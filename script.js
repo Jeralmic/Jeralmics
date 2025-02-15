@@ -23,4 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
             dotsElement.textContent = dots;
         }, 500);
     }
+
+    const text = "JERALMI C.S"; // The text to type
+    const speed = 150; // Speed in milliseconds per letter
+    let index = 0;
+
+    function typeWriter() {
+        if (index < text.length) {
+            document.getElementById("typewriter").innerHTML += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, speed);
+        }
+    }
+
+    typeWriter(); // Start typing effect
 });

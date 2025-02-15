@@ -130,6 +130,30 @@ figcaption {
 }
 
 
+#typewriter {
+    font-size: 28px;
+    font-weight: normal;
+    font-family: "DotMatri", sans-serif; /* Your custom font */
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+}
+
+/* Blinking underscore effect */
+#typewriter::after {
+    content: "_"; /* Cursor is now an underscore */
+    display: inline-block;
+    animation: blinkCursor 0.6s infinite;
+}
+
+@keyframes blinkCursor {
+    50% {
+        opacity: 0; /* Makes it disappear and reappear */
+    }
+}
+
 /* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
     .content {
