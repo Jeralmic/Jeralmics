@@ -3,26 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under The Bed</title>
-    <link rel="stylesheet" href="style.css">
-
-    <style>
-        @font-face {
-            font-family: "DotMatri";
-            src: url("Fonts/dotmatrix.woff") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        /* Apply the font to the whole page */
-        body {
-            font-family: "DotMatri", sans-serif;
-        }
-
-        /* Optional: Apply font to specific elements */
-        .header h1, .subheader p {
-            font-family: "DotMatri", sans-serif;
-        }
-    </style>
-    
+    <title>Private</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="project-style.css"> 
 </head>
+<body>
+
+    <div class="header">
+        <h1><a href="index.html">JERALMI C S</a></h1>
+    </div>
+
+    <div class="subheader">
+        <p>Jeralmi is an indie game developer.</p>
+        <p>Browse game jam projects and more.</p>
+        <p><a href="https://uhminc.itch.io" target="_blank" class="project-link">Uhm<span class="loading-dots">...</span></a></p>
+    </div>
+
+    <div class="image-container">
+        <span class="arrow arrow-left" onclick="prevImage()">&#60;</span>
+        <img id="project-image" class="project-image" src="images/PrivateShot01.png" data-project-name="Private" alt="Private Screenshot">
+        <span class="arrow arrow-right" onclick="nextImage()">&#62;</span>
+    </div>
+
+    <div class="project-details">
+        <figcaption>
+            <span class="game-title">Unannounced (2024-2025)</span>
+            <span class="company-name">Imaginary Hazard</span>
+        </figcaption>
+    </div>
+
+    <div class="project-description">
+        <h2>Project Overview</h2>
+        <p><strong>Indie development team based in Cambridge, MA. More details coming soon.</strong></p>
+    
+        <h2>Role</h2>
+        <ul>
+            <li>Artist</li>
+            <li>Programmer</li>
+        </ul>
+    
+        <h2>Tech-</h2>
+        <p>Unreal engine 5</p>
+    </div>
+    
+
+    <script src="project-script.js"></script>
+
+</body>
+</html>
