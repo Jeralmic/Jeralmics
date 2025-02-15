@@ -1,0 +1,152 @@
+@font-face {
+    font-family: "DotMatri";
+    src: url("Fonts/dotmatrix.woff") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Apply the font globally */
+body {
+    font-family: "DotMatri", sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Keep header & subheader aligned to the left */
+.header, .subheader {
+    text-align: left;
+    margin-left: 20px;
+}
+
+/* Header link styling */
+.header h1 a {
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 500; /* Light weight */
+    margin-bottom: 1%;
+    color: #000000;
+    transition: color 0.3s ease-in-out;
+}
+
+.header h1 a:hover {
+    color: #1e90ff;
+}
+
+.subheader {
+    text-align: left;
+    margin-left: 20px; /* Align left with header */
+}
+/* Subheader text */
+.subheader p {
+    font-size: 1rem;
+    color: rgb(82, 82, 82);
+    margin-top: 0.3%;
+    line-height: 1.5;
+}
+
+/* Project details section */
+.project-details {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+/* Centered Image Container */
+.image-container {
+    position: relative;
+    max-width: 600px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+/* Image Styling */
+.project-image {
+    width: 100%;
+    height: auto;
+    border-radius: 0; /* Remove rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Arrows for Image Navigation */
+/* Arrows for Image Navigation */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 45px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    user-select: none;
+    background: none; /* Remove background */
+}
+
+
+.arrow-left {
+    left: 10px;
+}
+
+.arrow-right {
+    right: 10px;
+}
+
+/* Style for loading dots */
+.loading-dots {
+    display: inline-block;
+    font-size: 16px;
+    animation: loadingDots 1.5s infinite;
+}
+
+.project-details figcaption {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px; /* Increased font size */
+    font-weight: bold; /* Make it stand out */
+    color: rgb(90, 90, 90);
+    font-family: "DotMatri", sans-serif;
+    margin-top: 20px;
+}
+
+.game-title {
+    text-align: left;
+}
+
+.company-name {
+    text-align: right;
+    color: rgb(90, 90, 90);
+}
+
+.project-description {
+    max-width: 600px;
+    margin: 30px auto;
+    text-align: left;
+    line-height: 1.6;
+}
+
+.project-description h2 {
+    margin-top: 20px;
+    font-size: 20px;
+    color: black;
+}
+
+.project-description p, .project-description ul {
+    font-size: 16px;
+    color: rgb(60, 60, 60);
+}
+
+.project-description ul {
+    padding-left: 20px;
+}
+
+
+
+/* Keyframe animation for loading dots */
+@keyframes loadingDots {
+    0% { content: "."; }
+    33% { content: ".."; }
+    66% { content: "..."; }
+    100% { content: ""; }
+}
