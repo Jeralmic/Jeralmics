@@ -1,0 +1,168 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Apply Inter Font Globally */
+body {
+    font-family: "DotMatri", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    background-color: white;
+    padding: 20px;
+}
+
+/* Header Styles */
+.header {
+    text-align: left;
+    margin-left: 20px; /* Adds some spacing from the left */
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 500; /* Light weight */
+    margin-bottom: 1%;
+    color: #000000;
+
+}
+
+/* Subheader Styles */
+.subheader {
+    text-align: left;
+    margin-left: 20px; /* Align left with header */
+}
+
+.subheader p {
+    font-size: 1rem;
+    color: rgb(82, 82, 82);
+    margin-top: 0.3%;
+    line-height: 1.5;
+}
+
+/* Grid Layout for Images */
+.content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Ensures 3 images per row */
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+    max-width: 1800px; /* Adjusts width of the grid */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content img {
+    width: 100%;
+    height: auto;
+    border-radius: 0; /* Remove rounding */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.content img:hover {
+    transform: scale(1.05);
+}
+
+/* Style for figure container */
+figure {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns content to the left */
+    text-align: left;
+}
+
+figcaption {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
+    color: gray;
+    font-family: "DotMatri", sans-serif;
+}
+
+.game-title {
+    text-align: left;
+}
+
+.company-name {
+    text-align: right;
+}
+
+
+.project-link {
+    color: #88ccee; /* Light blue text */
+    text-decoration: none; /* Removes underline */
+    font-weight: normal;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Change color on hover */
+.project-link:hover {
+    color: #25b6ff; /* Slightly lighter blue when hovered */
+}
+
+/* Style for the loading dots */
+.loading-dots {
+    display: inline-block;
+    font-size: 16px;
+    animation: loadingDots 1.5s infinite;
+}
+
+/* Keyframe animation for loading dots */
+@keyframes loadingDots {
+    0% { content: "."; }
+    33% { content: ".."; }
+    66% { content: "..."; }
+    100% { content: ""; }
+}
+
+.header h1 a {
+    text-decoration: none; /* Remove underline */
+    color: black; /* Default color */
+    transition: color 0.3s ease-in-out;
+}
+
+.header h1 a:hover {
+    color: #25b6ff; /* Slight blue on hover */
+}
+
+
+#typewriter {
+    font-size: 28px;
+    font-weight: normal;
+    font-family: "DotMatri", sans-serif; /* Your custom font */
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+}
+
+/* Blinking underscore effect */
+#typewriter::after {
+    content: "_"; /* Cursor is now an underscore */
+    display: inline-block;
+    animation: blinkCursor 0.6s infinite;
+}
+
+@keyframes blinkCursor {
+    50% {
+        opacity: 0; /* Makes it disappear and reappear */
+    }
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .content {
+        grid-template-columns: repeat(2, 1fr); /* 2 per row on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        grid-template-columns: repeat(1, 1fr); /* 1 per row on mobile */
+    }
+}

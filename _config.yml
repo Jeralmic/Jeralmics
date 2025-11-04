@@ -1,0 +1,39 @@
+# Jekyll Configuration for Jeralmi Canela Portfolio
+
+# Site settings
+title: Jeralmi Canela
+email: jeralmicw@gmail.com
+description: Game designer, artist, and programmer
+url: "https://jeralmics.com"
+
+# Build settings
+permalink: pretty
+
+# Collections
+collections:
+  layouts:
+    output: false
+  includes:
+    output: false
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - CAROUSEL_REDESIGN
+  - "*.md"
+
+# Include
+include:
+  - _layouts
+  - _includes
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"

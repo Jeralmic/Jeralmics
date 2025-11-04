@@ -1,0 +1,36 @@
+---
+layout: default
+has_carousel: true
+---
+
+<div class="project-page">
+    
+    <!-- Main Carousel/Image Container -->
+    <div class="image-container">
+        <!-- Main image - will be replaced by carousel.js -->
+        <img id="project-image" 
+             class="project-image" 
+             src="/images/{{ page.slug }}.jpg" 
+             data-project-name="{{ page.slug }}" 
+             data-image-count="{{ page.image_count | default: 0 }}"
+             {% if page.video_url %}data-video-url="{{ page.video_url }}"{% endif %}
+             alt="{{ page.title }}"
+             loading="lazy">
+        
+        <!-- Navigation panels and counter will be added by carousel.js -->
+    </div>
+    
+    <!-- Thumbnail strip will be dynamically inserted here by carousel.js -->
+
+    <div class="project-details">
+        <figcaption>
+            <span class="game-title">{{ page.title }}</span>
+            <span class="company-name">{{ page.company }}</span>
+        </figcaption>
+    </div>
+
+    <div class="project-description">
+        {{ content }}
+    </div>
+
+</div>

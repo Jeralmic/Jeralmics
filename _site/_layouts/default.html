@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}Jeralmi Canela</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}Jeralmi Canela - Game designer, artist, and programmer{% endif %}">
+    
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="/assets/fonts/dotmatrix.woff" as="font" type="font/woff" crossorigin>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <style>
+        @font-face {
+            font-family: "DotMatri";
+            src: url("/assets/fonts/dotmatrix.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+</head>
+<body>
+    
+    {% include header.html %}
+
+    <main>
+        {{ content }}
+    </main>
+
+    <!-- JavaScript -->
+    <script src="/assets/js/typewriter.js"></script>
+    {% if page.has_carousel %}
+    <script src="/assets/js/carousel.js"></script>
+    {% endif %}
+    
+</body>
+</html>
