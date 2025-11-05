@@ -1,15 +1,14 @@
 /**
- * Carousel - Smart Image Detection
- * Tries both capitalized and lowercase filenames
+ * PROJECT PAGE CAROUSEL
+ * Steam-style with thumbnails below main image
+ * Click thumbnails or left/right halves of image to navigate
  */
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("🚀 Carousel loading...");
-    
     const projectImage = document.getElementById("project-image");
     
+    // Only run on project pages
     if (!projectImage) {
-        console.error("❌ No project-image found");
         return;
     }
     
@@ -17,8 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const imageCount = parseInt(projectImage.dataset.imageCount) || 0;
     const videoUrl = projectImage.dataset.videoUrl || null;
     const previewImage = projectImage.src;
-    
-    console.log("📊 Project:", projectName, "| Images:", imageCount, "| Video:", !!videoUrl);
     
     let currentIndex = 0;
     let media = [];
@@ -33,17 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-    // Detect images - try both capitalized and lowercase
+    // Detect available images (try different case variations)
     async function detectImages() {
-        console.log("🔍 Detecting images...");
         const extensions = ['.jpg', '.png', '.jpeg'];
         const detectedImages = [];
         
-        // Try different name variations
+        // Try different name variations to handle case sensitivity
         const nameVariations = [
-            projectName,                                                    // Original (e.g., "InfiniteRoads")
-            projectName.toLowerCase(),                                      // All lowercase (e.g., "infiniteroads")
-            projectName.charAt(0).toLowerCase() + projectName.slice(1)     // First letter lowercase (e.g., "infiniteRoads")
+            projectName,                                                   // Original (e.g., "InfiniteRoads")
+            projectName.toLowerCase(),                                     // all lowercase (e.g., "infiniteroads")
+            projectName.charAt(0).toLowerCase() + projectName.slice(1),    // camelCase (e.g., "infiniteRoads")
+            projectName.charAt(0).toUpperCase() + projectName.slice(1).toLowerCase() // Title case (e.g., "Infiniteroads")
         ];
         
         for (let i = 1; i <= imageCount; i++) {
@@ -57,20 +54,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     const exists = await checkImageExists(testSrc);
                     
                     if (exists) {
-                        console.log(`✅ Found: ${testSrc}`);
                         detectedImages.push({ type: 'image', src: testSrc, index: i });
                         found = true;
                         break;
                     }
                 }
             }
-            
-            if (!found) {
-                console.log(`❌ Not found: Shot0${i}`);
-            }
         }
         
-        console.log(`📸 Detected ${detectedImages.length} images`);
         return detectedImages;
     }
     
@@ -78,54 +69,49 @@ document.addEventListener("DOMContentLoaded", function () {
     async function initCarousel() {
         const detectedImages = await detectImages();
         
-        // Build media array: video first, then images
+        // Build media array: video first (if exists), then images
         if (videoUrl) {
-            console.log("🎥 Adding video");
             media.push({ type: 'video', src: videoUrl });
         }
         
         media = media.concat(detectedImages);
         
-        // Fallback to preview
+        // If no media found, use preview image
         if (media.length === 0) {
-            console.log("⚠️ No media, using preview");
             media.push({ type: 'image', src: previewImage });
         }
         
-        console.log(`📦 Total media: ${media.length}`);
-        
+        // Only create UI if we have more than 1 item
         if (media.length > 1) {
-            setupNavigation();
-            createThumbnails();
+            createNavigationPanels();
+            createThumbnailStrip();
             createCounter();
-        } else {
-            console.log("ℹ️ Single item, no navigation needed");
         }
         
+        // Display first item
         updateDisplay();
-        console.log("✅ Carousel ready!");
     }
     
-    // Setup clickable navigation panels
-    function setupNavigation() {
+    // Create invisible clickable panels (left/right halves)
+    function createNavigationPanels() {
         const container = document.querySelector('.image-container');
         if (!container) return;
         
+        // Left panel (previous)
         const leftPanel = document.createElement('div');
         leftPanel.className = 'nav-panel nav-panel-left';
         leftPanel.onclick = () => navigate(-1);
         container.appendChild(leftPanel);
         
+        // Right panel (next)
         const rightPanel = document.createElement('div');
         rightPanel.className = 'nav-panel nav-panel-right';
         rightPanel.onclick = () => navigate(1);
         container.appendChild(rightPanel);
-        
-        console.log("✅ Navigation panels created");
     }
     
-    // Create thumbnails
-    function createThumbnails() {
+    // Create thumbnail strip below main image
+    function createThumbnailStrip() {
         const strip = document.createElement('div');
         strip.className = 'carousel-thumbnails';
         strip.id = 'thumbnailStrip';
@@ -138,34 +124,41 @@ document.addEventListener("DOMContentLoaded", function () {
             if (item.type === 'video') {
                 thumb.classList.add('video');
                 
+                // Video play icon
                 const playIcon = document.createElement('div');
                 playIcon.className = 'video-play-icon';
                 playIcon.innerHTML = '▶';
                 thumb.appendChild(playIcon);
                 
+                // Use first image as video thumbnail, or preview
                 const img = document.createElement('img');
-                img.src = media.length > 1 && media[1].type === 'image' ? media[1].src : previewImage;
+                if (media.length > 1 && media[1].type === 'image') {
+                    img.src = media[1].src;
+                } else {
+                    img.src = previewImage;
+                }
                 img.alt = 'Video';
                 thumb.appendChild(img);
             } else {
                 const img = document.createElement('img');
                 img.src = item.src;
-                img.alt = `Thumbnail ${index + 1}`;
+                img.alt = `Screenshot ${index + 1}`;
                 thumb.appendChild(img);
             }
             
-            thumb.onclick = () => goTo(index);
+            // Click thumbnail to jump to that media
+            thumb.onclick = () => goToIndex(index);
             strip.appendChild(thumb);
         });
         
+        // Insert thumbnail strip after image container
         const container = document.querySelector('.image-container');
         if (container && container.parentNode) {
             container.parentNode.insertBefore(strip, container.nextSibling);
-            console.log("✅ Thumbnails created");
         }
     }
     
-    // Create counter
+    // Create counter (e.g., "1 / 6")
     function createCounter() {
         const counter = document.createElement('div');
         counter.className = 'image-counter';
@@ -175,94 +168,128 @@ document.addEventListener("DOMContentLoaded", function () {
         const container = document.querySelector('.image-container');
         if (container) {
             container.appendChild(counter);
-            console.log("✅ Counter created");
         }
     }
     
-    // Update display
+    // Update main display
     function updateDisplay() {
         const container = document.querySelector('.image-container');
         if (!container) return;
         
-        // Remove old media
-        const old = container.querySelector('#mainImage');
-        if (old) old.remove();
+        // Remove existing media element
+        const oldMedia = container.querySelector('#mainImage');
+        if (oldMedia) {
+            oldMedia.remove();
+        }
         
-        const current = media[currentIndex];
+        const currentMedia = media[currentIndex];
         
-        // Create new media
-        if (current.type === 'video') {
+        // Create new media element
+        if (currentMedia.type === 'video') {
+            // Create video iframe
             const iframe = document.createElement('iframe');
             iframe.id = 'mainImage';
-            iframe.src = current.src;
+            iframe.src = currentMedia.src;
             iframe.frameBorder = '0';
             iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
             iframe.allowFullscreen = true;
             iframe.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;';
+            
+            // Insert at the beginning (behind panels and counter)
             container.insertBefore(iframe, container.firstChild);
         } else {
+            // Create image
             const img = document.createElement('img');
             img.id = 'mainImage';
-            img.src = current.src;
-            img.alt = 'Project Media';
+            img.src = currentMedia.src;
+            img.alt = 'Project Screenshot';
             img.className = 'project-image';
+            
+            // Insert at the beginning
             container.insertBefore(img, container.firstChild);
         }
         
+        // Update UI
         updateCounter();
-        updateThumbnails();
-        updatePanels();
+        updateActiveThumbnail();
+        updateNavigationPanels();
     }
     
-    // Update counter
+    // Update counter text
     function updateCounter() {
         const counter = document.getElementById('currentIndex');
-        if (counter) counter.textContent = currentIndex + 1;
+        if (counter) {
+            counter.textContent = currentIndex + 1;
+        }
     }
     
-    // Update thumbnails
-    function updateThumbnails() {
-        document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+    // Update which thumbnail has active state
+    function updateActiveThumbnail() {
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        thumbnails.forEach((thumb, index) => {
             if (index === currentIndex) {
                 thumb.classList.add('active');
-                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                // Scroll thumbnail into view
+                thumb.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest', 
+                    inline: 'center' 
+                });
             } else {
                 thumb.classList.remove('active');
             }
         });
     }
     
-    // Update panels
-    function updatePanels() {
-        const left = document.querySelector('.nav-panel-left');
-        const right = document.querySelector('.nav-panel-right');
+    // Update navigation panel states (disable at boundaries)
+    function updateNavigationPanels() {
+        const leftPanel = document.querySelector('.nav-panel-left');
+        const rightPanel = document.querySelector('.nav-panel-right');
         
-        if (left) {
-            currentIndex === 0 ? left.classList.add('disabled') : left.classList.remove('disabled');
+        if (leftPanel) {
+            if (currentIndex === 0) {
+                leftPanel.classList.add('disabled');
+            } else {
+                leftPanel.classList.remove('disabled');
+            }
         }
         
-        if (right) {
-            currentIndex >= media.length - 1 ? right.classList.add('disabled') : right.classList.remove('disabled');
+        if (rightPanel) {
+            if (currentIndex >= media.length - 1) {
+                rightPanel.classList.add('disabled');
+            } else {
+                rightPanel.classList.remove('disabled');
+            }
         }
     }
     
-    // Navigate
-    function navigate(dir) {
-        const newIndex = currentIndex + dir;
-        if (newIndex < 0 || newIndex >= media.length) return;
+    // Navigate by direction (-1 for prev, +1 for next)
+    function navigate(direction) {
+        const newIndex = currentIndex + direction;
+        
+        // Check bounds
+        if (newIndex < 0 || newIndex >= media.length) {
+            return;
+        }
+        
         currentIndex = newIndex;
         updateDisplay();
     }
     
-    // Go to index
-    function goTo(index) {
-        if (index < 0 || index >= media.length || index === currentIndex) return;
+    // Go to specific index
+    function goToIndex(index) {
+        if (index < 0 || index >= media.length || index === currentIndex) {
+            return;
+        }
+        
         currentIndex = index;
         updateDisplay();
     }
     
-    // Keyboard
+    // Keyboard navigation (arrow keys)
     document.addEventListener("keydown", (e) => {
+        if (!projectImage) return;
+        
         if (e.key === "ArrowLeft") {
             e.preventDefault();
             navigate(-1);
@@ -272,6 +299,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
     
-    // Start
+    // Start the carousel
     initCarousel();
 });
