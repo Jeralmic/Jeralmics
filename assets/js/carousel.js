@@ -1,19 +1,24 @@
 /**
- * Carousel Matching Prototype
- * - Thumbnails display below main image
- * - Invisible clickable panels on left/right (darken on hover)
- * - Counter showing current / total
+ * Carousel - Smart Image Detection
+ * Tries both capitalized and lowercase filenames
  */
 
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("🚀 Carousel loading...");
+    
     const projectImage = document.getElementById("project-image");
     
-    if (!projectImage) return;
+    if (!projectImage) {
+        console.error("❌ No project-image found");
+        return;
+    }
     
     const projectName = projectImage.dataset.projectName;
     const imageCount = parseInt(projectImage.dataset.imageCount) || 0;
     const videoUrl = projectImage.dataset.videoUrl || null;
     const previewImage = projectImage.src;
+    
+    console.log("📊 Project:", projectName, "| Images:", imageCount, "| Video:", !!videoUrl);
     
     let currentIndex = 0;
     let media = [];
@@ -28,23 +33,44 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-    // Detect available images
+    // Detect images - try both capitalized and lowercase
     async function detectImages() {
+        console.log("🔍 Detecting images...");
         const extensions = ['.jpg', '.png', '.jpeg'];
         const detectedImages = [];
         
+        // Try different name variations
+        const nameVariations = [
+            projectName,                                                    // Original (e.g., "InfiniteRoads")
+            projectName.toLowerCase(),                                      // All lowercase (e.g., "infiniteroads")
+            projectName.charAt(0).toLowerCase() + projectName.slice(1)     // First letter lowercase (e.g., "infiniteRoads")
+        ];
+        
         for (let i = 1; i <= imageCount; i++) {
-            for (const ext of extensions) {
-                const testSrc = `/images/${projectName}Shot0${i}${ext}`;
-                const exists = await checkImageExists(testSrc);
+            let found = false;
+            
+            for (const nameVar of nameVariations) {
+                if (found) break;
                 
-                if (exists) {
-                    detectedImages.push({ type: 'image', src: testSrc, index: i });
-                    break;
+                for (const ext of extensions) {
+                    const testSrc = `/images/${nameVar}Shot0${i}${ext}`;
+                    const exists = await checkImageExists(testSrc);
+                    
+                    if (exists) {
+                        console.log(`✅ Found: ${testSrc}`);
+                        detectedImages.push({ type: 'image', src: testSrc, index: i });
+                        found = true;
+                        break;
+                    }
                 }
+            }
+            
+            if (!found) {
+                console.log(`❌ Not found: Shot0${i}`);
             }
         }
         
+        console.log(`📸 Detected ${detectedImages.length} images`);
         return detectedImages;
     }
     
@@ -52,62 +78,57 @@ document.addEventListener("DOMContentLoaded", function () {
     async function initCarousel() {
         const detectedImages = await detectImages();
         
-        // Build media array: video first (if exists), then images
+        // Build media array: video first, then images
         if (videoUrl) {
+            console.log("🎥 Adding video");
             media.push({ type: 'video', src: videoUrl });
         }
         
         media = media.concat(detectedImages);
         
-        // If no media, use preview image
+        // Fallback to preview
         if (media.length === 0) {
+            console.log("⚠️ No media, using preview");
             media.push({ type: 'image', src: previewImage });
         }
         
-        console.log(`Carousel: ${media.length} items detected`, media);
+        console.log(`📦 Total media: ${media.length}`);
         
-        // Only create UI if we have more than 1 item
         if (media.length > 1) {
-            setupClickablePanels();
-            createThumbnailStrip();
-            createImageCounter();
+            setupNavigation();
+            createThumbnails();
+            createCounter();
         } else {
-            // Single item - hide navigation
-            const arrows = document.querySelectorAll('.arrow');
-            arrows.forEach(arrow => arrow.style.display = 'none');
+            console.log("ℹ️ Single item, no navigation needed");
         }
         
-        // Display first item
         updateDisplay();
+        console.log("✅ Carousel ready!");
     }
     
-    // Setup invisible clickable panels instead of arrows
-    function setupClickablePanels() {
+    // Setup clickable navigation panels
+    function setupNavigation() {
         const container = document.querySelector('.image-container');
         if (!container) return;
         
-        // Remove old arrows if they exist
-        const oldArrows = container.querySelectorAll('.arrow');
-        oldArrows.forEach(arrow => arrow.remove());
-        
-        // Create left panel
         const leftPanel = document.createElement('div');
         leftPanel.className = 'nav-panel nav-panel-left';
         leftPanel.onclick = () => navigate(-1);
         container.appendChild(leftPanel);
         
-        // Create right panel
         const rightPanel = document.createElement('div');
         rightPanel.className = 'nav-panel nav-panel-right';
         rightPanel.onclick = () => navigate(1);
         container.appendChild(rightPanel);
+        
+        console.log("✅ Navigation panels created");
     }
     
-    // Create thumbnail strip below main image
-    function createThumbnailStrip() {
-        const thumbnailStrip = document.createElement('div');
-        thumbnailStrip.className = 'carousel-thumbnails';
-        thumbnailStrip.id = 'thumbnailStrip';
+    // Create thumbnails
+    function createThumbnails() {
+        const strip = document.createElement('div');
+        strip.className = 'carousel-thumbnails';
+        strip.id = 'thumbnailStrip';
         
         media.forEach((item, index) => {
             const thumb = document.createElement('div');
@@ -117,108 +138,91 @@ document.addEventListener("DOMContentLoaded", function () {
             if (item.type === 'video') {
                 thumb.classList.add('video');
                 
-                // Video play icon
                 const playIcon = document.createElement('div');
                 playIcon.className = 'video-play-icon';
                 playIcon.innerHTML = '▶';
                 thumb.appendChild(playIcon);
                 
-                // Use first image as video thumbnail, or preview
-                const thumbImg = document.createElement('img');
-                if (media.length > 1 && media[1].type === 'image') {
-                    thumbImg.src = media[1].src;
-                } else {
-                    thumbImg.src = previewImage;
-                }
-                thumbImg.alt = 'Video';
-                thumb.appendChild(thumbImg);
+                const img = document.createElement('img');
+                img.src = media.length > 1 && media[1].type === 'image' ? media[1].src : previewImage;
+                img.alt = 'Video';
+                thumb.appendChild(img);
             } else {
-                const thumbImg = document.createElement('img');
-                thumbImg.src = item.src;
-                thumbImg.alt = `Thumbnail ${index + 1}`;
-                thumb.appendChild(thumbImg);
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.alt = `Thumbnail ${index + 1}`;
+                thumb.appendChild(img);
             }
             
-            thumb.onclick = () => goToIndex(index);
-            thumbnailStrip.appendChild(thumb);
+            thumb.onclick = () => goTo(index);
+            strip.appendChild(thumb);
         });
         
-        // Insert after image container
-        const imageContainer = document.querySelector('.image-container');
-        if (imageContainer && imageContainer.parentNode) {
-            imageContainer.parentNode.insertBefore(thumbnailStrip, imageContainer.nextSibling);
+        const container = document.querySelector('.image-container');
+        if (container && container.parentNode) {
+            container.parentNode.insertBefore(strip, container.nextSibling);
+            console.log("✅ Thumbnails created");
         }
     }
     
-    // Create image counter (1 / 9 format)
-    function createImageCounter() {
+    // Create counter
+    function createCounter() {
         const counter = document.createElement('div');
         counter.className = 'image-counter';
         counter.id = 'image-counter';
         counter.innerHTML = `<span id="currentIndex">1</span> / <span id="totalImages">${media.length}</span>`;
         
-        const imageContainer = document.querySelector('.image-container');
-        if (imageContainer) {
-            imageContainer.appendChild(counter);
+        const container = document.querySelector('.image-container');
+        if (container) {
+            container.appendChild(counter);
+            console.log("✅ Counter created");
         }
     }
     
-    // Update display when index changes
+    // Update display
     function updateDisplay() {
         const container = document.querySelector('.image-container');
         if (!container) return;
         
-        const currentMedia = media[currentIndex];
+        // Remove old media
+        const old = container.querySelector('#mainImage');
+        if (old) old.remove();
         
-        // Remove existing media
-        const existingMedia = container.querySelector('#mainImage');
-        if (existingMedia) {
-            existingMedia.remove();
-        }
+        const current = media[currentIndex];
         
-        // Create new media element
-        if (currentMedia.type === 'video') {
-            const videoFrame = document.createElement('iframe');
-            videoFrame.id = 'mainImage';
-            videoFrame.src = currentMedia.src;
-            videoFrame.frameBorder = '0';
-            videoFrame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            videoFrame.allowFullscreen = true;
-            videoFrame.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;';
-            
-            container.insertBefore(videoFrame, container.firstChild);
+        // Create new media
+        if (current.type === 'video') {
+            const iframe = document.createElement('iframe');
+            iframe.id = 'mainImage';
+            iframe.src = current.src;
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;';
+            container.insertBefore(iframe, container.firstChild);
         } else {
             const img = document.createElement('img');
             img.id = 'mainImage';
-            img.src = currentMedia.src;
+            img.src = current.src;
             img.alt = 'Project Media';
             img.className = 'project-image';
-            
             container.insertBefore(img, container.firstChild);
         }
         
-        // Update counter
         updateCounter();
-        
-        // Update active thumbnail
         updateThumbnails();
-        
-        // Update panel states
         updatePanels();
     }
     
-    // Update counter display
+    // Update counter
     function updateCounter() {
         const counter = document.getElementById('currentIndex');
-        if (counter) {
-            counter.textContent = currentIndex + 1;
-        }
+        if (counter) counter.textContent = currentIndex + 1;
     }
     
-    // Update active thumbnail
+    // Update thumbnails
     function updateThumbnails() {
-        const thumbnails = document.querySelectorAll('.thumbnail');
-        thumbnails.forEach((thumb, index) => {
+        document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
             if (index === currentIndex) {
                 thumb.classList.add('active');
                 thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -228,47 +232,36 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-    // Update panel enabled/disabled states
+    // Update panels
     function updatePanels() {
-        const leftPanel = document.querySelector('.nav-panel-left');
-        const rightPanel = document.querySelector('.nav-panel-right');
+        const left = document.querySelector('.nav-panel-left');
+        const right = document.querySelector('.nav-panel-right');
         
-        if (leftPanel) {
-            if (currentIndex === 0) {
-                leftPanel.classList.add('disabled');
-            } else {
-                leftPanel.classList.remove('disabled');
-            }
+        if (left) {
+            currentIndex === 0 ? left.classList.add('disabled') : left.classList.remove('disabled');
         }
         
-        if (rightPanel) {
-            if (currentIndex >= media.length - 1) {
-                rightPanel.classList.add('disabled');
-            } else {
-                rightPanel.classList.remove('disabled');
-            }
+        if (right) {
+            currentIndex >= media.length - 1 ? right.classList.add('disabled') : right.classList.remove('disabled');
         }
     }
     
-    // Navigate by direction
-    function navigate(direction) {
-        const newIndex = currentIndex + direction;
-        
+    // Navigate
+    function navigate(dir) {
+        const newIndex = currentIndex + dir;
         if (newIndex < 0 || newIndex >= media.length) return;
-        
         currentIndex = newIndex;
         updateDisplay();
     }
     
-    // Go to specific index
-    function goToIndex(index) {
+    // Go to index
+    function goTo(index) {
         if (index < 0 || index >= media.length || index === currentIndex) return;
-        
         currentIndex = index;
         updateDisplay();
     }
     
-    // Keyboard navigation
+    // Keyboard
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") {
             e.preventDefault();
@@ -279,114 +272,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
     
-    // Initialize
+    // Start
     initCarousel();
-});
-
-/**
- * Homepage hover cycling (unchanged)
- */
-document.addEventListener("DOMContentLoaded", () => {
-    const gridImages = document.querySelectorAll(".content figure img");
-    
-    gridImages.forEach(img => {
-        const figure = img.closest("figure");
-        const link = figure.querySelector("a");
-        
-        if (!link) return;
-        
-        const href = link.getAttribute("href");
-        let projectName = href.replace(".html", "").replace("/", "").trim();
-        projectName = projectName.replace(/\s+/g, '');
-        
-        const originalSrc = img.src;
-        let cycleInterval = null;
-        let cycleTimeout = null;
-        let currentCycleIndex = 0;
-        const maxCycleImages = 10;
-        let preloadedImages = [];
-        let isPreloading = true;
-        
-        const projectNameVariations = [
-            projectName,
-            projectName.charAt(0).toUpperCase() + projectName.slice(1)
-        ];
-        
-        function preloadImages() {
-            let checkCount = 0;
-            const totalChecks = maxCycleImages * projectNameVariations.length;
-            
-            for (let i = 1; i <= maxCycleImages; i++) {
-                projectNameVariations.forEach(nameVar => {
-                    const testSrc = `/images/${nameVar}Shot0${i}.jpg`;
-                    const testImg = new Image();
-                    
-                    testImg.onload = function() {
-                        if (!preloadedImages.find(p => p.index === i)) {
-                            preloadedImages.push({ index: i, src: testSrc });
-                            preloadedImages.sort((a, b) => a.index - b.index);
-                        }
-                        checkCount++;
-                        if (checkCount >= totalChecks) {
-                            isPreloading = false;
-                        }
-                    };
-                    
-                    testImg.onerror = function() {
-                        checkCount++;
-                        if (checkCount >= totalChecks) {
-                            isPreloading = false;
-                        }
-                    };
-                    
-                    testImg.src = testSrc;
-                });
-            }
-        }
-        
-        preloadImages();
-        
-        img.addEventListener("mouseenter", () => {
-            if (cycleInterval) clearInterval(cycleInterval);
-            if (cycleTimeout) clearTimeout(cycleTimeout);
-            
-            cycleTimeout = setTimeout(() => {
-                const checkAndStart = () => {
-                    if (isPreloading) {
-                        cycleTimeout = setTimeout(checkAndStart, 100);
-                        return;
-                    }
-                    
-                    if (preloadedImages.length <= 1) return;
-                    
-                    currentCycleIndex = 0;
-                    
-                    cycleInterval = setInterval(() => {
-                        currentCycleIndex = (currentCycleIndex + 1) % preloadedImages.length;
-                        const imageData = preloadedImages[currentCycleIndex];
-                        
-                        if (imageData && imageData.src) {
-                            img.src = imageData.src;
-                        }
-                    }, 800);
-                };
-                
-                checkAndStart();
-            }, 50);
-        });
-        
-        img.addEventListener("mouseleave", () => {
-            if (cycleInterval) {
-                clearInterval(cycleInterval);
-                cycleInterval = null;
-            }
-            if (cycleTimeout) {
-                clearTimeout(cycleTimeout);
-                cycleTimeout = null;
-            }
-            
-            currentCycleIndex = 0;
-            img.src = originalSrc;
-        });
-    });
 });
