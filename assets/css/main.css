@@ -1,9 +1,20 @@
 /* ===================================
-   JERALMI CANELA PORTFOLIO - Main CSS
-   Matching Carousel Prototype
+   JERALMI CANELA PORTFOLIO
+   BASE STYLES - Shared Across Site
+   Aesthetic: Dune / Blade Runner / Hyper Light Drifter
    =================================== */
 
-/* ============ BASE STYLES ============ */
+/* ============ FONTS ============ */
+
+@font-face {
+    font-family: "DotMatri";
+    src: url("/assets/fonts/dotmatrix.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ============ BASE RESET ============ */
 
 * {
     margin: 0;
@@ -15,15 +26,33 @@ body {
     font-family: "DotMatri", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
-    background-color: white;
+    background-color: #fafafa;
+    color: #1a1a1a;
     padding: 20px;
-    color: #000;
+    line-height: 1.5;
 }
 
-/* ============ HEADER STYLES ============ */
+/* ============ TYPOGRAPHY ============ */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+a:hover {
+    opacity: 0.6;
+}
+
+/* ============ HEADER ============ */
 
 .site-header {
-    margin-bottom: 30px;
+    margin-bottom: 60px;
 }
 
 .header {
@@ -34,15 +63,15 @@ body {
 .header h1,
 .header h1 a {
     font-size: 28px;
-    font-weight: 500;
+    font-weight: 400;
     margin-bottom: 1%;
-    color: #000000;
+    color: #000;
     text-decoration: none;
-    transition: color 0.3s ease-in-out;
+    letter-spacing: 2px;
 }
 
 .header h1 a:hover {
-    color: #25b6ff;
+    opacity: 0.5;
 }
 
 /* Typewriter effect */
@@ -50,11 +79,12 @@ body {
     font-size: 28px;
     font-weight: normal;
     font-family: "DotMatri", sans-serif;
-    color: #000000;
+    color: #000;
     white-space: nowrap;
     overflow: hidden;
     display: inline-block;
     position: relative;
+    letter-spacing: 2px;
 }
 
 #typewriter::after {
@@ -77,25 +107,28 @@ body {
 }
 
 .subheader p {
-    font-size: 1rem;
-    color: rgb(82, 82, 82);
+    font-size: 14px;
+    color: #666;
     margin-top: 0.3%;
-    line-height: 1.5;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
 }
 
 /* ============ LINKS ============ */
 
 .project-link,
 .contact-link {
-    color: #88ccee;
+    color: #000;
     text-decoration: none;
     font-weight: normal;
-    transition: color 0.3s ease-in-out;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
 .project-link:hover,
 .contact-link:hover {
-    color: #25b6ff;
+    border-bottom-color: #000;
+    opacity: 1;
 }
 
 /* Twitter Icon */
@@ -109,6 +142,8 @@ body {
 .loading-dots {
     display: inline-block;
     font-size: 16px;
+    width: 18px;       
+    text-align: left;  
     animation: loadingDots 1.5s infinite;
 }
 
@@ -119,354 +154,16 @@ body {
     100% { content: ""; }
 }
 
-/* ============ PROJECT GRID (Homepage) ============ */
-
-.content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-    max-width: 1800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.content figure {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-}
-
-.content img {
-    width: 100%;
-    height: auto;
-    border-radius: 0;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    object-fit: cover;
-    transition: transform 0.3s ease-in-out;
-    cursor: pointer;
-}
-
-.content img:hover {
-    transform: scale(1.05);
-}
-
-.content figcaption {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 14px;
-    color: gray;
-    font-family: "DotMatri", sans-serif;
-    margin-top: 10px;
-}
-
-.game-title {
-    text-align: left;
-}
-
-.company-name {
-    text-align: right;
-    color: rgb(90, 90, 90);
-}
-
-/* ============ PROJECT DETAIL PAGE ============ */
-
-.project-page {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 60px 20px;
-}
-
-/* Main Carousel Container */
-.image-container {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    min-height: 600px;
-    margin: 0 auto 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-}
-
-/* Main Image */
-.project-image,
-#mainImage {
-    width: 100%;
-    height: auto;
-    max-height: 700px;
-    object-fit: contain;
-    display: block;
-}
-
-/* Hide old arrow buttons if they exist */
-.arrow {
-    display: none !important;
-}
-
-/* Navigation Panels - Invisible clickable areas that darken on hover */
-.nav-panel {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 50%;
-    cursor: pointer;
-    z-index: 100;
-    transition: background-color 0.2s ease;
-}
-
-.nav-panel-left {
-    left: 0;
-}
-
-.nav-panel-right {
-    right: 0;
-}
-
-/* Darken on hover */
-.nav-panel:hover:not(.disabled) {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.nav-panel:active:not(.disabled) {
-    background-color: rgba(0, 0, 0, 0.15);
-}
-
-/* Disabled state */
-.nav-panel.disabled {
-    cursor: not-allowed;
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Image Counter - Bottom Right */
-.image-counter {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #e0e0e0;
-    padding: 8px 16px;
-    font-size: 12px;
-    color: #666;
-    letter-spacing: 1px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    pointer-events: none;
-    z-index: 50;
-}
-
-/* Thumbnail Strip - Horizontal below main image */
-.carousel-thumbnails {
-    display: flex;
-    gap: 12px;
-    max-width: 1000px;
-    margin: 0 auto 40px;
-    overflow-x: auto;
-    padding: 10px 0;
-    scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-.carousel-thumbnails::-webkit-scrollbar {
-    height: 8px;
-}
-
-.carousel-thumbnails::-webkit-scrollbar-track {
-    background: #f0f0f0;
-}
-
-.carousel-thumbnails::-webkit-scrollbar-thumb {
-    background: #ccc;
-}
-
-.carousel-thumbnails::-webkit-scrollbar-thumb:hover {
-    background: #999;
-}
-
-/* Individual Thumbnails */
-.thumbnail {
-    flex: 0 0 140px;
-    height: 90px;
-    border: 1px solid #e0e0e0;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    opacity: 0;
-    animation: thumbnailFadeIn 0.5s ease forwards;
-}
-
-/* Stagger thumbnails */
-.thumbnail:nth-child(1) { animation-delay: 0.1s; }
-.thumbnail:nth-child(2) { animation-delay: 0.15s; }
-.thumbnail:nth-child(3) { animation-delay: 0.2s; }
-.thumbnail:nth-child(4) { animation-delay: 0.25s; }
-.thumbnail:nth-child(5) { animation-delay: 0.3s; }
-.thumbnail:nth-child(6) { animation-delay: 0.35s; }
-.thumbnail:nth-child(7) { animation-delay: 0.4s; }
-.thumbnail:nth-child(8) { animation-delay: 0.45s; }
-.thumbnail:nth-child(9) { animation-delay: 0.5s; }
-.thumbnail:nth-child(10) { animation-delay: 0.55s; }
-
-@keyframes thumbnailFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.thumbnail:hover {
-    border-color: #999;
-    transform: translateY(-2px);
-}
-
-.thumbnail.active {
-    border: 2px solid #000;
-}
-
-/* Video thumbnail indicator */
-.thumbnail.video::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-}
-
-.thumbnail .video-play-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 32px;
-    height: 32px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #000;
-    z-index: 10;
-    pointer-events: none;
-    padding-left: 3px;
-}
-
-/* Project Details */
-.project-details {
-    max-width: 1000px;
-    margin: 20px auto;
-    text-align: left;
-}
-
-.project-details figcaption {
-    display: flex;
-    justify-content: space-between;
-    font-size: 20px;
-    font-weight: bold;
-    color: rgb(90, 90, 90);
-    font-family: "DotMatri", sans-serif;
-    margin-top: 20px;
-}
-
-/* Project Description */
-.project-description {
-    max-width: 800px;
-    margin: 30px auto;
-    text-align: left;
-    line-height: 1.6;
-}
-
-.project-description h2 {
-    margin-top: 20px;
-    font-size: 20px;
-    color: black;
-}
-
-.project-description p,
-.project-description ul {
-    font-size: 16px;
-    color: rgb(60, 60, 60);
-}
-
-.project-description ul {
-    padding-left: 20px;
-    margin-top: 10px;
-}
-
-.project-description li {
-    margin-bottom: 5px;
-}
-
-.project-description a {
-    color: #88ccee;
-    text-decoration: none;
-    transition: color 0.3s ease-in-out;
-}
-
-.project-description a:hover {
-    color: #25b6ff;
-}
-
-/* ============ RESPONSIVE DESIGN ============ */
-
-@media (max-width: 1024px) {
-    .content {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-    
-    .project-page {
-        padding: 40px 15px;
-    }
-}
+/* ============ RESPONSIVE ============ */
 
 @media (max-width: 768px) {
-    .content {
-        grid-template-columns: repeat(2, 1fr);
+    body {
+        padding: 15px;
     }
     
     .header h1,
     #typewriter {
         font-size: 24px;
-    }
-    
-    .image-container {
-        min-height: 400px;
-    }
-    
-    .thumbnail {
-        flex: 0 0 100px;
-        height: 65px;
-    }
-}
-
-@media (max-width: 640px) {
-    .content {
-        grid-template-columns: repeat(1, 1fr);
-    }
-    
-    .header h1,
-    #typewriter {
-        font-size: 20px;
     }
 }
 
@@ -480,12 +177,12 @@ body {
         margin-left: 10px;
     }
     
-    .subheader p {
-        font-size: 0.9rem;
+    .header h1,
+    #typewriter {
+        font-size: 20px;
     }
     
-    .thumbnail {
-        flex: 0 0 80px;
-        height: 55px;
+    .subheader p {
+        font-size: 13px;
     }
 }

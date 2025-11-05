@@ -23,13 +23,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     typeWriter();
 
-    // Animate the loading dots
-    const dotsElements = document.querySelectorAll(".loading-dots");
-    dotsElements.forEach(dotsElement => {
-        let dots = "";
-        setInterval(() => {
-            dots = dots.length < 3 ? dots + "." : "";
-            dotsElement.textContent = dots;
-        }, 500);
-    });
 });

@@ -11,18 +11,19 @@
     <!-- Preload Critical Assets -->
     <link rel="preload" href="/assets/fonts/dotmatrix.woff" as="font" type="font/woff" crossorigin>
     
-    <!-- Stylesheet -->
+    <!-- Base Styles (Always Load) -->
     <link rel="stylesheet" href="/assets/css/main.css">
     
-    <style>
-        @font-face {
-            font-family: "DotMatri";
-            src: url("/assets/fonts/dotmatrix.woff") format("woff");
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-    </style>
+    <!-- Homepage Styles -->
+    {% if page.url == "/" or page.url == "/index.html" %}
+    <link rel="stylesheet" href="/assets/css/home.css">
+    {% endif %}
+    
+    <!-- Project Page Styles -->
+    {% if page.layout == 'project' %}
+    <link rel="stylesheet" href="/assets/css/project.css">
+    {% endif %}
+    
 </head>
 <body>
     
@@ -34,10 +35,10 @@
 
     <!-- JavaScript -->
     <script src="/assets/js/typewriter.js"></script>
+    
     {% if page.layout == 'project' %}
     <script src="/assets/js/carousel.js"></script>
     {% endif %}
-
     
 </body>
 </html>

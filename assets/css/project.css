@@ -1,0 +1,309 @@
+/* ===================================
+   PROJECT PAGES - Carousel
+   Aesthetic: Dune / Blade Runner / Hyper Light Drifter
+   White/Gray with Geometric Brutalism
+   =================================== */
+
+/* ============ PROJECT CONTAINER ============ */
+
+.project-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* ============ MAIN IMAGE CONTAINER ============ */
+
+.image-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 20px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+/* Main Image */
+.image-container #mainImage,
+.image-container .project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Hide original preview image after carousel loads */
+.image-container #mainImage ~ .project-image {
+    display: none;
+}
+
+/* ============ NAVIGATION PANELS ============ */
+
+.nav-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.15s ease;
+}
+
+.nav-panel-left {
+    left: 0;
+}
+
+.nav-panel-right {
+    right: 0;
+}
+
+/* Subtle hover feedback - minimal */
+.nav-panel:hover:not(.disabled) {
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.03) 0%,
+        transparent 100%
+    );
+}
+
+.nav-panel-right:hover:not(.disabled) {
+    background: linear-gradient(
+        to left,
+        rgba(0, 0, 0, 0.03) 0%,
+        transparent 100%
+    );
+}
+
+.nav-panel.disabled {
+    cursor: not-allowed;
+    opacity: 0;
+}
+
+/* ============ IMAGE COUNTER ============ */
+
+.image-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 15;
+}
+
+/* ============ THUMBNAIL STRIP ============ */
+
+.carousel-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 2px;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    padding: 0;
+}
+
+/* Individual Thumbnail - Geometric & Brutalist */
+.thumbnail {
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    transition: all 0.15s ease;
+    background: #fafafa;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+
+.thumbnail:hover {
+    border-color: #999;
+}
+
+.thumbnail:hover img {
+    opacity: 0.8;
+}
+
+/* Active Thumbnail - Subtle cyan accent (Blade Runner/HLD) */
+.thumbnail.active {
+    border-color: #000;
+    border-width: 2px;
+}
+
+.thumbnail.active img {
+    opacity: 1;
+}
+
+/* Alternative: Neon cyan accent (uncomment if you want more color) */
+/*
+.thumbnail.active {
+    border-color: #00d9ff;
+    box-shadow: inset 0 0 0 1px #00d9ff;
+}
+*/
+
+/* Video Thumbnail */
+.thumbnail.video::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.thumbnail .video-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #000;
+    z-index: 2;
+    padding-left: 2px;
+}
+
+/* ============ PROJECT DETAILS ============ */
+
+.project-details {
+    max-width: 1000px;
+    margin: 40px auto 20px;
+    padding: 0 4px;
+}
+
+.project-details figcaption {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #999;
+    font-family: "DotMatri", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 12px;
+}
+
+.game-title {
+    font-weight: 400;
+    color: #000;
+}
+
+.company-name {
+    color: #999;
+}
+
+/* ============ PROJECT DESCRIPTION ============ */
+
+.project-description {
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: left;
+    line-height: 1.8;
+}
+
+.project-description h2 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #000;
+    margin: 32px 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-left: 2px solid #000;
+    padding-left: 12px;
+}
+
+.project-description p,
+.project-description ul {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 16px;
+}
+
+.project-description ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.project-description li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.project-description li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #999;
+}
+
+.project-description a {
+    color: #000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    transition: border-color 0.15s ease;
+}
+
+.project-description a:hover {
+    border-bottom-color: #000;
+    opacity: 1;
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 768px) {
+    .project-page {
+        padding: 30px 16px;
+    }
+    
+    .image-container {
+        aspect-ratio: 4 / 3;
+    }
+    
+    .carousel-thumbnails {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 1px;
+    }
+    
+    .image-counter {
+        font-size: 9px;
+        padding: 3px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-thumbnails {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    
+    .project-description h2 {
+        font-size: 14px;
+    }
+    
+    .project-description p,
+    .project-description ul {
+        font-size: 13px;
+    }
+}
