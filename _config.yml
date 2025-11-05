@@ -5,16 +5,10 @@ title: Jeralmi Canela
 email: jeralmicw@gmail.com
 description: Game designer, artist, and programmer
 url: "https://jeralmics.com"
+baseurl: ""
 
 # Build settings
 permalink: pretty
-
-# Collections
-collections:
-  layouts:
-    output: false
-  includes:
-    output: false
 
 # Exclude from processing
 exclude:
@@ -24,11 +18,9 @@ exclude:
   - vendor
   - CAROUSEL_REDESIGN
   - "*.md"
-
-# Include
-include:
-  - _layouts
-  - _includes
+  - README.md
+  - IMPLEMENTATION_SUMMARY.md
+  - QUICK_START.md
 
 # Defaults
 defaults:
