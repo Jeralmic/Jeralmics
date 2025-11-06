@@ -6,6 +6,13 @@
 
 /* ============ FONTS ============ */
 
+/* Space Grotesk - Modern, geometric, readable */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* Modern Display Fonts for Enhanced Greeting System */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&family=Antonio:wght@100;200;300;400;500;600;700&family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
+
+/* DotMatri - Strategic accent use only */
 @font-face {
     font-family: "DotMatri";
     src: url("/assets/fonts/dotmatrix.woff") format("woff");
@@ -23,13 +30,14 @@
 }
 
 body {
-    font-family: "DotMatri", sans-serif;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
     background-color: #fafafa;
     color: #1a1a1a;
     padding: 20px;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-weight: 400;
 }
 
 /* ============ TYPOGRAPHY ============ */
@@ -68,23 +76,24 @@ a:hover {
     color: #000;
     text-decoration: none;
     letter-spacing: 2px;
+    font-family: "DotMatri", sans-serif;
 }
 
 .header h1 a:hover {
     opacity: 0.5;
 }
 
-/* Typewriter effect */
+/* Typewriter effect - Enhanced with randomization */
 #typewriter {
-    font-size: 28px;
+    /* Base styles - will be overridden by JS */
+    font-size: 64px;
     font-weight: normal;
-    font-family: "DotMatri", sans-serif;
     color: #000;
     white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
+    overflow: visible;
+    display: inline-flex;
     position: relative;
-    letter-spacing: 2px;
+    letter-spacing: 8px;
 }
 
 #typewriter::after {
@@ -99,6 +108,47 @@ a:hover {
     }
 }
 
+/* ============ WAVE ANIMATIONS ============ */
+
+@keyframes wave-slow {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes wave-medium {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-25px); }
+}
+
+@keyframes wave-fast {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+}
+
+@keyframes wave-bouncy {
+    0%, 100% { transform: translateY(0px); }
+    25% { transform: translateY(-35px); }
+    50% { transform: translateY(-10px); }
+    75% { transform: translateY(-25px); }
+}
+
+/* ============ TEXT EFFECTS ============ */
+
+.effect-shadow {
+    text-shadow: 
+        2px 2px 0 rgba(0,0,0,0.3),
+        4px 4px 0 rgba(0,0,0,0.2),
+        6px 6px 0 rgba(0,0,0,0.1);
+}
+
+.effect-heavy-shadow {
+    text-shadow: 
+        3px 3px 0 #999,
+        6px 6px 0 #888,
+        9px 9px 0 #777,
+        12px 12px 0 #666;
+}
+
 /* ============ SUBHEADER / BIO ============ */
 
 .subheader {
@@ -107,11 +157,12 @@ a:hover {
 }
 
 .subheader p {
-    font-size: 14px;
+    font-size: 15px;
     color: #666;
     margin-top: 0.3%;
-    line-height: 1.6;
-    letter-spacing: 0.3px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    font-weight: 400;
 }
 
 /* ============ LINKS ============ */
