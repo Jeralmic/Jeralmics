@@ -88,28 +88,18 @@ a:hover {
     white-space: nowrap;
     display: inline-block;
     position: relative;
-    font-size: clamp(32px, 8vw, 80px); /* Scales with viewport, fits particle box */
+    font-size: clamp(32px, 8vw, 80px);
     letter-spacing: clamp(2px, 0.5vw, 8px);
 }
 
-#typewriter::after {
-    content: "_";
-    display: inline-block;
-    animation: blinkCursor 0.6s infinite;
-}
-
-@keyframes blinkCursor {
-    50% {
-        opacity: 0;
-    }
-}
+/* No blinking cursor anymore */
 
 /* ============ PARTICLE HERO ============ */
 
 .particle-hero-container {
     width: 100%;
     max-width: 1400px;
-    height: 250px;
+    height: 200px; /* Better size for name display */
     margin: 60px auto 30px;
     position: relative;
     background: white;
@@ -167,20 +157,21 @@ a:hover {
 /* Responsive particle hero */
 @media (max-width: 1024px) {
     .particle-hero-container {
-        height: 220px;
+        height: 180px;
     }
 }
 
 @media (max-width: 768px) {
     .particle-hero-container {
-        height: 180px;
+        height: 150px;
         margin: 40px auto 20px;
     }
 }
 
 @media (max-width: 640px) {
     .particle-hero-container {
-        height: 150px;
+        height: 120px;
+        margin: 30px auto 15px;
     }
 }
 
@@ -204,18 +195,12 @@ a:hover {
     margin-bottom: 20px;
 }
 
-/* Name scales to fit particle box width */
+/* Name scales to fit particle box width - NO MORE ANIMATION */
 .site-header-homepage #typewriter {
-    font-size: clamp(32px, 8vw, 80px);
-    letter-spacing: clamp(2px, 0.5vw, 8px);
+    font-size: clamp(28px, 6vw, 64px);
+    letter-spacing: clamp(2px, 0.4vw, 6px);
     max-width: 90%;
     display: inline-block;
-}
-
-.site-header-homepage #typewriter::after {
-    content: "_";
-    display: inline-block;
-    animation: blinkCursor 0.6s infinite;
 }
 
 .site-header-homepage .subheader {
@@ -310,17 +295,22 @@ body main .particle-hero-container:first-child {
     
     .header h1,
     #typewriter {
-        font-size: clamp(24px, 6vw, 48px);
+        font-size: clamp(24px, 5vw, 48px);
+        letter-spacing: clamp(1px, 0.3vw, 4px);
     }
     
     .site-header-homepage #typewriter {
-        font-size: clamp(24px, 6vw, 48px);
-        letter-spacing: clamp(1px, 0.3vw, 4px);
+        font-size: clamp(20px, 5vw, 40px);
+        letter-spacing: clamp(1px, 0.3vw, 3px);
+    }
+    
+    .site-header-homepage {
+        margin-bottom: 40px;
     }
     
     body main .particle-hero-container:first-child {
         margin-top: 30px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 }
 
@@ -331,20 +321,26 @@ body main .particle-hero-container:first-child {
     
     .header h1,
     #typewriter {
-        font-size: clamp(20px, 5vw, 36px);
+        font-size: clamp(18px, 4.5vw, 32px);
+        letter-spacing: clamp(1px, 0.2vw, 2px);
     }
     
     .site-header-homepage #typewriter {
-        font-size: clamp(20px, 5vw, 36px);
-        letter-spacing: clamp(1px, 0.2vw, 3px);
+        font-size: clamp(16px, 4.5vw, 28px);
+        letter-spacing: clamp(0.5px, 0.2vw, 2px);
     }
     
     .subheader p {
         font-size: 13px;
+        line-height: 1.6;
+    }
+    
+    .site-header-homepage {
+        margin-bottom: 30px;
     }
     
     body main .particle-hero-container:first-child {
         margin-top: 20px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 }
