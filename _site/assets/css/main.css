@@ -80,7 +80,7 @@ a:hover {
     opacity: 0.5;
 }
 
-/* Typewriter effect - Simplified */
+/* Typewriter effect - NO CURSOR */
 #typewriter {
     font-family: "DotMatri", -apple-system, monospace;
     font-weight: normal;
@@ -88,33 +88,24 @@ a:hover {
     white-space: nowrap;
     display: inline-block;
     position: relative;
-    font-size: clamp(32px, 8vw, 80px); /* Scales with viewport, fits particle box */
+    font-size: clamp(32px, 8vw, 80px);
     letter-spacing: clamp(2px, 0.5vw, 8px);
 }
 
-#typewriter::after {
-    content: "_";
-    display: inline-block;
-    animation: blinkCursor 0.6s infinite;
-}
-
-@keyframes blinkCursor {
-    50% {
-        opacity: 0;
-    }
-}
+/* Cursor removed - clean name display */
 
 /* ============ PARTICLE HERO ============ */
 
 .particle-hero-container {
-    width: 100%;
-    max-width: 1400px;
-    height: 250px; /* Reduced from 400px - more compact like Rekall */
-    margin: 60px auto 30px; /* Tighter spacing */
+    width: fit-content;
+    max-width: 90%;
+    height: 180px;
+    margin: 60px auto 30px;
     position: relative;
-    background: white;
-    border: 1px solid #e8e8e8;
+    background: #000000; /* Black background */
+    border: 2px solid #000;
     overflow: hidden;
+    padding: 0 40px; /* Horizontal padding for breathing room */
 }
 
 .particle-hero-container canvas {
@@ -123,29 +114,26 @@ a:hover {
     height: 100%;
 }
 
-/* Dark theme variant (add .dark-theme class to container to use) */
-.particle-hero-container.dark-theme {
-    background: #0a0a0a;
-    border-color: #222;
-}
-
 /* Responsive particle hero */
 @media (max-width: 1024px) {
     .particle-hero-container {
-        height: 220px;
+        height: 150px;
+        padding: 0 30px;
     }
 }
 
 @media (max-width: 768px) {
     .particle-hero-container {
-        height: 180px;
+        height: 120px;
         margin: 40px auto 20px;
+        padding: 0 20px;
     }
 }
 
 @media (max-width: 640px) {
     .particle-hero-container {
-        height: 150px;
+        height: 100px;
+        padding: 0 15px;
     }
 }
 
@@ -177,11 +165,7 @@ a:hover {
     display: inline-block;
 }
 
-.site-header-homepage #typewriter::after {
-    content: "_";
-    display: inline-block;
-    animation: blinkCursor 0.6s infinite;
-}
+/* NO CURSOR on homepage */
 
 .site-header-homepage .subheader {
     text-align: center;
