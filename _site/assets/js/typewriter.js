@@ -12,15 +12,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // Configuration
     const config = {
         greetings: [
-            "> HELLO", "WELCOME", "Suh Dude", 
-            "HEYA", "HOWDY", "HOLA", "BONJOUR",
-            "G'DAY", "ALOHA", "GREETINGS", "NICE",
-            "Sup Nerds","Salutations", "Hola Amigo", "Bonjour Mon Ami", "Ciao Bella",
-            "Hallo Freunde", "Hej Kompis", "Olá Amigo", "こんにちは", "안녕하세요",
-            "你好", "Привет", "مرحبا", "שלום חבר", "नमस्ते दोस्त", "Hej Vän", "Szia Barát",
-            "Salut Prieten", "Hei Ystävä", "Halo Teman", "Sawubona Mngani", "Merhaba Arkadaş"
-            ,"Hello There", "What's New", "Good Day", "Peace", "Bless Up",
-             "Stay Beatiful", "Keep Going", "You Got This", 
+            "HELLO",           // English
+            "HOLA",            // Spanish
+            "BONJOUR",         // French
+            "CIAO",            // Italian
+            "HALLO",           // German
+            "OLÁ",             // Portuguese
+            "ПРИВЕТ",          // Russian
+            "你好",            // Chinese (Mandarin)
+            "こんにちは",      // Japanese
+            "안녕하세요",      // Korean
+            "مرحبا",           // Arabic
+            "नमस्ते",          // Hindi
+            "ΓΕΙΑ ΣΟΥ",        // Greek
+            "שלום",            // Hebrew
+            "สวัสดี",          // Thai
+            "MERHABA",         // Turkish
+            "HALO",            // Indonesian
+            "XIN CHÀO",        // Vietnamese
+            "SAWUBONA",        // Zulu
+            "JAMBO",           // Swahili
+            "SALAM"            // Persian
         ],
         
         fonts: [
@@ -34,14 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
             'Chakra Petch, sans-serif'
         ],
         
-        sizes: [48, 64, 80, 96, 120],
+        size: 80, // Fixed size for consistency across devices
         
         colors: [
             { color: '#000000', weight: 30 },
             { color: '#ff0066', weight: 10 },
             { color: '#8b00ff', weight: 8 },
-            { color: '#dc143c', weight: 8 },
-            { color: '#09d699ff', weight: 7 },
             { color: '#ff4500', weight: 5 },
             { color: '#e76ae1ff', weight: 4 },
             { color: '#ecd761ff', weight: 3 }
@@ -50,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         effects: [
             { class: '', weight: 50 },
             { class: 'effect-shadow', weight: 30 },
-            { class: 'effect-heavy-shadow', weight: 20 }
         ],
         
         waves: [
@@ -89,10 +98,24 @@ document.addEventListener("DOMContentLoaded", () => {
         return items[0];
     }
     
-    // Select random configuration
-    const greeting = config.greetings[Math.floor(Math.random() * config.greetings.length)];
+    // Cycling greeting logic - starts random, then cycles +1 each refresh
+    let greetingIndex;
+    const storedIndex = localStorage.getItem('greetingIndex');
+    
+    if (storedIndex === null) {
+        // First visit or cleared cache - pick random starting point
+        greetingIndex = Math.floor(Math.random() * config.greetings.length);
+    } else {
+        // Increment from last visit, wrap around to 0 if at end
+        greetingIndex = (parseInt(storedIndex) + 1) % config.greetings.length;
+    }
+    
+    // Store current index for next visit
+    localStorage.setItem('greetingIndex', greetingIndex);
+    
+    // Select greeting and other random elements
+    const greeting = config.greetings[greetingIndex];
     const font = config.fonts[Math.floor(Math.random() * config.fonts.length)];
-    const size = config.sizes[Math.floor(Math.random() * config.sizes.length)];
     const color = weightedRandom(config.colors);
     const effect = weightedRandom(config.effects);
     const wave = config.waves[Math.floor(Math.random() * config.waves.length)];
@@ -102,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Apply styles to typewriter element
     typewriterElement.style.fontFamily = font;
-    typewriterElement.style.fontSize = size + 'px';
+    typewriterElement.style.fontSize = config.size + 'px';
     typewriterElement.style.color = color.color;
     typewriterElement.style.letterSpacing = spacing + 'px';
     typewriterElement.style.transform = `rotate(${rotation.deg}deg)`;

@@ -6,9 +6,9 @@
 .content {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2px; /* Minimal gap for brutalist grid feel */
+    gap: 20px; /* Increased from 2px for better spacing */
     justify-content: center;
-    margin-top: 60px;
+    margin-top: 80px; /* More space from header */
     max-width: 1800px;
     margin-left: auto;
     margin-right: auto;
@@ -83,12 +83,13 @@
 @media (max-width: 1024px) {
     .content {
         grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
 }
 
 @media (max-width: 640px) {
     .content {
         grid-template-columns: repeat(1, 1fr);
-        gap: 1px;
+        gap: 20px;
     }
 }
