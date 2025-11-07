@@ -1,7 +1,7 @@
 /**
  * Particle Network Hero
  * Organic particle animation for portfolio header
- * Black background with white particles
+ * WHITE BACKGROUND VERSION
  */
 
 class ParticleHero {
@@ -14,14 +14,14 @@ class ParticleHero {
         this.mouse = { x: null, y: null, radius: 150 };
         this.time = 0;
         
-        // Configuration - Black background with white particles
+        // Configuration - WHITE background with dark particles
         this.config = {
-            particleColor: options.particleColor || '255, 255, 255', // White particles
-            connectionColor: options.connectionColor || '255, 255, 255', // White connections
-            particleOpacity: options.particleOpacity || 0.7,
+            particleColor: options.particleColor || '0, 0, 0', // Dark particles
+            connectionColor: options.connectionColor || '0, 0, 0', // Dark connections
+            particleOpacity: options.particleOpacity || 0.6,
             connectionOpacity: options.connectionOpacity || 0.15,
-            backgroundColor: options.backgroundColor || '#000000', // Black background
-            particleDensity: options.particleDensity || 0.65,
+            backgroundColor: options.backgroundColor || '#ffffff', // WHITE background
+            particleDensity: options.particleDensity || 0.7,
             ...options
         };
         
@@ -128,7 +128,7 @@ class ParticleHero {
     animate() {
         this.time++;
         
-        // Clear with background color (black)
+        // Clear with WHITE background
         this.ctx.fillStyle = this.config.backgroundColor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
@@ -210,13 +210,13 @@ class Particle {
 document.addEventListener('DOMContentLoaded', () => {
     const heroCanvas = document.getElementById('particle-hero-canvas');
     if (heroCanvas) {
-        // Black background with white particles
+        // WHITE background with dark particles
         new ParticleHero('particle-hero-canvas', {
-            particleColor: '255, 255, 255',   // White particles
-            connectionColor: '255, 255, 255',  // White connections
-            particleOpacity: 0.7,
-            connectionOpacity: 0.15,
-            backgroundColor: '#000000',        // Black background
+            particleColor: '0, 0, 0',        // Black particles
+            connectionColor: '0, 0, 0',       // Black connections
+            particleOpacity: 0.6,
+            connectionOpacity: 0.12,
+            backgroundColor: '#ffffff',       // WHITE background
             particleDensity: 0.65
         });
     }

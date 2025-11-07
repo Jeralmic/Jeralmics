@@ -80,7 +80,7 @@ a:hover {
     opacity: 0.5;
 }
 
-/* Typewriter effect - NO CURSOR */
+/* Typewriter effect - Simplified */
 #typewriter {
     font-family: "DotMatri", -apple-system, monospace;
     font-weight: normal;
@@ -88,24 +88,33 @@ a:hover {
     white-space: nowrap;
     display: inline-block;
     position: relative;
-    font-size: clamp(32px, 8vw, 80px);
+    font-size: clamp(32px, 8vw, 80px); /* Scales with viewport, fits particle box */
     letter-spacing: clamp(2px, 0.5vw, 8px);
 }
 
-/* Cursor removed - clean name display */
+#typewriter::after {
+    content: "_";
+    display: inline-block;
+    animation: blinkCursor 0.6s infinite;
+}
+
+@keyframes blinkCursor {
+    50% {
+        opacity: 0;
+    }
+}
 
 /* ============ PARTICLE HERO ============ */
 
 .particle-hero-container {
-    width: fit-content;
-    max-width: 90%;
-    height: 180px;
+    width: 100%;
+    max-width: 1400px;
+    height: 250px;
     margin: 60px auto 30px;
     position: relative;
-    background: #000000; /* Black background */
-    border: 2px solid #000;
+    background: white;
+    border: 1px solid #e8e8e8;
     overflow: hidden;
-    padding: 0 40px; /* Horizontal padding for breathing room */
 }
 
 .particle-hero-container canvas {
@@ -114,26 +123,64 @@ a:hover {
     height: 100%;
 }
 
+/* Letterbox bars for cinematic effect */
+.particle-hero-container .letterbox-bar {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 30%; /* Cover top and bottom portions */
+    background: #ffffff;
+    z-index: 10;
+    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.particle-hero-container .letterbox-bar-top {
+    top: 0;
+    transform: translateY(0);
+}
+
+.particle-hero-container .letterbox-bar-bottom {
+    bottom: 0;
+    transform: translateY(0);
+}
+
+/* Opened state - bars slide away */
+.particle-hero-container.letterbox-open .letterbox-bar-top {
+    transform: translateY(-100%);
+}
+
+.particle-hero-container.letterbox-open .letterbox-bar-bottom {
+    transform: translateY(100%);
+}
+
+/* Hide bars after animation */
+.particle-hero-container.letterbox-complete .letterbox-bar {
+    display: none;
+}
+
+/* Dark theme variant (add .dark-theme class to container to use) */
+.particle-hero-container.dark-theme {
+    background: #0a0a0a;
+    border-color: #222;
+}
+
 /* Responsive particle hero */
 @media (max-width: 1024px) {
     .particle-hero-container {
-        height: 150px;
-        padding: 0 30px;
+        height: 220px;
     }
 }
 
 @media (max-width: 768px) {
     .particle-hero-container {
-        height: 120px;
+        height: 180px;
         margin: 40px auto 20px;
-        padding: 0 20px;
     }
 }
 
 @media (max-width: 640px) {
     .particle-hero-container {
-        height: 100px;
-        padding: 0 15px;
+        height: 150px;
     }
 }
 
@@ -165,7 +212,11 @@ a:hover {
     display: inline-block;
 }
 
-/* NO CURSOR on homepage */
+.site-header-homepage #typewriter::after {
+    content: "_";
+    display: inline-block;
+    animation: blinkCursor 0.6s infinite;
+}
 
 .site-header-homepage .subheader {
     text-align: center;

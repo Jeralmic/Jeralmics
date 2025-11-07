@@ -36,6 +36,12 @@
     </main>
 
     <!-- JavaScript -->
+    
+    <!-- Letterbox Animation (Homepage Only) -->
+    {% if page.has_letterbox %}
+    <script src="/assets/js/letterbox.js"></script>
+    {% endif %}
+    
     <script src="/assets/js/typewriter.js"></script>
     
     {% if page.has_particle_hero %}
