@@ -9,9 +9,6 @@
 /* Space Grotesk - Modern, geometric, readable */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
-/* Modern Display Fonts for Enhanced Greeting System */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Audiowide&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&family=Antonio:wght@100;200;300;400;500;600;700&family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
-
 /* DotMatri - Strategic accent use only */
 @font-face {
     font-family: "DotMatri";
@@ -83,17 +80,16 @@ a:hover {
     opacity: 0.5;
 }
 
-/* Typewriter effect - Enhanced with randomization */
+/* Typewriter effect - Simplified */
 #typewriter {
-    /* Base styles - will be overridden by JS */
-    font-size: 64px;
+    font-family: "DotMatri", -apple-system, monospace;
     font-weight: normal;
     color: #000;
     white-space: nowrap;
-    overflow: visible;
-    display: inline-flex;
+    display: inline-block;
     position: relative;
-    letter-spacing: 8px;
+    font-size: clamp(32px, 8vw, 80px); /* Scales with viewport, fits particle box */
+    letter-spacing: clamp(2px, 0.5vw, 8px);
 }
 
 #typewriter::after {
@@ -108,45 +104,107 @@ a:hover {
     }
 }
 
-/* ============ WAVE ANIMATIONS ============ */
+/* ============ PARTICLE HERO ============ */
 
-@keyframes wave-slow {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+.particle-hero-container {
+    width: 100%;
+    max-width: 1400px;
+    height: 250px; /* Reduced from 400px - more compact like Rekall */
+    margin: 60px auto 30px; /* Tighter spacing */
+    position: relative;
+    background: white;
+    border: 1px solid #e8e8e8;
+    overflow: hidden;
 }
 
-@keyframes wave-medium {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-25px); }
+.particle-hero-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
-@keyframes wave-fast {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-30px); }
+/* Dark theme variant (add .dark-theme class to container to use) */
+.particle-hero-container.dark-theme {
+    background: #0a0a0a;
+    border-color: #222;
 }
 
-@keyframes wave-bouncy {
-    0%, 100% { transform: translateY(0px); }
-    25% { transform: translateY(-35px); }
-    50% { transform: translateY(-10px); }
-    75% { transform: translateY(-25px); }
+/* Responsive particle hero */
+@media (max-width: 1024px) {
+    .particle-hero-container {
+        height: 220px;
+    }
 }
 
-/* ============ TEXT EFFECTS ============ */
-
-.effect-shadow {
-    text-shadow: 
-        2px 2px 0 rgba(0,0,0,0.3),
-        4px 4px 0 rgba(0,0,0,0.2),
-        6px 6px 0 rgba(0,0,0,0.1);
+@media (max-width: 768px) {
+    .particle-hero-container {
+        height: 180px;
+        margin: 40px auto 20px;
+    }
 }
 
-.effect-heavy-shadow {
-    text-shadow: 
-        3px 3px 0 #999,
-        6px 6px 0 #888,
-        9px 9px 0 #777,
-        12px 12px 0 #666;
+@media (max-width: 640px) {
+    .particle-hero-container {
+        height: 150px;
+    }
+}
+
+/* ============ HOMEPAGE-SPECIFIC LAYOUT ============ */
+
+/* When particle hero comes first, header is inline in content */
+.site-header-homepage {
+    margin-bottom: 60px;
+    margin-top: 0;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.site-header-homepage .header {
+    text-align: center;
+    margin-left: 0;
+}
+
+.site-header-homepage .header h1 {
+    margin-bottom: 20px;
+}
+
+/* Name scales to fit particle box width */
+.site-header-homepage #typewriter {
+    font-size: clamp(32px, 8vw, 80px);
+    letter-spacing: clamp(2px, 0.5vw, 8px);
+    max-width: 90%;
+    display: inline-block;
+}
+
+.site-header-homepage #typewriter::after {
+    content: "_";
+    display: inline-block;
+    animation: blinkCursor 0.6s infinite;
+}
+
+.site-header-homepage .subheader {
+    text-align: center;
+    margin-left: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+.site-header-homepage .subheader p {
+    font-size: 15px;
+    color: #666;
+    margin-top: 8px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    font-weight: 400;
+}
+
+/* Adjust particle hero spacing for homepage flow */
+body main .particle-hero-container:first-child {
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 /* ============ SUBHEADER / BIO ============ */
@@ -217,7 +275,17 @@ a:hover {
     
     .header h1,
     #typewriter {
-        font-size: 24px;
+        font-size: clamp(24px, 6vw, 48px);
+    }
+    
+    .site-header-homepage #typewriter {
+        font-size: clamp(24px, 6vw, 48px);
+        letter-spacing: clamp(1px, 0.3vw, 4px);
+    }
+    
+    body main .particle-hero-container:first-child {
+        margin-top: 30px;
+        margin-bottom: 20px;
     }
 }
 
@@ -228,10 +296,20 @@ a:hover {
     
     .header h1,
     #typewriter {
-        font-size: 20px;
+        font-size: clamp(20px, 5vw, 36px);
+    }
+    
+    .site-header-homepage #typewriter {
+        font-size: clamp(20px, 5vw, 36px);
+        letter-spacing: clamp(1px, 0.2vw, 3px);
     }
     
     .subheader p {
         font-size: 13px;
+    }
+    
+    body main .particle-hero-container:first-child {
+        margin-top: 20px;
+        margin-bottom: 15px;
     }
 }

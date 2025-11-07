@@ -27,7 +27,9 @@
 </head>
 <body>
     
+    {% unless page.particle_hero_first %}
     {% include header.html %}
+    {% endunless %}
 
     <main>
         {{ content }}
@@ -35,6 +37,10 @@
 
     <!-- JavaScript -->
     <script src="/assets/js/typewriter.js"></script>
+    
+    {% if page.has_particle_hero %}
+    <script src="/assets/js/particle-hero.js"></script>
+    {% endif %}
     
     {% if page.layout == 'project' %}
     <script src="/assets/js/carousel.js"></script>
