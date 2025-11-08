@@ -80,32 +80,6 @@ a:hover {
     opacity: 0.5;
 }
 
-/* Typewriter effect - Simplified */
-#typewriter {
-    font-family: "DotMatri", -apple-system, monospace;
-    font-weight: normal;
-    color: #000;
-    white-space: nowrap;
-    display: inline-block;
-    position: relative;
-    font-size: clamp(32px, 8vw, 80px); /* Scales with viewport, fits particle box */
-    letter-spacing: clamp(2px, 0.5vw, 8px);
-    opacity: 1;
-    visibility: visible;
-}
-
-#typewriter::after {
-    content: "_";
-    display: inline-block;
-    animation: blinkCursor 0.6s infinite;
-}
-
-@keyframes blinkCursor {
-    50% {
-        opacity: 0;
-    }
-}
-
 /* ============ PARTICLE HERO ============ */
 
 .particle-hero-container {
@@ -169,22 +143,11 @@ a:hover {
 
 .site-header-homepage .header h1 {
     margin-bottom: 20px;
-}
-
-/* Name scales to fit particle box width */
-.site-header-homepage #typewriter {
+    font-family: "DotMatri", -apple-system, monospace;
+    font-weight: normal;
+    color: #000;
     font-size: clamp(32px, 8vw, 80px);
     letter-spacing: clamp(2px, 0.5vw, 8px);
-    max-width: 90%;
-    display: inline-block;
-    opacity: 1;
-    visibility: visible;
-}
-
-.site-header-homepage #typewriter::after {
-    content: "_";
-    display: inline-block;
-    animation: blinkCursor 0.6s infinite;
 }
 
 .site-header-homepage .subheader {
