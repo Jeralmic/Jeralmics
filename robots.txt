@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://jeralmics.com/sitemap.xml
+
+# Disallow admin/config files (if any)
+Disallow: /admin/
+Disallow: /_config.yml
+Disallow: /node_modules/
