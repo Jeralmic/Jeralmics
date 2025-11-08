@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
-    // Update main display with no-flash crossfade
+    // Update main display with Apple-style transition
     function updateDisplay(direction = 1) {
         const container = document.querySelector('.image-container');
         if (!container) return;
@@ -198,7 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 height: 100%;
                 border: none;
                 opacity: 0;
-                transition: opacity 0.5s ease;
+                transform: scale(1.05);
+                transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 2;
             `;
         } else {
@@ -210,7 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
             newMedia.className = 'project-image';
             newMedia.style.cssText = `
                 opacity: 0;
-                transition: opacity 0.5s ease;
+                transform: scale(1.05);
+                transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
                 position: relative;
                 z-index: 2;
             `;
@@ -229,14 +231,15 @@ document.addEventListener("DOMContentLoaded", function () {
             container.insertBefore(newMedia, container.firstChild);
         }
         
-        // Fade in new image on top of solid old image
+        // Apple-style fade in: new image scales down while fading in
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 newMedia.style.opacity = '1';
+                newMedia.style.transform = 'scale(1)';
                 
                 // Remove old media after new one is fully visible
                 if (oldMedia) {
-                    setTimeout(() => oldMedia.remove(), 500);
+                    setTimeout(() => oldMedia.remove(), 800);
                 }
             });
         });
