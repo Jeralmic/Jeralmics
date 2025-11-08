@@ -241,12 +241,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-    // Update navigation panel states (disable at boundaries)
+    // Update navigation panel states (disable at boundaries and for videos)
     function updateNavigationPanels() {
         const leftPanel = document.querySelector('.nav-panel-left');
         const rightPanel = document.querySelector('.nav-panel-right');
+        const currentMedia = media[currentIndex];
         
+        // If current media is a video, hide navigation panels completely
+        // so video controls are accessible
+        if (currentMedia.type === 'video') {
+            if (leftPanel) {
+                leftPanel.style.pointerEvents = 'none';
+                leftPanel.style.opacity = '0';
+            }
+            if (rightPanel) {
+                rightPanel.style.pointerEvents = 'none';
+                rightPanel.style.opacity = '0';
+            }
+            return;
+        }
+        
+        // For images, restore normal navigation behavior
         if (leftPanel) {
+            leftPanel.style.pointerEvents = 'auto';
+            leftPanel.style.opacity = '1';
+            
             if (currentIndex === 0) {
                 leftPanel.classList.add('disabled');
             } else {
@@ -255,6 +274,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         
         if (rightPanel) {
+            rightPanel.style.pointerEvents = 'auto';
+            rightPanel.style.opacity = '1';
+            
             if (currentIndex >= media.length - 1) {
                 rightPanel.classList.add('disabled');
             } else {
