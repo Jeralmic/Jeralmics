@@ -36,14 +36,7 @@
     </main>
 
     <!-- JavaScript -->
-    
-    <!-- Letterbox Animation (Homepage Only) -->
-    {% if page.has_letterbox %}
-    <script src="/assets/js/letterbox.js"></script>
-    {% endif %}
-    
-    <!-- Simple name display (no animation) -->
-    <script src="/assets/js/name-display.js"></script>
+    <script src="/assets/js/typewriter.js"></script>
     
     {% if page.has_particle_hero %}
     <script src="/assets/js/particle-hero.js"></script>
@@ -51,6 +44,7 @@
     
     {% if page.layout == 'project' %}
     <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/js/project-hero.js"></script>
     {% endif %}
     
 </body>
