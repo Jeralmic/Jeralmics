@@ -15,77 +15,90 @@
 }
 
 .content figure {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
     position: relative;
-}
-
-.content img {
-    width: 100%;
-    height: 100%; /* Force specific height */
-    aspect-ratio: 16 / 9;
-    object-fit: cover; /* Scale to fill */
-    object-position: center;
     display: block;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    transition: transform 0.15s ease, border-color 0.15s ease;
-    cursor: pointer;
 }
 
-/* Ensure figure container maintains aspect ratio */
-.content figure {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    position: relative;
-}
-
-/* Force all image containers to same aspect ratio */
+/* Image container with aspect ratio */
 .content figure a {
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    position: relative;
+}
+
+.content img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: transform 0.15s ease, border-color 0.15s ease, filter 0.2s ease;
+    cursor: pointer;
 }
 
 .content img:hover {
-    transform: scale(1.01);
+    transform: scale(1.02);
     border-color: rgba(0, 0, 0, 0.3);
+    filter: brightness(0.85); /* Darken image on hover for better text contrast */
 }
 
+/* Overlay caption on image */
 .content figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30px 20px;
+    background: linear-gradient(
+        to top, 
+        rgba(0, 0, 0, 1) 0%, 
+        rgba(0, 0, 0, 0.98) 20%, 
+        rgba(0, 0, 0, 0.92) 35%,
+        rgba(0, 0, 0, 0.75) 50%,
+        rgba(0, 0, 0, 0.5) 65%,
+        rgba(0, 0, 0, 0.25) 80%,
+        transparent 100%
+    );
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 11px;
-    color: #666;
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 400;
-    margin-top: 8px;
-    letter-spacing: 0.3px;
+    flex-direction: column;
+    gap: 4px;
     opacity: 0;
-    transform: translateY(-4px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
 }
 
 /* Show caption on hover */
 .content figure:hover figcaption {
     opacity: 1;
-    transform: translateY(0);
 }
 
 .game-title {
-    text-align: left;
-    color: #000;
-    font-weight: 500;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    text-shadow: 
+        0 4px 16px rgba(0, 0, 0, 1), 
+        0 2px 8px rgba(0, 0, 0, 0.9),
+        0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .company-name {
-    text-align: right;
-    color: #999;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    text-shadow: 
+        0 3px 12px rgba(0, 0, 0, 1),
+        0 2px 6px rgba(0, 0, 0, 0.9),
+        0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* ============ RESPONSIVE ============ */
