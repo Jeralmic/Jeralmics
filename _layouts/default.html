@@ -38,6 +38,10 @@
     <!-- JavaScript -->
     <script src="/assets/js/page-transitions.js"></script>
     
+    {% if page.url == "/" or page.url == "/index.html" %}
+    <script src="/assets/js/image-loader.js"></script>
+    {% endif %}
+    
     {% if page.has_particle_hero %}
     <script src="/assets/js/particle-hero.js"></script>
     {% endif %}

@@ -1,12 +1,12 @@
 /**
- * Page Transitions - Smooth Fade
- * Uses overlay instead of body opacity to avoid hiding content
+ * Page Transitions - Simple Clean Fade
+ * Minimal transition overlay
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const transitionDuration = 250; // milliseconds
+    const transitionDuration = 200; // milliseconds
     
-    // Create overlay element
+    // Create simple fade overlay
     const overlay = document.createElement('div');
     overlay.id = 'page-transition-overlay';
     overlay.style.cssText = `
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Intercept all internal link clicks
     document.addEventListener('click', (e) => {
-        // Find the link element (might be clicked on child element)
+        // Find the link element
         let target = e.target;
         while (target && target.tagName !== 'A') {
             target = target.parentElement;
@@ -35,11 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const href = target.getAttribute('href');
         
-        // Skip if:
-        // - External link (has http/https)
-        // - Anchor link (starts with #)
-        // - mailto/tel links
-        // - Opens in new tab
+        // Skip external/special links
         if (!href ||
             href.startsWith('http') || 
             href.startsWith('#') ||
@@ -52,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Prevent default navigation
         e.preventDefault();
         
-        // Fade in overlay
+        // Simple fade
         overlay.style.opacity = '1';
         
-        // Navigate after fade completes
+        // Navigate
         setTimeout(() => {
             window.location.href = href;
         }, transitionDuration);

@@ -171,43 +171,75 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
-    // Update main display
-    function updateDisplay() {
+    // Update main display with no-flash crossfade
+    function updateDisplay(direction = 1) {
         const container = document.querySelector('.image-container');
         if (!container) return;
         
-        // Remove existing media element
-        const oldMedia = container.querySelector('#mainImage');
-        if (oldMedia) {
-            oldMedia.remove();
-        }
-        
         const currentMedia = media[currentIndex];
+        const oldMedia = container.querySelector('#mainImage');
         
         // Create new media element
+        let newMedia;
+        
         if (currentMedia.type === 'video') {
             // Create video iframe
-            const iframe = document.createElement('iframe');
-            iframe.id = 'mainImage';
-            iframe.src = currentMedia.src;
-            iframe.frameBorder = '0';
-            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            iframe.allowFullscreen = true;
-            iframe.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;';
-            
-            // Insert at the beginning (behind panels and counter)
-            container.insertBefore(iframe, container.firstChild);
+            newMedia = document.createElement('iframe');
+            newMedia.id = 'mainImage';
+            newMedia.src = currentMedia.src;
+            newMedia.frameBorder = '0';
+            newMedia.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            newMedia.allowFullscreen = true;
+            newMedia.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: none;
+                opacity: 0;
+                transition: opacity 0.5s ease;
+                z-index: 2;
+            `;
         } else {
             // Create image
-            const img = document.createElement('img');
-            img.id = 'mainImage';
-            img.src = currentMedia.src;
-            img.alt = 'Project Screenshot';
-            img.className = 'project-image';
-            
-            // Insert at the beginning
-            container.insertBefore(img, container.firstChild);
+            newMedia = document.createElement('img');
+            newMedia.id = 'mainImage';
+            newMedia.src = currentMedia.src;
+            newMedia.alt = 'Project Screenshot';
+            newMedia.className = 'project-image';
+            newMedia.style.cssText = `
+                opacity: 0;
+                transition: opacity 0.5s ease;
+                position: relative;
+                z-index: 2;
+            `;
         }
+        
+        // Keep old image at full opacity (z-index: 1)
+        if (oldMedia) {
+            oldMedia.style.zIndex = '1';
+            oldMedia.style.opacity = '1';
+        }
+        
+        // Insert new media (will be on top)
+        if (oldMedia) {
+            container.insertBefore(newMedia, oldMedia);
+        } else {
+            container.insertBefore(newMedia, container.firstChild);
+        }
+        
+        // Fade in new image on top of solid old image
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                newMedia.style.opacity = '1';
+                
+                // Remove old media after new one is fully visible
+                if (oldMedia) {
+                    setTimeout(() => oldMedia.remove(), 500);
+                }
+            });
+        });
         
         // Update UI
         updateCounter();
@@ -295,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         
         currentIndex = newIndex;
-        updateDisplay();
+        updateDisplay(direction);
     }
     
     // Go to specific index
@@ -304,8 +336,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         
+        const direction = index > currentIndex ? 1 : -1;
         currentIndex = index;
-        updateDisplay();
+        updateDisplay(direction);
     }
     
     // Keyboard navigation (arrow keys)

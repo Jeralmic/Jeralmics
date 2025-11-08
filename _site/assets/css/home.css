@@ -36,8 +36,14 @@
     object-position: center;
     display: block;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    transition: transform 0.15s ease, border-color 0.15s ease, filter 0.2s ease;
+    transition: transform 0.15s ease, border-color 0.15s ease, filter 0.2s ease, opacity 0.3s ease;
     cursor: pointer;
+    opacity: 0;
+}
+
+/* Fade in when loaded */
+.content img.loaded {
+    opacity: 1;
 }
 
 .content img:hover {
