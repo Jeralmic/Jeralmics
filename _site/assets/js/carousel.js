@@ -131,6 +131,25 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Add cursor hint
         container.style.cursor = 'zoom-in';
+        
+        // Show keyboard hint briefly
+        if (media.length > 1) {
+            showKeyboardHint();
+        }
+    }
+    
+    // Show keyboard navigation hint
+    function showKeyboardHint() {
+        const hint = document.createElement('div');
+        hint.className = 'keyboard-hint';
+        hint.innerHTML = '← → Arrow keys to navigate';
+        document.querySelector('.project-media').appendChild(hint);
+        
+        setTimeout(() => hint.classList.add('show'), 500);
+        setTimeout(() => {
+            hint.classList.remove('show');
+            setTimeout(() => hint.remove(), 500);
+        }, 4000);
     }
     
     // Open lightbox

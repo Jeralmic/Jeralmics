@@ -208,3 +208,105 @@ a:hover {
         font-size: 13px;
     }
 }
+
+/* ============ UX ENHANCEMENTS ============ */
+
+/* Scroll Progress Bar */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #5FD8FF, #a855f7);
+    width: 0%;
+    z-index: 9999;
+    transition: width 0.1s ease-out;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 44px;
+    height: 44px;
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: #5FD8FF;
+    transform: translateY(-3px);
+}
+
+.back-to-top:active {
+    transform: translateY(0) scale(0.95);
+}
+
+/* Click Ripple Effect */
+.click-ripple {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: rgba(95, 216, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.6s ease-out forwards;
+    z-index: 9998;
+}
+
+@keyframes ripple {
+    to {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+    }
+}
+
+/* Konami Code Easter Egg */
+.rainbow-mode {
+    animation: rainbow-bg 2s linear infinite;
+}
+
+@keyframes rainbow-bg {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+.easter-egg-msg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: #000000;
+    color: #5FD8FF;
+    padding: 20px 40px;
+    font-family: "Courier New", monospace;
+    font-size: 24px;
+    letter-spacing: 2px;
+    border: 2px solid #5FD8FF;
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.easter-egg-msg.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
