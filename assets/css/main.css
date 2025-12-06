@@ -83,6 +83,49 @@ a:hover {
     color: var(--cyan);
 }
 
+/* ============ MINIMAL HEADER (Project Pages) ============ */
+
+.site-header-minimal {
+    margin-bottom: 30px;
+}
+
+.header-link {
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.header-link:hover {
+    transform: translateX(-3px);
+}
+
+.header-link:active {
+    transform: translateX(-3px) scale(0.98);
+}
+
+.header-name {
+    font-family: "Bauhaus 93", "Arial Black", sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 1px;
+    margin: 0 0 4px 0;
+}
+
+.header-tagline {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: #999999;
+    margin: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+    transform-origin: left;
+}
+
+.header-link:hover .header-tagline {
+    color: #666666;
+    transform: translateX(3px);
+}
+
 /* ============ HOMEPAGE HEADER ============ */
 
 .site-header-homepage {
