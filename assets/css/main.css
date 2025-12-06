@@ -1,21 +1,27 @@
 /* ===================================
    JERALMI CANELA PORTFOLIO
-   BASE STYLES - Shared Across Site
-   Aesthetic: Dune / Blade Runner / Hyper Light Drifter
+   BASE STYLES
+   Inspired by Simogo / Teenage Engineering
    =================================== */
 
 /* ============ FONTS ============ */
 
-/* Space Grotesk - Modern, geometric, readable */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
-/* DotMatri - Strategic accent use only */
+/* DotMatri - For name/headers only */
 @font-face {
     font-family: "DotMatri";
     src: url("/assets/fonts/dotmatrix.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+}
+
+/* ============ BRAND COLORS ============ */
+:root {
+    --cyan: #5FD8FF;
+    --gray-text: #A6A6A6;
+    --white: #FFFFFF;
+    --gray-light: #E0E0E0;
+    --gray-dark: #666666;
 }
 
 /* ============ BASE RESET ============ */
@@ -27,14 +33,12 @@
 }
 
 body {
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    background-color: #fafafa;
-    color: #1a1a1a;
-    padding: 20px;
-    line-height: 1.6;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 400;
+    background-color: var(--white);
+    color: var(--gray-text);
+    padding: 40px;
+    line-height: 1.6;
 }
 
 /* ============ TYPOGRAPHY ============ */
@@ -42,259 +46,122 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
     letter-spacing: 0.5px;
+    color: var(--gray-text);
 }
 
 a {
-    color: inherit;
+    color: var(--cyan);
     text-decoration: none;
     transition: opacity 0.2s ease;
 }
 
 a:hover {
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 /* ============ HEADER ============ */
 
 .site-header {
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 }
 
 .header {
     text-align: center;
-    margin-left: 0;
 }
 
 .header h1,
 .header h1 a {
-    font-size: 28px;
-    font-weight: 400;
-    margin-bottom: 1%;
-    color: #000;
+    font-size: 24px;
+    font-weight: 500;
+    color: #000000;
     text-decoration: none;
-    letter-spacing: 2px;
-    font-family: "DotMatri", sans-serif;
+    letter-spacing: 1px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .header h1 a:hover {
-    opacity: 0.5;
+    color: var(--cyan);
 }
 
-/* ============ PARTICLE HERO ============ */
+/* ============ HOMEPAGE HEADER ============ */
 
-.particle-hero-container {
-    width: 100%;
-    max-width: 1400px;
-    height: 250px; /* Reduced from 400px - more compact like Rekall */
-    margin: 60px auto 30px; /* Tighter spacing */
-    position: relative;
-    background: white;
-    border: 1px solid #e8e8e8;
-    overflow: hidden;
-}
-
-.particle-hero-container canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-/* Dark theme variant (add .dark-theme class to container to use) */
-.particle-hero-container.dark-theme {
-    background: #0a0a0a;
-    border-color: #222;
-}
-
-/* Responsive particle hero */
-@media (max-width: 1024px) {
-    .particle-hero-container {
-        height: 220px;
-    }
-}
-
-@media (max-width: 768px) {
-    .particle-hero-container {
-        height: 180px;
-        margin: 40px auto 20px;
-    }
-}
-
-@media (max-width: 640px) {
-    .particle-hero-container {
-        height: 150px;
-    }
-}
-
-/* ============ HOMEPAGE-SPECIFIC LAYOUT ============ */
-
-/* When particle hero comes first, header is inline in content */
 .site-header-homepage {
     margin-bottom: 60px;
-    margin-top: 0;
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
-}
-
-.site-header-homepage .header {
     text-align: center;
-    margin-left: 0;
 }
 
 .site-header-homepage .header h1 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    color: #000000;
+    font-size: 32px;
+    letter-spacing: 2px;
     margin-bottom: 20px;
-    font-family: "DotMatri", -apple-system, monospace;
-    font-weight: normal;
-    color: #000;
-    font-size: clamp(32px, 8vw, 80px);
-    letter-spacing: clamp(2px, 0.5vw, 8px);
 }
 
 .site-header-homepage .subheader {
-    text-align: center;
-    margin-left: 0;
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
+    margin: 0 auto;
 }
 
 .site-header-homepage .subheader p {
     font-size: 15px;
-    color: #666;
+    color: var(--gray-text);
     margin-top: 8px;
     line-height: 1.7;
-    letter-spacing: 0;
-    font-weight: 400;
-}
-
-/* Adjust particle hero spacing for homepage flow */
-body main .particle-hero-container:first-child {
-    margin-top: 40px;
-    margin-bottom: 20px;
 }
 
 /* ============ SUBHEADER / BIO ============ */
 
 .subheader {
     text-align: center;
-    margin-left: 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .subheader p {
     font-size: 15px;
-    color: #666;
-    margin-top: 0.3%;
+    color: var(--gray-text);
     line-height: 1.7;
-    letter-spacing: 0;
-    font-weight: 400;
 }
 
 /* ============ LINKS ============ */
 
-.project-link,
 .contact-link {
-    color: #000;
+    color: var(--cyan);
     text-decoration: none;
-    font-weight: normal;
-    position: relative;
-    display: inline-block;
     transition: opacity 0.2s ease;
 }
 
-/* Animated underline - draws from left to right */
-.project-link::after,
-.contact-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: #000;
-    transition: width 0.3s ease;
-}
-
-.project-link:hover::after,
-.contact-link:hover::after {
-    width: 100%;
-}
-
-.project-link:hover,
 .contact-link:hover {
-    opacity: 1;
-}
-
-/* Twitter Icon */
-.twitter-icon {
-    vertical-align: middle;
-    margin-right: 4px;
-}
-
-/* ============ LOADING DOTS ANIMATION ============ */
-
-.loading-dots {
-    display: inline-block;
-    font-size: 16px;
-    width: 18px;       
-    text-align: left;  
-    animation: loadingDots 1.5s infinite;
-}
-
-@keyframes loadingDots {
-    0% { content: "."; }
-    33% { content: ".."; }
-    66% { content: "..."; }
-    100% { content: ""; }
+    opacity: 0.7;
 }
 
 /* ============ RESPONSIVE ============ */
 
 @media (max-width: 768px) {
     body {
-        padding: 15px;
+        padding: 20px;
     }
     
-    .header h1,
-    #typewriter {
-        font-size: clamp(24px, 6vw, 48px);
-    }
-    
-    .site-header-homepage #typewriter {
-        font-size: clamp(24px, 6vw, 48px);
-        letter-spacing: clamp(1px, 0.3vw, 4px);
-    }
-    
-    body main .particle-hero-container:first-child {
-        margin-top: 30px;
-        margin-bottom: 20px;
+    .site-header-homepage .header h1 {
+        font-size: 32px;
+        letter-spacing: 2px;
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding: 10px;
+        padding: 15px;
     }
     
-    .header h1,
-    #typewriter {
-        font-size: clamp(20px, 5vw, 36px);
-    }
-    
-    .site-header-homepage #typewriter {
-        font-size: clamp(20px, 5vw, 36px);
-        letter-spacing: clamp(1px, 0.2vw, 3px);
+    .site-header-homepage .header h1 {
+        font-size: 24px;
+        letter-spacing: 1px;
     }
     
     .subheader p {
         font-size: 13px;
-    }
-    
-    body main .particle-hero-container:first-child {
-        margin-top: 20px;
-        margin-bottom: 15px;
     }
 }

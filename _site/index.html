@@ -58,7 +58,7 @@
     <link rel="preload" href="/assets/fonts/dotmatrix.woff" as="font" type="font/woff" crossorigin>
     <link rel="preload" href="/images/infiniteroads.jpg" as="image">
     
-    <!-- Base Styles (Always Load) -->
+    <!-- Base Styles -->
     <link rel="stylesheet" href="/assets/css/main.css">
     
     <!-- Homepage Styles -->
@@ -75,113 +75,104 @@
     
 
     <main>
-        <!-- Particle Network Hero - No text overlay -->
-<div class="particle-hero-container">
-    <canvas id="particle-hero-canvas"></canvas>
-</div>
-
-<!-- Name and bio come AFTER particles -->
-<div class="site-header-homepage">
-    <div class="header">
-        <h1>JERALMI CANELA</h1>
+        <div class="site-intro">
+    <div class="intro-left">
+        <a href="https://uhminc.itch.io" target="_blank" class="uhm-logo">
+            <span class="uhm-text">Uhm</span>
+            <span class="uhm-dots">
+                <span class="dot dot-1"></span>
+                <span class="dot dot-2"></span>
+                <span class="dot dot-3"></span>
+            </span>
+        </a>
+        <h1 class="site-name">JERALMI CANELA</h1>
     </div>
-
-    <div class="subheader">
-        <p>Jeralmi makes games and other dope things.</p>
-        <p></p>
-        <p>
+    <div class="intro-right">
+        <p>Welcome! I'm a game designer, artist, and programmer. I make games and other dope things.</p>
+        <p class="contact-line">
             <a href="mailto:jeralmicw@gmail.com" class="contact-link">jeralmicw@gmail.com</a> | 
-            <a href="https://x.com/Jeralmics" target="_blank" class="contact-link">
-                <svg class="twitter-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-                @jeralmics
-            </a> | 
-            <a href="https://uhminc.itch.io" target="_blank" class="project-link">Uhm<span class="loading-dots">...</span></a>
+            <a href="https://x.com/Jeralmics" target="_blank" class="contact-link">@jeralmics</a> | 
+            <a href="https://uhminc.itch.io" target="_blank" class="contact-link">Uhm...</a>
         </p>
     </div>
 </div>
 
-<div class="content">
+<div class="section-header">
+    <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 6h8l2 2h8v12H3V6z"/>
+    </svg>
+    <span>Projects</span>
+</div>
 
-    <figure>
+<hr class="section-line">
+
+<div class="project-grid">
+
+    <div class="project-item">
         <a href="/infiniteroads">
-            <img src="/images/infiniteroads.jpg" 
-                 alt="infinite roads game"
-                 loading="lazy"
-                 decoding="async">
-            <figcaption>
-                <span class="game-title">Infinite Roads</span>
-                <span class="company-name">Uhm...</span>
-            </figcaption>
+            <img src="/images/infiniteroads.jpg" alt="Infinite Roads" loading="lazy" decoding="async">
         </a>
-    </figure>
+        <div class="project-info">
+            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 6h8l2 2h8v12H3V6z"/>
+            </svg>
+            <a href="/infiniteroads" class="project-title">Infinite Roads</a>
+        </div>
+    </div>
 
-    <figure>
+    <div class="project-item">
         <a href="/totem">
-            <img src="/images/Totem.jpg" 
-                 alt="Totem game"
-                 loading="lazy"
-                 decoding="async">
-            <figcaption>
-                <span class="game-title">TOTEM</span>
-                <span class="company-name">Uhm...</span>
-            </figcaption>
+            <img src="/images/Totem.jpg" alt="TOTEM" loading="lazy" decoding="async">
         </a>
-    </figure>
+        <div class="project-info">
+            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 6h8l2 2h8v12H3V6z"/>
+            </svg>
+            <a href="/totem" class="project-title">TOTEM</a>
+        </div>
+    </div>
     
-    <figure>
+    <div class="project-item">
         <a href="/judas">
-            <img src="/images/Judas.jpg" 
-                 alt="Judas game"
-                 loading="lazy"
-                 decoding="async">
-            <figcaption>
-                <span class="game-title">Judas</span>
-                <span class="company-name">Ghost Story Games</span>
-            </figcaption>
+            <img src="/images/Judas.jpg" alt="Judas" loading="lazy" decoding="async">
         </a>
-    </figure>
+        <div class="project-info">
+            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 6h8l2 2h8v12H3V6z"/>
+            </svg>
+            <a href="/judas" class="project-title">Judas</a>
+        </div>
+    </div>
 
-    <figure>
+    <div class="project-item">
         <a href="/raytracer">
-            <img src="/images/Raytracer.jpg" 
-                 alt="Raytracer project"
-                 loading="lazy"
-                 decoding="async">
-            <figcaption>
-                <span class="game-title">Raytracer</span>
-                <span class="company-name">Personal Project</span>
-            </figcaption>
+            <img src="/images/Raytracer.jpg" alt="Raytracer" loading="lazy" decoding="async">
         </a>
-    </figure>
+        <div class="project-info">
+            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 6h8l2 2h8v12H3V6z"/>
+            </svg>
+            <a href="/raytracer" class="project-title">Raytracer</a>
+        </div>
+    </div>
 
-    <figure>
+    <div class="project-item">
         <a href="/countach3d">
-            <img src="/images/countach3d.jpg" 
-                 alt="3D Lamborghini Countach Model"
-                 loading="lazy"
-                 decoding="async">
-            <figcaption>
-                <span class="game-title">3D Lamborghini Countach</span>
-                <span class="company-name">Personal Project</span>
-            </figcaption>
+            <img src="/images/countach3d.jpg" alt="Countach 3D" loading="lazy" decoding="async">
         </a>
-    </figure>
+        <div class="project-info">
+            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 6h8l2 2h8v12H3V6z"/>
+            </svg>
+            <a href="/countach3d" class="project-title">Countach 3D</a>
+        </div>
+    </div>
     
 </div>
     </main>
 
     <!-- JavaScript -->
     <script src="/assets/js/page-transitions.js"></script>
-    
-    
-    <script src="/assets/js/image-loader.js"></script>
-    
-    
-    
-    <script src="/assets/js/particle-hero.js"></script>
-    
     
     
     
