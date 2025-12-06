@@ -73,52 +73,86 @@
 <body>
     
     
-    <header class="site-header">
-    <div class="header">
-        <h1><a href="/">JERALMI CANELA</a></h1>
-    </div>
-
-    <div class="subheader">
-        <p>Game designer, artist, and programmer.</p>
-        <p>
-            <a href="https://uhminc.itch.io" target="_blank" class="contact-link">Uhm...</a>
-        </p>
-    </div>
+    <header class="site-header-minimal">
+    <a href="/" class="brand-mark">
+        <span class="uhm-text-small">Uhm</span>
+        <span class="uhm-dots-small">
+            <span class="dot dot-1"></span>
+            <span class="dot dot-2"></span>
+            <span class="dot dot-3"></span>
+        </span>
+    </a>
 </header>
     
 
     <main>
         <div class="project-page">
     
-    <!-- Main Carousel/Image Container -->
-    <div class="image-container">
-        <!-- Main image - will be replaced by carousel.js -->
-        <img id="project-image" 
-             class="project-image" 
-             src="/images/Raytracer.jpg" 
-             data-project-name="Raytracer" 
-             data-image-count="0"
-             
-             alt="Raytracer"
-             loading="lazy">
-        
-        <!-- Navigation panels and counter will be added by carousel.js -->
+    <!-- Project Header - Folder + Title -->
+    <div class="project-header">
+        <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 6h8l2 2h8v12H3V6z"/>
+        </svg>
+        <span class="project-name">Raytracer</span>
     </div>
     
-    <!-- Thumbnail strip will be dynamically inserted here by carousel.js -->
-
-    <div class="project-details">
-        <figcaption>
-            <span class="game-title">Raytracer</span>
-            <span class="company-name">Personal Project</span>
-        </figcaption>
-    </div>
-
-    <div class="project-description">
-        <h2>Project Overview</h2>
-<p>Built a raytracer from scratch in C++, implementing ray-sphere intersection, lighting models, and reflection/refraction. Features realistic shadows, anti-aliasing, and multiple material types.</p>
+    <!-- Two Column Layout -->
+    <div class="project-content">
+        
+        <!-- Left: Image/Video -->
+        <div class="project-media">
+            <div class="image-container">
+                <img id="project-image" 
+                     class="project-image" 
+                     src="/images/Raytracer.jpg" 
+                     data-project-name="Raytracer" 
+                     data-image-count="0"
+                     
+                     alt="Raytracer"
+                     loading="lazy">
+            </div>
+            <!-- Thumbnail strip inserted by carousel.js -->
+        </div>
+        
+        <!-- Right: Metadata + Description -->
+        <div class="project-info-col">
+            
+            <!-- Metadata -->
+            <div class="project-meta">
+                <div class="meta-row">
+                    <span class="meta-label">• Title:</span>
+                    <span class="meta-value">Raytracer</span>
+                </div>
+                
+                <div class="meta-row">
+                    <span class="meta-label">• Genre:</span>
+                    <span class="meta-value">Graphics Programming</span>
+                </div>
+                
+                
+                <div class="meta-row">
+                    <span class="meta-label">• Role:</span>
+                    <span class="meta-value">Programmer</span>
+                </div>
+                
+                <div class="meta-row">
+                    <span class="meta-label">• Company:</span>
+                    <span class="meta-value">Personal Project</span>
+                </div>
+                
+                <div class="meta-row">
+                    <span class="meta-label">• Tech:</span>
+                    <span class="meta-value">C++</span>
+                </div>
+                
+            </div>
+            
+            <!-- Description -->
+            <div class="project-description">
+                Built a raytracer from scratch in C++, implementing ray-sphere intersection, lighting models, and reflection/refraction. Features realistic shadows, anti-aliasing, and multiple material types.
 
 <h2>Key Accomplishments</h2>
+
 <ul>
     <li>Implemented core ray tracing algorithm without external libraries</li>
     <li>Achieved realistic lighting and shadow effects through physically-based rendering</li>
@@ -126,16 +160,21 @@
     <li>Rendered complex scenes with multiple objects, materials, and light sources</li>
     <li>Developed deep understanding of 3D graphics mathematics and rendering pipelines</li>
 </ul>
-
-<h2>Tech Used</h2>
-<p>C++</p>
+            </div>
+            
+        </div>
+        
     </div>
 
 </div>
     </main>
 
     <!-- JavaScript -->
+    
     <script src="/assets/js/page-transitions.js"></script>
+    
+    
+    
     
     
     <script src="/assets/js/carousel.js"></script>

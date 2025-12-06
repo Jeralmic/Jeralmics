@@ -1,43 +1,77 @@
 /* ===================================
-   PROJECT PAGES - Carousel
-   Simogo / Teenage Engineering inspired
+   PROJECT PAGES - Simogo Style
+   Two-column layout with metadata
    =================================== */
 
 /* ============ BRAND COLORS ============ */
 :root {
     --cyan: #5FD8FF;
-    --gray-text: #A6A6A6;
+    --gray-text: #666666;
+    --black: #000000;
     --white: #FFFFFF;
     --gray-light: #E0E0E0;
+    --gray-bg: #F0F0F0;
 }
 
-/* ============ PROJECT CONTAINER ============ */
+/* ============ PROJECT PAGE CONTAINER ============ */
 
 .project-page {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 20px 40px 60px;
 }
 
-/* ============ MAIN IMAGE CONTAINER ============ */
+/* ============ PROJECT HEADER ============ */
+
+.project-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.project-header .folder-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--black);
+}
+
+.project-header .project-name {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--black);
+}
+
+/* ============ TWO COLUMN LAYOUT ============ */
+
+.project-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+/* ============ LEFT: MEDIA COLUMN ============ */
+
+.project-media {
+    position: sticky;
+    top: 40px;
+}
 
 .image-container {
     position: relative;
     width: 100%;
-    max-width: 1000px;
-    margin: 0 auto 20px;
-    background: #fafafa;
-    border: 1px solid var(--gray-light);
+    background: var(--gray-bg);
     aspect-ratio: 16 / 9;
     overflow: hidden;
 }
 
-/* Main Image */
 .image-container #mainImage,
 .image-container .project-image {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     display: block;
 }
 
@@ -69,7 +103,7 @@
 .nav-panel:hover:not(.disabled) {
     background: linear-gradient(
         to right,
-        rgba(95, 216, 255, 0.05) 0%,
+        rgba(0, 0, 0, 0.05) 0%,
         transparent 100%
     );
 }
@@ -77,7 +111,7 @@
 .nav-panel-right:hover:not(.disabled) {
     background: linear-gradient(
         to left,
-        rgba(95, 216, 255, 0.05) 0%,
+        rgba(0, 0, 0, 0.05) 0%,
         transparent 100%
     );
 }
@@ -91,16 +125,13 @@
 
 .image-counter {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
-    background: var(--white);
-    color: var(--gray-text);
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--white);
     padding: 4px 10px;
-    font-size: 10px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 500;
-    letter-spacing: 1px;
-    border: 1px solid var(--gray-light);
+    font-size: 11px;
+    font-family: "Courier New", monospace;
     pointer-events: none;
     z-index: 15;
 }
@@ -108,23 +139,21 @@
 /* ============ THUMBNAIL STRIP ============ */
 
 .carousel-thumbnails {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 2px;
-    max-width: 1000px;
-    margin: 0 auto 40px;
-    padding: 0;
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    overflow-x: auto;
 }
 
-/* Individual Thumbnail */
 .thumbnail {
+    flex-shrink: 0;
+    width: 80px;
     aspect-ratio: 16 / 9;
     cursor: pointer;
-    position: relative;
     overflow: hidden;
-    border: 1px solid var(--gray-light);
-    transition: all 0.15s ease;
-    background: #fafafa;
+    background: var(--gray-bg);
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
 }
 
 .thumbnail img {
@@ -132,38 +161,21 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    opacity: 0.5;
-    transition: opacity 0.15s ease;
 }
 
 .thumbnail:hover {
-    border-color: var(--gray-text);
-}
-
-.thumbnail:hover img {
     opacity: 0.8;
 }
 
-/* Active Thumbnail */
 .thumbnail.active {
-    border-color: var(--cyan);
-    border-width: 2px;
-}
-
-.thumbnail.active img {
     opacity: 1;
+    outline: 2px solid var(--black);
+    outline-offset: -2px;
 }
 
 /* Video Thumbnail */
-.thumbnail.video::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
-    z-index: 1;
+.thumbnail.video {
+    position: relative;
 }
 
 .thumbnail .video-play-icon {
@@ -171,85 +183,89 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 28px;
-    height: 28px;
-    background: var(--white);
-    border: 1px solid var(--gray-text);
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
-    color: var(--gray-text);
+    font-size: 8px;
+    color: var(--black);
     z-index: 2;
-    padding-left: 2px;
 }
 
-/* ============ PROJECT DETAILS ============ */
+/* ============ RIGHT: INFO COLUMN ============ */
 
-.project-details {
-    max-width: 1000px;
-    margin: 40px auto 20px;
-    padding: 0 4px;
+.project-info-col {
+    padding-top: 0;
 }
 
-.project-details figcaption {
+/* ============ METADATA ============ */
+
+.project-meta {
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--black);
+    padding-bottom: 20px;
+}
+
+.meta-row {
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 6px;
+    font-family: "Courier New", Courier, monospace;
     font-size: 14px;
-    color: var(--gray-text);
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    letter-spacing: 0.5px;
-    border-top: 1px solid var(--gray-light);
-    padding-top: 12px;
+    line-height: 1.6;
 }
 
-.game-title {
-    font-weight: 500;
+.meta-label {
     color: var(--gray-text);
+    min-width: 80px;
 }
 
-.company-name {
-    color: var(--gray-text);
-    opacity: 0.6;
+.meta-value {
+    color: var(--black);
 }
 
-/* ============ PROJECT DESCRIPTION ============ */
+/* ============ DESCRIPTION ============ */
 
 .project-description {
-    max-width: 800px;
-    margin: 40px auto;
-    text-align: left;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
     line-height: 1.8;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--black);
 }
 
 .project-description h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 14px;
-    font-weight: 500;
-    color: var(--gray-text);
-    margin: 32px 0 12px;
+    font-weight: 400;
+    color: var(--black);
+    margin: 30px 0 15px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    border-left: 2px solid var(--cyan);
-    padding-left: 12px;
+    letter-spacing: 1px;
 }
 
-.project-description p,
-.project-description ul {
-    font-size: 15px;
-    color: var(--gray-text);
+.project-description h2::before {
+    content: '✦';
+    font-size: 12px;
+}
+
+.project-description p {
     margin-bottom: 16px;
-    font-weight: 400;
+    text-align: justify;
 }
 
 .project-description ul {
     padding-left: 0;
     list-style: none;
+    margin-bottom: 16px;
 }
 
 .project-description li {
     margin-bottom: 8px;
-    padding-left: 20px;
+    padding-left: 16px;
     position: relative;
 }
 
@@ -258,52 +274,47 @@
     position: absolute;
     left: 0;
     color: var(--gray-text);
-    opacity: 0.5;
 }
 
 .project-description a {
-    color: var(--cyan);
-    text-decoration: none;
-    transition: opacity 0.2s ease;
+    color: var(--black);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
 }
 
 .project-description a:hover {
-    opacity: 0.7;
+    color: var(--cyan);
+}
+
+.project-description strong {
+    font-weight: 600;
 }
 
 /* ============ RESPONSIVE ============ */
 
-@media (max-width: 768px) {
-    .project-page {
-        padding: 30px 16px;
+@media (max-width: 900px) {
+    .project-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
     
-    .image-container {
-        aspect-ratio: 4 / 3;
-    }
-    
-    .carousel-thumbnails {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 1px;
-    }
-    
-    .image-counter {
-        font-size: 9px;
-        padding: 3px 8px;
+    .project-media {
+        position: static;
     }
 }
 
-@media (max-width: 480px) {
-    .carousel-thumbnails {
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+@media (max-width: 600px) {
+    .project-page {
+        padding: 20px;
     }
     
-    .project-description h2 {
-        font-size: 13px;
+    .meta-row {
+        flex-direction: column;
+        gap: 2px;
     }
     
-    .project-description p,
-    .project-description ul {
-        font-size: 14px;
+    .meta-label {
+        min-width: auto;
     }
 }
