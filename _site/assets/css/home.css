@@ -121,24 +121,25 @@
 }
 
 .intro-right {
-    /* Bio column - left aligned */
-    text-align: left;
+    /* Bio column - right aligned */
+    text-align: right;
+    padding-top: 76px;
+    max-width: 400px;
+    margin-left: auto;
 }
 
 .intro-right p {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 18px;
-    color: var(--black);
+    color: var(--gray-text);
     line-height: 1.6;
     margin: 0 0 12px;
-    text-align: left;
 }
 
 .intro-right .contact-line {
     font-size: 15px;
     color: var(--gray-text);
     margin-top: 16px;
-    text-align: left;
 }
 
 .intro-right .contact-link {
