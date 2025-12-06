@@ -114,7 +114,7 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 24px;
     font-weight: 500;
-    color: var(--gray-text);
+    color: var(--black);
     letter-spacing: 1px;
     margin: 0;
     line-height: 1.3;
@@ -131,14 +131,14 @@
 .intro-right p {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 18px;
-    color: var(--gray-text);
+    color: #666666;
     line-height: 1.6;
     margin: 0 0 12px;
 }
 
 .intro-right .contact-line {
     font-size: 15px;
-    color: var(--gray-text);
+    color: #666666;
     margin-top: 16px;
 }
 
@@ -157,36 +157,59 @@
 .section-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     max-width: 1200px;
-    margin: 0 auto 12px;
+    margin: 0 auto 8px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: var(--black);
 }
 
-.section-header .folder-icon {
-    width: 28px;
-    height: 28px;
+.section-header svg.folder-icon {
+    width: 20px;
+    height: 20px;
     color: var(--black);
+}
+
+.section-header svg.section-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+}
+
+.section-header svg.section-icon.games {
+    color: #E74C3C;
+}
+
+.section-header svg.section-icon.prototype {
+    color: #9B59B6;
+}
+
+.section-header svg.section-icon.art {
+    color: #3498DB;
+}
+
+.section-header svg.section-icon.code {
+    color: #2ECC71;
 }
 
 .section-line {
     max-width: 1200px;
-    margin: 0 auto 40px;
+    margin: 0 auto 30px;
     border: none;
-    border-top: 1px solid var(--gray-light);
+    border-top: 1px solid var(--black);
 }
 
 /* ============ PROJECT GRID ============ */
 
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(3, 280px);
+    gap: 24px;
     max-width: 1200px;
     margin: 0 auto 60px;
+    justify-content: start;
 }
 
 /* ============ PROJECT ITEM ============ */
@@ -217,13 +240,13 @@
 .project-info {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    font-size: 15px;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
-/* Folder Icon */
-.folder-icon {
+/* Project Folder Icon - small */
+.project-info svg.folder-icon {
     width: 14px;
     height: 14px;
     color: var(--black);
@@ -248,8 +271,8 @@
 
 @media (max-width: 1024px) {
     .project-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 25px;
+        grid-template-columns: repeat(2, 280px);
+        gap: 20px;
     }
 }
 
@@ -285,11 +308,17 @@
     .intro-right p {
         font-size: 16px;
     }
+    
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
 }
 
 @media (max-width: 640px) {
     .project-grid {
         grid-template-columns: 1fr;
+        max-width: 280px;
         gap: 30px;
     }
     
