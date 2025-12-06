@@ -157,17 +157,18 @@
 .section-header {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     max-width: 1200px;
     margin: 0 auto 12px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
+    font-weight: 400;
     color: var(--black);
 }
 
 .section-header .folder-icon {
-    width: 18px;
-    height: 18px;
+    width: 28px;
+    height: 28px;
     color: var(--black);
 }
 
@@ -175,7 +176,7 @@
     max-width: 1200px;
     margin: 0 auto 40px;
     border: none;
-    border-top: 1px solid var(--black);
+    border-top: 1px solid var(--gray-light);
 }
 
 /* ============ PROJECT GRID ============ */
@@ -185,7 +186,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 auto 60px;
 }
 
 /* ============ PROJECT ITEM ============ */
@@ -223,8 +224,8 @@
 
 /* Folder Icon */
 .folder-icon {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     color: var(--black);
     flex-shrink: 0;
 }
