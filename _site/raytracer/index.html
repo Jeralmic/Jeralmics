@@ -153,16 +153,24 @@
             
             <!-- Description -->
             <div class="project-description">
-                Built a raytracer from scratch in C++, implementing ray-sphere intersection, lighting models, and reflection/refraction. Features realistic shadows, anti-aliasing, and multiple material types.
+                A raytracer built from scratch in C++.
+
+<h2>Breakdown</h2>
+
+<p>This started on Shadertoy. A friend and I had been messing around on there for a few weeks, writing shaders and breaking things, and at some point building a raytracer just seemed like the natural next step. We found <a href="https://raytracing.github.io/" target="_blank">"Ray Tracing in One Weekend"</a> and made a pact to actually finish it in one weekend.</p>
+
+<p>We did not finish it in one weekend.</p>
+
+<p>Turns out understanding how rays bounce off spheres is one thing, but actually implementing it is another. Getting the vector math right, debugging reflections that look wrong for reasons you can't quite articulate, figuring out why everything keeps rendering too dark—all of that takes longer than you'd think. But that was kind of the point. We wanted to struggle through it and actually understand what's happening instead of just calling someone else's function.</p>
+
+<p>There's this moment when it finally works where you're just staring at the output. You wrote code that simulates light bouncing around a scene, and now there's an image on screen that looks real. It's just math, but it doesn't feel like it.</p>
 
 <h2>Key Accomplishments</h2>
 
 <ul>
-    <li>Implemented core ray tracing algorithm without external libraries</li>
-    <li>Achieved realistic lighting and shadow effects through physically-based rendering</li>
-    <li>Optimized rendering performance through spatial partitioning techniques</li>
-    <li>Rendered complex scenes with multiple objects, materials, and light sources</li>
-    <li>Developed deep understanding of 3D graphics mathematics and rendering pipelines</li>
+    <li>Implemented complete raytracing pipeline from scratch</li>
+    <li>Built ray sphere intersection, Lambertian diffuse, and metallic materials</li>
+    <li>Developed recursive reflection and refraction with configurable depth</li>
 </ul>
             </div>
             
