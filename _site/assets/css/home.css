@@ -331,7 +331,15 @@
 @media (max-width: 768px) {
     .site-intro {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 20px;
+    }
+    
+    .intro-left {
+        text-align: center;
+    }
+    
+    .uhm-logo {
+        justify-content: center;
     }
     
     .uhm-text {
@@ -357,24 +365,89 @@
         font-size: 20px;
     }
     
+    .intro-right {
+        text-align: center;
+        padding-top: 0;
+    }
+    
     .intro-right p {
-        font-size: 16px;
+        font-size: 15px;
+    }
+    
+    .intro-right .contact-line {
+        font-size: 14px;
+    }
+    
+    .section-header {
+        font-size: 18px;
+        gap: 10px;
+    }
+    
+    .section-header svg.folder-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .section-header svg.section-icon {
+        width: 20px;
+        height: 20px;
     }
     
     .project-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
+        max-width: 100%;
+    }
+    
+    .project-item img {
+        aspect-ratio: 1 / 1;
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
+    .site-intro {
+        gap: 16px;
+    }
+    
+    .site-name {
+        font-size: 18px;
+    }
+    
+    .uhm-text {
+        font-size: 24px;
+    }
+    
+    .intro-right p {
+        font-size: 14px;
+    }
+    
+    .section-header {
+        font-size: 16px;
+    }
+    
+    .section-header svg.folder-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .section-header svg.section-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
     .project-grid {
-        grid-template-columns: 1fr;
-        max-width: 280px;
-        gap: 30px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
     
     .project-info {
-        font-size: 14px;
+        font-size: 12px;
+        gap: 4px;
+        margin-top: 8px;
+    }
+    
+    .project-info svg.folder-icon {
+        width: 12px;
+        height: 12px;
     }
 }

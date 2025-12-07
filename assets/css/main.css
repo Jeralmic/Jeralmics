@@ -187,18 +187,43 @@ a:hover {
 
 @media (max-width: 768px) {
     body {
-        padding: 20px;
+        padding: 24px 20px;
+    }
+    
+    .site-header-minimal {
+        margin-bottom: 24px;
+    }
+    
+    .header-name {
+        font-size: 20px;
+    }
+    
+    .header-tagline {
+        font-size: 12px;
     }
     
     .site-header-homepage .header h1 {
-        font-size: 32px;
-        letter-spacing: 2px;
+        font-size: 28px;
+        letter-spacing: 1.5px;
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding: 15px;
+        padding: 20px 16px;
+    }
+    
+    .site-header-minimal {
+        margin-bottom: 20px;
+    }
+    
+    .header-name {
+        font-size: 18px;
+        letter-spacing: 0.5px;
+    }
+    
+    .header-tagline {
+        font-size: 11px;
     }
     
     .site-header-homepage .header h1 {
@@ -208,6 +233,15 @@ a:hover {
     
     .subheader p {
         font-size: 13px;
+    }
+    
+    /* Back to top button mobile adjustments */
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
     }
 }
 
