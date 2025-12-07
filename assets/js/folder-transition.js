@@ -51,4 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+    
+    // Handle back/forward navigation
+    window.addEventListener('pageshow', (e) => {
+        if (e.persisted) {
+            // Page was restored from cache (back/forward)
+            overlay.style.opacity = '0';
+            // Remove folder-opening class from all items
+            document.querySelectorAll('.folder-opening').forEach(item => {
+                item.classList.remove('folder-opening');
+            });
+        }
+    });
+    
+    // Also reset on regular page load
+    window.addEventListener('load', () => {
+        overlay.style.opacity = '0';
+    });
 });

@@ -1,12 +1,10 @@
 /**
  * Page Transitions - Simple Clean Fade
- * Minimal transition overlay
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const transitionDuration = 200; // milliseconds
+    const transitionDuration = 200;
     
-    // Create simple fade overlay
     const overlay = document.createElement('div');
     overlay.id = 'page-transition-overlay';
     overlay.style.cssText = `
@@ -15,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         left: 0;
         width: 100%;
         height: 100%;
-        background: #fafafa;
+        background: #ffffff;
         z-index: 9999;
         pointer-events: none;
         opacity: 0;
@@ -23,9 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(overlay);
     
-    // Intercept all internal link clicks
     document.addEventListener('click', (e) => {
-        // Find the link element
         let target = e.target;
         while (target && target.tagName !== 'A') {
             target = target.parentElement;
@@ -35,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const href = target.getAttribute('href');
         
-        // Skip external/special links
         if (!href ||
             href.startsWith('http') || 
             href.startsWith('#') ||
@@ -45,15 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Prevent default navigation
         e.preventDefault();
-        
-        // Simple fade
         overlay.style.opacity = '1';
         
-        // Navigate
         setTimeout(() => {
             window.location.href = href;
         }, transitionDuration);
+    });
+    
+    // Handle back/forward navigation
+    window.addEventListener('pageshow', (e) => {
+        if (e.persisted) {
+            // Page was restored from cache (back/forward)
+            overlay.style.opacity = '0';
+        }
+    });
+    
+    // Also reset on regular page load
+    window.addEventListener('load', () => {
+        overlay.style.opacity = '0';
     });
 });
