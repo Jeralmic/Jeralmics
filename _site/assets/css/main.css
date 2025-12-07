@@ -3,15 +3,6 @@
    BASE STYLES - Mobile First
    =================================== */
 
-/* ============ FONTS ============ */
-@font-face {
-    font-family: "DotMatri";
-    src: url("/assets/fonts/dotmatrix.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
 /* ============ CSS VARIABLES ============ */
 :root {
     --cyan: #5FD8FF;
@@ -31,7 +22,6 @@
     
     /* Typography */
     --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --font-mono: "Courier New", Courier, monospace;
     
     /* Transitions */
     --transition-fast: 0.15s ease;
@@ -240,7 +230,7 @@ p a, li a, span a {
     background: var(--black);
     color: var(--cyan);
     padding: var(--space-sm) var(--space-md);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: clamp(16px, 4vw, 24px);
     letter-spacing: 2px;
     border: 2px solid var(--cyan);
