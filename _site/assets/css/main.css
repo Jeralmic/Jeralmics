@@ -1,12 +1,9 @@
 /* ===================================
    JERALMI CANELA PORTFOLIO
-   BASE STYLES
-   Inspired by Simogo / Teenage Engineering
+   BASE STYLES - Mobile First
    =================================== */
 
 /* ============ FONTS ============ */
-
-/* DotMatri - For name/headers only */
 @font-face {
     font-family: "DotMatri";
     src: url("/assets/fonts/dotmatrix.woff") format("woff");
@@ -15,34 +12,58 @@
     font-display: swap;
 }
 
-/* ============ BRAND COLORS ============ */
+/* ============ CSS VARIABLES ============ */
 :root {
     --cyan: #5FD8FF;
     --gray-text: #A6A6A6;
+    --gray-dark: #666666;
+    --black: #000000;
     --white: #FFFFFF;
     --gray-light: #E0E0E0;
-    --gray-dark: #666666;
+    --gray-bg: #F5F5F5;
+    
+    /* Spacing */
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 40px;
+    --space-xl: 60px;
+    
+    /* Typography */
+    --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: "Courier New", Courier, monospace;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.2s ease;
+    --transition-slow: 0.3s ease;
 }
 
 /* ============ BASE RESET ============ */
-
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-sans);
     font-weight: 400;
     background-color: var(--white);
     color: var(--gray-text);
-    padding: 40px;
     line-height: 1.6;
+    min-height: 100vh;
+    /* Mobile-first padding */
+    padding: var(--space-sm);
 }
 
 /* ============ TYPOGRAPHY ============ */
-
 h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
     letter-spacing: 0.5px;
@@ -52,49 +73,39 @@ h1, h2, h3, h4, h5, h6 {
 a {
     color: var(--cyan);
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transition-normal);
+    -webkit-tap-highlight-color: transparent;
 }
 
 a:hover {
     opacity: 0.7;
 }
 
-/* ============ HEADER ============ */
-
-.site-header {
-    margin-bottom: 60px;
+/* Better touch targets */
+a, button {
+    min-height: 44px;
+    min-width: 44px;
 }
 
-.header {
-    text-align: center;
-}
-
-.header h1,
-.header h1 a {
-    font-size: 24px;
-    font-weight: 500;
-    color: #000000;
-    text-decoration: none;
-    letter-spacing: 1px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.header h1 a:hover {
-    color: var(--cyan);
+/* Inline links don't need min-height */
+p a, li a, span a {
+    min-height: auto;
+    min-width: auto;
 }
 
 /* ============ MINIMAL HEADER (Project Pages) ============ */
-
 .site-header-minimal {
     max-width: 1200px;
-    margin: 0 auto 30px;
+    margin: 0 auto var(--space-md);
     padding: 0;
 }
 
 .header-link {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
     text-decoration: none;
-    transition: transform 0.2s ease;
+    transition: transform var(--transition-normal);
+    padding: var(--space-xs) 0;
 }
 
 .header-link:hover {
@@ -106,143 +117,37 @@ a:hover {
 }
 
 .header-name {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 24px;
+    font-family: var(--font-sans);
+    font-size: clamp(18px, 4vw, 24px);
     font-weight: 700;
-    color: #000000;
+    color: var(--black);
     letter-spacing: 1px;
     margin: 0 0 4px 0;
 }
 
 .header-tagline {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 13px;
+    font-family: var(--font-sans);
+    font-size: clamp(11px, 2.5vw, 13px);
     color: #999999;
     margin: 0;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: color var(--transition-normal), transform var(--transition-normal);
     transform-origin: left;
 }
 
 .header-link:hover .header-tagline {
-    color: #666666;
+    color: var(--gray-dark);
     transform: translateX(3px);
 }
 
-/* ============ HOMEPAGE HEADER ============ */
-
-.site-header-homepage {
-    margin-bottom: 60px;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
-.site-header-homepage .header h1 {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 500;
-    color: #000000;
-    font-size: 32px;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-}
-
-.site-header-homepage .subheader {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.site-header-homepage .subheader p {
-    font-size: 15px;
-    color: var(--gray-text);
-    margin-top: 8px;
-    line-height: 1.7;
-}
-
-/* ============ SUBHEADER / BIO ============ */
-
-.subheader {
-    text-align: center;
-}
-
-.subheader p {
-    font-size: 15px;
-    color: var(--gray-text);
-    line-height: 1.7;
-}
-
 /* ============ LINKS ============ */
-
 .contact-link {
     color: var(--cyan);
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transition-normal);
 }
 
 .contact-link:hover {
     opacity: 0.7;
-}
-
-/* ============ RESPONSIVE ============ */
-
-@media (max-width: 768px) {
-    body {
-        padding: 24px 20px;
-    }
-    
-    .site-header-minimal {
-        margin-bottom: 24px;
-    }
-    
-    .header-name {
-        font-size: 20px;
-    }
-    
-    .header-tagline {
-        font-size: 12px;
-    }
-    
-    .site-header-homepage .header h1 {
-        font-size: 28px;
-        letter-spacing: 1.5px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 20px 16px;
-    }
-    
-    .site-header-minimal {
-        margin-bottom: 20px;
-    }
-    
-    .header-name {
-        font-size: 18px;
-        letter-spacing: 0.5px;
-    }
-    
-    .header-tagline {
-        font-size: 11px;
-    }
-    
-    .site-header-homepage .header h1 {
-        font-size: 24px;
-        letter-spacing: 1px;
-    }
-    
-    .subheader p {
-        font-size: 13px;
-    }
-    
-    /* Back to top button mobile adjustments */
-    .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-    }
 }
 
 /* ============ UX ENHANCEMENTS ============ */
@@ -253,7 +158,7 @@ a:hover {
     top: 0;
     left: 0;
     height: 3px;
-    background: linear-gradient(90deg, #5FD8FF, #a855f7);
+    background: linear-gradient(90deg, var(--cyan), #a855f7);
     width: 0%;
     z-index: 9999;
     transition: width 0.1s ease-out;
@@ -262,12 +167,12 @@ a:hover {
 /* Back to Top Button */
 .back-to-top {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 44px;
-    height: 44px;
-    background: #000000;
-    color: #ffffff;
+    bottom: var(--space-sm);
+    right: var(--space-sm);
+    width: 48px;
+    height: 48px;
+    background: var(--black);
+    color: var(--white);
     border: none;
     border-radius: 50%;
     font-size: 20px;
@@ -275,8 +180,11 @@ a:hover {
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
-    transition: all 0.3s ease;
+    transition: all var(--transition-slow);
     z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .back-to-top.visible {
@@ -286,7 +194,7 @@ a:hover {
 }
 
 .back-to-top:hover {
-    background: #5FD8FF;
+    background: var(--cyan);
     transform: translateY(-3px);
 }
 
@@ -329,20 +237,44 @@ a:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
-    background: #000000;
-    color: #5FD8FF;
-    padding: 20px 40px;
-    font-family: "Courier New", monospace;
-    font-size: 24px;
+    background: var(--black);
+    color: var(--cyan);
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-mono);
+    font-size: clamp(16px, 4vw, 24px);
     letter-spacing: 2px;
-    border: 2px solid #5FD8FF;
+    border: 2px solid var(--cyan);
     z-index: 10000;
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: all var(--transition-slow);
     text-align: center;
+    max-width: 90vw;
 }
 
 .easter-egg-msg.show {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
+}
+
+/* ============ RESPONSIVE - TABLET ============ */
+@media (min-width: 768px) {
+    body {
+        padding: var(--space-md);
+    }
+    
+    .site-header-minimal {
+        margin-bottom: var(--space-lg);
+    }
+    
+    .back-to-top {
+        bottom: var(--space-md);
+        right: var(--space-md);
+    }
+}
+
+/* ============ RESPONSIVE - DESKTOP ============ */
+@media (min-width: 1024px) {
+    body {
+        padding: var(--space-lg);
+    }
 }

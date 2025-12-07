@@ -3,7 +3,8 @@
  * Card tilts like a folder opening before navigating
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
+    'use strict';
     
     const projectItems = document.querySelectorAll('.project-item');
     if (!projectItems.length) return;
@@ -26,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     projectItems.forEach(item => {
         const links = item.querySelectorAll('a');
-        
         if (!links.length) return;
         
         const href = links[0].getAttribute('href');
@@ -52,20 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Handle back/forward navigation
+    // Handle back/forward navigation (bfcache)
     window.addEventListener('pageshow', (e) => {
         if (e.persisted) {
-            // Page was restored from cache (back/forward)
             overlay.style.opacity = '0';
-            // Remove folder-opening class from all items
             document.querySelectorAll('.folder-opening').forEach(item => {
                 item.classList.remove('folder-opening');
             });
         }
     });
     
-    // Also reset on regular page load
-    window.addEventListener('load', () => {
-        overlay.style.opacity = '0';
-    });
-});
+    // Reset on load
+    overlay.style.opacity = '0';
+})();

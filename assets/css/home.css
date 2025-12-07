@@ -1,38 +1,29 @@
 /* ===================================
-   HOMEPAGE - Simogo-inspired Layout
-   Two column intro, projects grid
+   HOMEPAGE - Mobile First
+   Simogo-inspired Layout
    =================================== */
 
-/* ============ BRAND COLORS ============ */
-:root {
-    --cyan: #5FD8FF;
-    --gray-text: #A6A6A6;
-    --black: #000000;
-    --white: #FFFFFF;
-    --gray-light: #E0E0E0;
-    --gray-bg: #F5F5F5;
-}
-
-/* ============ SITE INTRO - TWO COLUMN ============ */
-
+/* ============ SITE INTRO ============ */
 .site-intro {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
     max-width: 1200px;
-    margin: 0 auto 60px;
-    align-items: start;
+    margin: 0 auto var(--space-lg);
+    align-items: center;
+    text-align: center;
 }
 
 .intro-left {
-    /* Name column */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* ============ SITE NAME ============ */
-
 .site-name {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 24px;
+    font-family: var(--font-sans);
+    font-size: clamp(20px, 5vw, 24px);
     font-weight: 700;
     color: var(--black);
     letter-spacing: 1px;
@@ -41,13 +32,14 @@
 }
 
 /* ============ UHM LOGO ============ */
-
 .uhm-logo {
-    display: flex;
+    display: inline-flex;
     align-items: baseline;
     gap: 3px;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-slow);
+    padding: var(--space-xs);
+    margin: calc(-1 * var(--space-xs));
 }
 
 .uhm-logo:hover {
@@ -69,11 +61,11 @@
 
 .uhm-text {
     font-family: "Bauhaus 93", "Arial Black", sans-serif;
-    font-size: 36px;
+    font-size: clamp(28px, 7vw, 36px);
     font-weight: 700;
     color: var(--cyan);
     letter-spacing: -1px;
-    transition: text-shadow 0.3s ease;
+    transition: text-shadow var(--transition-slow);
 }
 
 .uhm-dots {
@@ -89,28 +81,27 @@
     border-radius: 50%;
     opacity: 0;
     animation: thinking 2.4s ease-in-out infinite;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow var(--transition-slow);
 }
 
 .dot-1 {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     animation-delay: 0s;
 }
 
 .dot-2 {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     animation-delay: 0.3s;
 }
 
 .dot-3 {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     animation-delay: 0.6s;
 }
 
-/* Thinking animation - dots fade in sequentially, hold, fade out */
 @keyframes thinking {
     0% {
         opacity: 0;
@@ -134,26 +125,23 @@
     }
 }
 
+/* ============ INTRO RIGHT (Bio) ============ */
 .intro-right {
-    /* Bio column - right aligned */
-    text-align: right;
-    padding-top: 12px;
     max-width: 400px;
-    margin-left: auto;
 }
 
 .intro-right p {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 18px;
-    color: #666666;
+    font-family: var(--font-sans);
+    font-size: clamp(14px, 3.5vw, 18px);
+    color: var(--gray-dark);
     line-height: 1.6;
     margin: 0 0 12px;
 }
 
 .intro-right .contact-line {
-    font-size: 15px;
-    color: #666666;
-    margin-top: 16px;
+    font-size: clamp(13px, 3vw, 15px);
+    color: var(--gray-dark);
+    margin-top: var(--space-sm);
 }
 
 .intro-right .contact-link {
@@ -167,73 +155,61 @@
 }
 
 /* ============ SECTION HEADER ============ */
-
 .section-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     max-width: 1200px;
     margin: 0 auto 12px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 20px;
+    font-family: var(--font-sans);
+    font-size: clamp(16px, 4vw, 20px);
     font-weight: 400;
     color: var(--black);
 }
 
 .section-header svg.folder-icon {
-    width: 28px;
-    height: 28px;
+    width: clamp(20px, 5vw, 28px);
+    height: clamp(20px, 5vw, 28px);
     color: var(--black);
+    flex-shrink: 0;
 }
 
 .section-header svg.section-icon {
-    width: 24px;
-    height: 24px;
+    width: clamp(18px, 4vw, 24px);
+    height: clamp(18px, 4vw, 24px);
     margin-left: 4px;
+    flex-shrink: 0;
 }
 
-.section-header svg.section-icon.games {
-    color: #E74C3C;
-}
-
-.section-header svg.section-icon.prototype {
-    color: #9B59B6;
-}
-
-.section-header svg.section-icon.art {
-    color: #3498DB;
-}
-
-.section-header svg.section-icon.code {
-    color: #2ECC71;
-}
+.section-header svg.section-icon.games { color: #E74C3C; }
+.section-header svg.section-icon.prototype { color: #9B59B6; }
+.section-header svg.section-icon.art { color: #3498DB; }
+.section-header svg.section-icon.code { color: #2ECC71; }
 
 .section-line {
     max-width: 1200px;
-    margin: 0 auto 30px;
+    margin: 0 auto var(--space-md);
     border: none;
     border-top: 1px solid var(--black);
 }
 
-/* ============ PROJECT GRID ============ */
-
+/* ============ PROJECT GRID - Mobile First ============ */
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(3, 280px);
-    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
     max-width: 1200px;
-    margin: 0 auto 60px;
+    margin: 0 auto var(--space-lg);
     justify-content: start;
     perspective: 1000px;
 }
 
 /* ============ PROJECT ITEM ============ */
-
 .project-item {
     display: block;
+    transform-style: preserve-3d;
 }
 
-/* Project Image */
 .project-item a {
     display: block;
 }
@@ -243,7 +219,8 @@
     aspect-ratio: 1 / 1;
     object-fit: cover;
     display: block;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transition-normal);
+    background-color: var(--gray-bg);
 }
 
 .project-item:hover img {
@@ -251,36 +228,34 @@
 }
 
 /* ============ PROJECT INFO ============ */
-
 .project-info {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: var(--space-xs);
+    font-size: clamp(12px, 3vw, 14px);
+    min-height: 44px;
 }
 
-/* Project Folder Icon - small */
 .project-info svg.folder-icon {
-    width: 14px;
-    height: 14px;
+    width: clamp(12px, 3vw, 14px);
+    height: clamp(12px, 3vw, 14px);
     color: var(--black);
     flex-shrink: 0;
-    transition: transform 0.2s ease;
+    transition: transform var(--transition-normal);
 }
 
 .project-item:hover .project-info svg.folder-icon {
     transform: scale(1.1);
 }
 
-/* Project Title - Underlined like Simogo */
 .project-title {
     color: var(--black);
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-sans);
     font-weight: 400;
     text-decoration: underline;
     text-underline-offset: 3px;
-    transition: color 0.2s ease;
+    transition: color var(--transition-normal);
 }
 
 .project-title:hover {
@@ -288,11 +263,6 @@
 }
 
 /* ============ FOLDER OPENING ANIMATION ============ */
-
-.project-item {
-    transform-style: preserve-3d;
-}
-
 .project-item.folder-opening {
     animation: folderShake 0.4s ease-out forwards;
 }
@@ -319,135 +289,47 @@
     }
 }
 
-/* ============ RESPONSIVE ============ */
-
-@media (max-width: 1024px) {
-    .project-grid {
-        grid-template-columns: repeat(2, 280px);
-        gap: 20px;
-    }
-}
-
-@media (max-width: 768px) {
+/* ============ RESPONSIVE - TABLET ============ */
+@media (min-width: 600px) {
     .site-intro {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: start;
+        text-align: left;
+        gap: var(--space-lg);
     }
     
     .intro-left {
-        text-align: center;
-    }
-    
-    .uhm-logo {
-        justify-content: center;
-    }
-    
-    .uhm-text {
-        font-size: 28px;
-    }
-    
-    .dot-1 {
-        width: 9px;
-        height: 9px;
-    }
-    
-    .dot-2 {
-        width: 7px;
-        height: 7px;
-    }
-    
-    .dot-3 {
-        width: 5px;
-        height: 5px;
-    }
-    
-    .site-name {
-        font-size: 20px;
+        align-items: flex-start;
     }
     
     .intro-right {
-        text-align: center;
-        padding-top: 0;
-    }
-    
-    .intro-right p {
-        font-size: 15px;
-    }
-    
-    .intro-right .contact-line {
-        font-size: 14px;
-    }
-    
-    .section-header {
-        font-size: 18px;
-        gap: 10px;
-    }
-    
-    .section-header svg.folder-icon {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .section-header svg.section-icon {
-        width: 20px;
-        height: 20px;
+        text-align: right;
+        margin-left: auto;
     }
     
     .project-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        max-width: 100%;
+        grid-template-columns: repeat(2, minmax(200px, 280px));
+        gap: var(--space-md);
     }
     
-    .project-item img {
-        aspect-ratio: 1 / 1;
-    }
+    .dot-1 { width: 12px; height: 12px; }
+    .dot-2 { width: 10px; height: 10px; }
+    .dot-3 { width: 8px; height: 8px; }
 }
 
-@media (max-width: 480px) {
+/* ============ RESPONSIVE - DESKTOP ============ */
+@media (min-width: 900px) {
     .site-intro {
-        gap: 16px;
-    }
-    
-    .site-name {
-        font-size: 18px;
-    }
-    
-    .uhm-text {
-        font-size: 24px;
-    }
-    
-    .intro-right p {
-        font-size: 14px;
-    }
-    
-    .section-header {
-        font-size: 16px;
-    }
-    
-    .section-header svg.folder-icon {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .section-header svg.section-icon {
-        width: 18px;
-        height: 18px;
+        margin-bottom: var(--space-xl);
     }
     
     .project-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(3, 280px);
+        gap: var(--space-md);
     }
     
-    .project-info {
-        font-size: 12px;
-        gap: 4px;
-        margin-top: 8px;
-    }
-    
-    .project-info svg.folder-icon {
-        width: 12px;
-        height: 12px;
+    .section-line {
+        margin-bottom: 30px;
     }
 }

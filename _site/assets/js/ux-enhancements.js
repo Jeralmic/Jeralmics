@@ -1,20 +1,31 @@
 /**
  * UX Enhancements
- * Gamey interactions and polish
+ * Lightweight polish and interactions
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
+    'use strict';
     
     // ============ SCROLL PROGRESS BAR ============
     const progressBar = document.createElement('div');
     progressBar.className = 'scroll-progress';
     document.body.appendChild(progressBar);
     
-    window.addEventListener('scroll', () => {
+    let ticking = false;
+    
+    function updateProgressBar() {
         const scrollTop = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
         progressBar.style.width = scrollPercent + '%';
+        ticking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(updateProgressBar);
+            ticking = true;
+        }
     }, { passive: true });
     
     // ============ BACK TO TOP BUTTON ============
@@ -24,11 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTop.setAttribute('aria-label', 'Back to top');
     document.body.appendChild(backToTop);
     
-    window.addEventListener('scroll', () => {
+    let scrollTicking = false;
+    
+    function checkBackToTop() {
         if (window.scrollY > 400) {
             backToTop.classList.add('visible');
         } else {
             backToTop.classList.remove('visible');
+        }
+        scrollTicking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+            requestAnimationFrame(checkBackToTop);
+            scrollTicking = true;
         }
     }, { passive: true });
     
@@ -53,43 +74,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     function activateEasterEgg() {
-        // Rainbow mode!
         document.body.classList.add('rainbow-mode');
         
-        // Show message
         const msg = document.createElement('div');
         msg.className = 'easter-egg-msg';
         msg.innerHTML = '🎮 KONAMI CODE ACTIVATED! 🎮';
         document.body.appendChild(msg);
         
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             msg.classList.add('show');
-        }, 100);
+        });
         
         setTimeout(() => {
             msg.classList.remove('show');
             setTimeout(() => msg.remove(), 500);
         }, 3000);
         
-        // Remove rainbow after 10 seconds
         setTimeout(() => {
             document.body.classList.remove('rainbow-mode');
         }, 10000);
     }
     
-    // ============ CLICK RIPPLE EFFECT ============
-    document.addEventListener('click', (e) => {
-        // Only on interactive elements
-        const target = e.target.closest('a, button, .thumbnail, .project-item');
-        if (!target) return;
-        
-        const ripple = document.createElement('div');
-        ripple.className = 'click-ripple';
-        ripple.style.left = e.clientX + 'px';
-        ripple.style.top = e.clientY + 'px';
-        document.body.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
-    });
-    
-});
+    // ============ CLICK RIPPLE (Desktop only - better performance) ============
+    if (window.matchMedia('(hover: hover)').matches) {
+        document.addEventListener('click', (e) => {
+            const target = e.target.closest('a, button, .thumbnail, .project-item');
+            if (!target) return;
+            
+            const ripple = document.createElement('div');
+            ripple.className = 'click-ripple';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+    }
+})();

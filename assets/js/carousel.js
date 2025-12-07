@@ -1,16 +1,13 @@
 /**
  * PROJECT PAGE CAROUSEL
- * Thumbnails below main image
- * Click image to enlarge (lightbox)
+ * Optimized for mobile with touch support
  */
 
-document.addEventListener("DOMContentLoaded", function () {
-    const projectImage = document.getElementById("project-image");
+(function() {
+    'use strict';
     
-    // Only run on project pages
-    if (!projectImage) {
-        return;
-    }
+    const projectImage = document.getElementById("project-image");
+    if (!projectImage) return;
     
     const projectName = projectImage.dataset.projectName;
     const imageCount = parseInt(projectImage.dataset.imageCount) || 0;
@@ -19,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
     let currentIndex = 0;
     let media = [];
+    let touchStartX = 0;
+    let touchEndX = 0;
     
     // Create lightbox
     const lightbox = document.createElement('div');
@@ -43,12 +42,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const lightboxPrev = lightbox.querySelector('.lightbox-prev');
     const lightboxNext = lightbox.querySelector('.lightbox-next');
     
-    // Check if image exists
+    // Image existence check with caching
+    const imageCache = new Map();
+    
     function checkImageExists(url) {
+        if (imageCache.has(url)) {
+            return Promise.resolve(imageCache.get(url));
+        }
         return new Promise((resolve) => {
             const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
+            img.onload = () => {
+                imageCache.set(url, true);
+                resolve(true);
+            };
+            img.onerror = () => {
+                imageCache.set(url, false);
+                resolve(false);
+            };
             img.src = url;
         });
     }
@@ -65,24 +75,39 @@ document.addEventListener("DOMContentLoaded", function () {
             projectName.charAt(0).toUpperCase() + projectName.slice(1).toLowerCase()
         ];
         
+        // Parallel checking for speed
+        const checks = [];
+        
         for (let i = 1; i <= imageCount; i++) {
-            let found = false;
-            
             for (const nameVar of nameVariations) {
-                if (found) break;
-                
                 for (const ext of extensions) {
-                    const testSrc = `/images/${nameVar}Shot0${i}${ext}`;
-                    const exists = await checkImageExists(testSrc);
-                    
-                    if (exists) {
-                        detectedImages.push({ type: 'image', src: testSrc, index: i });
-                        found = true;
-                        break;
-                    }
+                    checks.push({
+                        src: `/images/${nameVar}Shot0${i}${ext}`,
+                        index: i
+                    });
                 }
             }
         }
+        
+        // Check all in parallel
+        const results = await Promise.all(
+            checks.map(async (check) => ({
+                ...check,
+                exists: await checkImageExists(check.src)
+            }))
+        );
+        
+        // Group by index and take first valid
+        const foundIndexes = new Set();
+        for (const result of results) {
+            if (result.exists && !foundIndexes.has(result.index)) {
+                detectedImages.push({ type: 'image', src: result.src, index: result.index });
+                foundIndexes.add(result.index);
+            }
+        }
+        
+        // Sort by index
+        detectedImages.sort((a, b) => a.index - b.index);
         
         return detectedImages;
     }
@@ -91,65 +116,92 @@ document.addEventListener("DOMContentLoaded", function () {
     async function initCarousel() {
         const detectedImages = await detectImages();
         
-        // Build media array: video first (if exists), then images
         if (videoUrl) {
             media.push({ type: 'video', src: videoUrl });
         }
         
         media = media.concat(detectedImages);
         
-        // If no media found, use preview image
         if (media.length === 0) {
             media.push({ type: 'image', src: previewImage });
         }
         
-        // Create thumbnail strip if more than 1 item
         if (media.length > 1) {
             createThumbnailStrip();
             createCounter();
         }
         
-        // Make main image clickable for lightbox
         setupLightbox();
-        
-        // Display first item
+        setupTouchHandlers();
         updateDisplay();
     }
     
-    // Setup lightbox functionality
+    // Setup lightbox
     function setupLightbox() {
         const container = document.querySelector('.image-container');
         if (!container) return;
         
-        // Click main image to open lightbox
         container.addEventListener('click', (e) => {
-            // Don't open lightbox for videos
             if (media[currentIndex].type === 'video') return;
-            
             openLightbox();
         });
         
-        // Add cursor hint
         container.style.cursor = 'zoom-in';
+    }
+    
+    // Touch handlers for swipe navigation
+    function setupTouchHandlers() {
+        const container = document.querySelector('.image-container');
+        if (!container || media.length <= 1) return;
         
-        // Show keyboard hint briefly
-        if (media.length > 1) {
-            showKeyboardHint();
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        container.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        // Lightbox swipe
+        lightbox.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        lightbox.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (lightbox.classList.contains('active')) {
+                handleLightboxSwipe();
+            }
+        }, { passive: true });
+    }
+    
+    function handleSwipe() {
+        const diff = touchStartX - touchEndX;
+        const threshold = 50;
+        
+        if (Math.abs(diff) < threshold) return;
+        
+        if (diff > 0 && currentIndex < media.length - 1) {
+            currentIndex++;
+            updateDisplay();
+        } else if (diff < 0 && currentIndex > 0) {
+            currentIndex--;
+            updateDisplay();
         }
     }
     
-    // Show keyboard navigation hint
-    function showKeyboardHint() {
-        const hint = document.createElement('div');
-        hint.className = 'keyboard-hint';
-        hint.innerHTML = '← → Arrow keys to navigate';
-        document.querySelector('.project-media').appendChild(hint);
+    function handleLightboxSwipe() {
+        const diff = touchStartX - touchEndX;
+        const threshold = 50;
         
-        setTimeout(() => hint.classList.add('show'), 500);
-        setTimeout(() => {
-            hint.classList.remove('show');
-            setTimeout(() => hint.remove(), 500);
-        }, 4000);
+        if (Math.abs(diff) < threshold) return;
+        
+        if (diff > 0) {
+            lightboxNavigate(1);
+        } else {
+            lightboxNavigate(-1);
+        }
     }
     
     // Open lightbox
@@ -169,14 +221,12 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.style.overflow = '';
     }
     
-    // Update lightbox counter
     function updateLightboxCounter() {
         const imageMedia = media.filter(m => m.type === 'image');
         const imageIndex = imageMedia.findIndex(m => m.src === media[currentIndex].src);
         lightboxCounter.textContent = `${imageIndex + 1} / ${imageMedia.length}`;
     }
     
-    // Update lightbox navigation visibility
     function updateLightboxNav() {
         const imageMedia = media.filter(m => m.type === 'image');
         const imageIndex = imageMedia.findIndex(m => m.src === media[currentIndex].src);
@@ -188,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
         lightboxNext.style.pointerEvents = imageIndex >= imageMedia.length - 1 ? 'none' : 'auto';
     }
     
-    // Lightbox navigation
     function lightboxNavigate(direction) {
         const imageMedia = media.filter(m => m.type === 'image');
         const imageIndex = imageMedia.findIndex(m => m.src === media[currentIndex].src);
@@ -196,7 +245,6 @@ document.addEventListener("DOMContentLoaded", function () {
         
         if (newImageIndex < 0 || newImageIndex >= imageMedia.length) return;
         
-        // Find the actual index in main media array
         const newMediaIndex = media.findIndex(m => m.src === imageMedia[newImageIndex].src);
         currentIndex = newMediaIndex;
         
@@ -210,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 150);
     }
     
-    // Lightbox event listeners
+    // Lightbox events
     lightboxBackdrop.addEventListener('click', closeLightbox);
     lightboxClose.addEventListener('click', closeLightbox);
     lightboxPrev.addEventListener('click', (e) => {
@@ -222,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function () {
         lightboxNavigate(1);
     });
     
-    // Create thumbnail strip below main image
+    // Create thumbnail strip
     function createThumbnailStrip() {
         const strip = document.createElement('div');
         strip.className = 'carousel-thumbnails';
@@ -231,6 +279,10 @@ document.addEventListener("DOMContentLoaded", function () {
         media.forEach((item, index) => {
             const thumb = document.createElement('div');
             thumb.className = 'thumbnail';
+            thumb.setAttribute('role', 'button');
+            thumb.setAttribute('tabindex', '0');
+            thumb.setAttribute('aria-label', `View ${item.type === 'video' ? 'video' : 'image ' + (index + 1)}`);
+            
             if (index === 0) thumb.classList.add('active');
             
             if (item.type === 'video') {
@@ -242,28 +294,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 thumb.appendChild(playIcon);
                 
                 const img = document.createElement('img');
-                if (media.length > 1 && media[1].type === 'image') {
-                    img.src = media[1].src;
-                } else {
-                    img.src = previewImage;
-                }
+                img.src = (media.length > 1 && media[1].type === 'image') ? media[1].src : previewImage;
                 img.alt = 'Video';
+                img.loading = 'lazy';
                 thumb.appendChild(img);
             } else {
                 const img = document.createElement('img');
                 img.src = item.src;
                 img.alt = `Screenshot ${index + 1}`;
+                img.loading = 'lazy';
                 thumb.appendChild(img);
             }
             
-            thumb.onclick = (e) => {
+            // Click handler
+            thumb.addEventListener('click', (e) => {
                 e.stopPropagation();
                 goToIndex(index);
-            };
+            });
+            
+            // Keyboard handler
+            thumb.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    goToIndex(index);
+                }
+            });
+            
             strip.appendChild(thumb);
         });
         
-        // Insert after image container, inside project-media
         const mediaContainer = document.querySelector('.project-media');
         if (mediaContainer) {
             mediaContainer.appendChild(strip);
@@ -284,14 +343,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     // Update main display
-    function updateDisplay(direction = 1) {
+    function updateDisplay() {
         const container = document.querySelector('.image-container');
         if (!container) return;
         
         const currentMedia = media[currentIndex];
         const oldMedia = container.querySelector('#mainImage');
         
-        // Update cursor based on media type
         container.style.cursor = currentMedia.type === 'video' ? 'default' : 'zoom-in';
         
         let newMedia;
@@ -303,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
             newMedia.frameBorder = '0';
             newMedia.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
             newMedia.allowFullscreen = true;
+            newMedia.loading = 'lazy';
             newMedia.style.cssText = `
                 position: absolute;
                 top: 0;
@@ -330,18 +389,15 @@ document.addEventListener("DOMContentLoaded", function () {
         
         if (oldMedia) {
             oldMedia.style.zIndex = '1';
-        }
-        
-        if (oldMedia) {
             container.insertBefore(newMedia, oldMedia);
         } else {
             container.insertBefore(newMedia, container.firstChild);
         }
         
+        // Use requestAnimationFrame for smooth transition
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 newMedia.style.opacity = '1';
-                
                 if (oldMedia) {
                     setTimeout(() => oldMedia.remove(), 300);
                 }
@@ -376,10 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     function goToIndex(index) {
-        if (index < 0 || index >= media.length || index === currentIndex) {
-            return;
-        }
-        
+        if (index < 0 || index >= media.length || index === currentIndex) return;
         currentIndex = index;
         updateDisplay();
     }
@@ -400,24 +453,20 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         
-        // Normal carousel controls (thumbnails only now)
+        // Normal carousel controls
         if (!projectImage) return;
         
-        if (e.key === "ArrowLeft") {
+        if (e.key === "ArrowLeft" && currentIndex > 0) {
             e.preventDefault();
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateDisplay();
-            }
-        } else if (e.key === "ArrowRight") {
+            currentIndex--;
+            updateDisplay();
+        } else if (e.key === "ArrowRight" && currentIndex < media.length - 1) {
             e.preventDefault();
-            if (currentIndex < media.length - 1) {
-                currentIndex++;
-                updateDisplay();
-            }
+            currentIndex++;
+            updateDisplay();
         }
     });
     
     // Start
     initCarousel();
-});
+})();

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
     <!-- Primary Meta Tags -->
     <title>{% if page.title and page.title != 'Home' %}{{ page.title }} | {% endif %}Jeralmi Canela - Indie Game Developer</title>
@@ -16,6 +16,10 @@
     <meta name="robots" content="index, follow">
     {% endif %}
     <link rel="canonical" href="https://jeralmics.com{{ page.url }}">
+    
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -58,18 +62,20 @@
     
     <!-- Preload Critical Assets -->
     <link rel="preload" href="/assets/fonts/dotmatrix.woff" as="font" type="font/woff" crossorigin>
-    <link rel="preload" href="/images/{% if page.slug %}{{ page.slug }}.jpg{% else %}infiniteroads.jpg{% endif %}" as="image">
+    <link rel="preload" href="/assets/css/main.css" as="style">
     
-    <!-- Base Styles -->
-    <link rel="stylesheet" href="/assets/css/main.css">
-    
-    <!-- Homepage Styles -->
-    {% if page.url == "/" or page.url == "/index.html" %}
-    <link rel="stylesheet" href="/assets/css/home.css">
+    <!-- Preload hero image -->
+    {% if page.slug %}
+    <link rel="preload" href="/images/{{ page.slug }}.jpg" as="image">
     {% endif %}
     
-    <!-- Project Page Styles -->
-    {% if page.layout == 'project' %}
+    <!-- Base Styles (always needed) -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <!-- Page-specific Styles -->
+    {% if page.url == "/" or page.url == "/index.html" %}
+    <link rel="stylesheet" href="/assets/css/home.css">
+    {% elsif page.layout == 'project' %}
     <link rel="stylesheet" href="/assets/css/project.css">
     {% endif %}
     
@@ -84,21 +90,19 @@
         {{ content }}
     </main>
 
-    <!-- JavaScript -->
-    {% unless page.url == "/" or page.url == "/index.html" %}
-    <script src="/assets/js/page-transitions.js"></script>
-    {% endunless %}
-    
+    <!-- JavaScript - Deferred for Performance -->
     {% if page.url == "/" or page.url == "/index.html" %}
-    <script src="/assets/js/folder-transition.js"></script>
+    <script src="/assets/js/folder-transition.js" defer></script>
+    {% else %}
+    <script src="/assets/js/page-transitions.js" defer></script>
     {% endif %}
     
     {% if page.layout == 'project' %}
-    <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/js/carousel.js" defer></script>
     {% endif %}
     
-    <!-- UX Enhancements -->
-    <script src="/assets/js/ux-enhancements.js"></script>
+    <!-- UX Enhancements (load last, non-critical) -->
+    <script src="/assets/js/ux-enhancements.js" defer></script>
     
 </body>
 </html>

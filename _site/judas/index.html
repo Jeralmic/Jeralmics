@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
     <!-- Primary Meta Tags -->
     <title>Judas | Jeralmi Canela - Indie Game Developer</title>
@@ -14,6 +14,10 @@
     <meta name="robots" content="index, follow">
     
     <link rel="canonical" href="https://jeralmics.com/judas/">
+    
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -56,15 +60,17 @@
     
     <!-- Preload Critical Assets -->
     <link rel="preload" href="/assets/fonts/dotmatrix.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="/assets/css/main.css" as="style">
+    
+    <!-- Preload hero image -->
+    
     <link rel="preload" href="/images/Judas.jpg" as="image">
     
-    <!-- Base Styles -->
+    
+    <!-- Base Styles (always needed) -->
     <link rel="stylesheet" href="/assets/css/main.css">
     
-    <!-- Homepage Styles -->
-    
-    
-    <!-- Project Page Styles -->
+    <!-- Page-specific Styles -->
     
     <link rel="stylesheet" href="/assets/css/project.css">
     
@@ -177,19 +183,17 @@ During my summer at Ghost Story Games, I contributed to the project through:
 </div>
     </main>
 
-    <!-- JavaScript -->
+    <!-- JavaScript - Deferred for Performance -->
     
-    <script src="/assets/js/page-transitions.js"></script>
-    
-    
+    <script src="/assets/js/page-transitions.js" defer></script>
     
     
     
-    <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/js/carousel.js" defer></script>
     
     
-    <!-- UX Enhancements -->
-    <script src="/assets/js/ux-enhancements.js"></script>
+    <!-- UX Enhancements (load last, non-critical) -->
+    <script src="/assets/js/ux-enhancements.js" defer></script>
     
 </body>
 </html>

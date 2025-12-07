@@ -2,7 +2,9 @@
  * Page Transitions - Simple Clean Fade
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
+    'use strict';
+    
     const transitionDuration = 200;
     
     const overlay = document.createElement('div');
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const href = target.getAttribute('href');
         
+        // Skip external links, anchors, etc.
         if (!href ||
             href.startsWith('http') || 
             href.startsWith('#') ||
@@ -48,16 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, transitionDuration);
     });
     
-    // Handle back/forward navigation
+    // Handle back/forward navigation (bfcache)
     window.addEventListener('pageshow', (e) => {
         if (e.persisted) {
-            // Page was restored from cache (back/forward)
             overlay.style.opacity = '0';
         }
     });
     
-    // Also reset on regular page load
-    window.addEventListener('load', () => {
-        overlay.style.opacity = '0';
-    });
-});
+    // Reset on load
+    overlay.style.opacity = '0';
+})();
