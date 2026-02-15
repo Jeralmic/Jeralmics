@@ -1,143 +1,420 @@
----
-layout: default
-title: Home
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeralmi Canela</title>
+<meta name="description" content="Jeralmi Canela - Indie game developer, designer, and programmer.">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Space+Mono:ital@1&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<div class="site-intro">
-    <div class="intro-left">
-        <h1 class="site-name">JERALMI CANELA</h1>
-        <a href="https://uhminc.itch.io" target="_blank" class="uhm-logo">
-            <span class="uhm-text">Uhm</span>
-            <span class="uhm-dots">
-                <span class="dot dot-1"></span>
-                <span class="dot dot-2"></span>
-                <span class="dot dot-3"></span>
-            </span>
-        </a>
-    </div>
-    <div class="intro-right">
-        <p>Welcome! I'm a game designer, artist, and programmer. I make games and other dope things.</p>
-        <p>I can be found in Allentown/Boston</p>
-        <p class="contact-line">
-            <a href="mailto:jeralmicw@gmail.com" class="contact-link">jeralmicw@gmail.com</a> | 
-            <a href="https://x.com/Jeralmics" target="_blank" class="contact-link">@jeralmics</a> | 
-            <a href="https://uhminc.itch.io" target="_blank" class="contact-link">Uhm...</a>
-        </p>
-    </div>
+  body {
+    background: #000;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  #asciiCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+  }
+
+  .vignette {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
+  }
+
+  /* ---- Sub-bar link ---- */
+  #subBar {
+    position: fixed;
+    z-index: 12;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    padding: 6px 18px;
+    white-space: nowrap;
+  }
+
+  #subBar a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-style: italic;
+    color: #ffd900;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s, text-shadow 0.3s;
+    text-shadow:
+      -1px -1px 0 #000, 1px -1px 0 #000,
+      -1px  1px 0 #000, 1px  1px 0 #000,
+       0   -1px 0 #000, 0    1px 0 #000,
+      -1px  0   0 #000, 1px  0   0 #000;
+  }
+
+  #subBar a:hover {
+    color: #ffe866;
+    text-shadow:
+      -1px -1px 0 #000, 1px -1px 0 #000,
+      -1px  1px 0 #000, 1px  1px 0 #000,
+       0   -1px 0 #000, 0    1px 0 #000,
+      -1px  0   0 #000, 1px  0   0 #000,
+       0 0 14px rgba(255,217,0,0.35);
+  }
+
+  /* ---- Counter ---- */
+  #counter {
+    position: fixed;
+    top: 12px;
+    left: 16px;
+    z-index: 20;
+    color: rgba(255,255,255,0.12);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    pointer-events: none;
+  }
+
+  /* ---- Loading state ---- */
+  #loadingMsg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 30;
+    color: rgba(255,255,255,0.25);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: opacity 0.6s;
+  }
+
+  #loadingMsg.hidden { opacity: 0; pointer-events: none; }
+
+  /* ---- Hidden videos ---- */
+  .source-video {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="asciiCanvas"></canvas>
+<canvas id="sampleCanvas" style="display:none"></canvas>
+<canvas id="textCanvas" style="display:none"></canvas>
+<div class="vignette"></div>
+
+<div id="subBar">
+  <a href="https://uhminc.itch.io" target="_blank">In the meantime, check out my projects at uhminc.itch.io</a>
 </div>
 
-<!-- GAMES SECTION -->
-<div class="section-header">
-    <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 6h8l2 2h8v12H3V6z"/>
-    </svg>
-    <span>Games</span>
-    <svg class="section-icon games" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M21 6H3a2 2 0 00-2 2v8a2 2 0 002 2h18a2 2 0 002-2V8a2 2 0 00-2-2zM6 14H4v-2h2v2zm0-3H4V9h2v2zm3 3H7v-2h2v2zm0-3H7V9h2v2zm6 3a2 2 0 110-4 2 2 0 010 4zm4 0a2 2 0 110-4 2 2 0 010 4z"/>
-    </svg>
-</div>
-<hr class="section-line">
+<div id="counter"></div>
+<div id="loadingMsg">loading</div>
 
-<div class="project-grid">
-    <div class="project-item">
-        <a href="/judas">
-            <img src="/images/Judas.jpg" alt="Judas" loading="lazy" decoding="async">
-        </a>
-        <div class="project-info">
-            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 6h8l2 2h8v12H3V6z"/>
-            </svg>
-            <a href="/judas" class="project-title">Judas</a>
-        </div>
-    </div>
-</div>
+<!-- Videos load from repo - muted+playsinline for autoplay on mobile -->
+<video class="source-video" src="/videos/rose.mp4" muted playsinline loop preload="auto"></video>
+<video class="source-video" src="/videos/butterfly.mp4" muted playsinline loop preload="auto"></video>
+<video class="source-video" src="/videos/runner.mp4" muted playsinline loop preload="auto"></video>
+<video class="source-video" src="/videos/tunnel.mp4" muted playsinline loop preload="auto"></video>
 
-<!-- PROTOTYPE GAMES SECTION -->
-<div class="section-header">
-    <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 6h8l2 2h8v12H3V6z"/>
-    </svg>
-    <span>Prototype Games</span>
-    <svg class="section-icon prototype" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M9 3v2H8v4l-3 8v4h14v-4l-3-8V5h-1V3H9zm1 2h4v4.5l2.5 6.5H7.5L10 9.5V5z"/>
-    </svg>
-</div>
-<hr class="section-line">
+<script>
+(function () {
+  'use strict';
 
-<div class="project-grid">
-    <div class="project-item">
-        <a href="/totem">
-            <img src="/images/Totem.jpg" alt="TOTEM" loading="lazy" decoding="async">
-        </a>
-        <div class="project-info">
-            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 6h8l2 2h8v12H3V6z"/>
-            </svg>
-            <a href="/totem" class="project-title">TOTEM</a>
-        </div>
-    </div>
+  // ─── CONFIG ───────────────────────────────────────────
+  const CHAR_RAMP = '  .·:-~=+*⊙π∑κΞ░▒▓█';
+  const FONT_FAMILY = '"Space Mono", monospace';
+  const FONT_SIZE = 13;
+  const MIN_PLAY_S = 10;           // min seconds per clip
+  const FADE_FRAMES = 20;          // frames for crossfade
 
-    <div class="project-item">
-        <a href="/infiniteroads">
-            <img src="/images/infiniteroads.jpg" alt="Infinite Roads" loading="lazy" decoding="async">
-        </a>
-        <div class="project-info">
-            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 6h8l2 2h8v12H3V6z"/>
-            </svg>
-            <a href="/infiniteroads" class="project-title">Infinite Roads</a>
-        </div>
-    </div>
-</div>
+  const TITLE_TEXT = 'Be Back Soon';
+  const TITLE_FONT = '"Cormorant Garamond", serif';
+  const TITLE_SIZE_RATIO = 0.065;
 
-<!-- ART SECTION -->
-<div class="section-header">
-    <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 6h8l2 2h8v12H3V6z"/>
-    </svg>
-    <span>Art</span>
-    <svg class="section-icon art" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.71 4.29l-1-1a1 1 0 00-1.42 0L9 12.59V15h2.41l9.3-9.29a1 1 0 000-1.42zM11 13H10v-1l7-7 1 1-7 7zM5 19h14v2H5z"/>
-    </svg>
-</div>
-<hr class="section-line">
+  // pre-computed grayscale color strings
+  const COLOR_LUT = new Array(256);
+  for (let i = 0; i < 256; i++) COLOR_LUT[i] = `rgb(${i},${i},${i})`;
 
-<div class="project-grid">
-    <div class="project-item">
-        <a href="/countach3d">
-            <img src="/images/countach3d.jpg" alt="Countach 3D" loading="lazy" decoding="async">
-        </a>
-        <div class="project-info">
-            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 6h8l2 2h8v12H3V6z"/>
-            </svg>
-            <a href="/countach3d" class="project-title">Countach 3D</a>
-        </div>
-    </div>
-</div>
+  // ─── ELEMENTS ─────────────────────────────────────────
+  const mainCanvas  = document.getElementById('asciiCanvas');
+  const mainCtx     = mainCanvas.getContext('2d', { willReadFrequently: true });
+  const sampleCanvas = document.getElementById('sampleCanvas');
+  const sampleCtx   = sampleCanvas.getContext('2d', { willReadFrequently: true });
+  const textCanvas  = document.getElementById('textCanvas');
+  const textCtx     = textCanvas.getContext('2d');
+  const counterEl   = document.getElementById('counter');
+  const subBar      = document.getElementById('subBar');
+  const loadingMsg  = document.getElementById('loadingMsg');
 
-<!-- CODE SECTION -->
-<div class="section-header">
-    <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 6h8l2 2h8v12H3V6z"/>
-    </svg>
-    <span>Code</span>
-    <svg class="section-icon code" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M8 6L2 12l6 6 2-2-4-4 4-4-2-2zm8 0l-2 2 4 4-4 4 2 2 6-6-6-6z"/>
-    </svg>
-</div>
-<hr class="section-line">
+  // ─── STATE ────────────────────────────────────────────
+  let cols = 0, rows = 0, charW = 0, charH = 0;
+  let textMask = null, textX = 0, textY = 0, textW = 0, textH = 0;
 
-<div class="project-grid">
-    <div class="project-item">
-        <a href="/raytracer">
-            <img src="/images/Raytracer.jpg" alt="Raytracer" loading="lazy" decoding="async">
-        </a>
-        <div class="project-info">
-            <svg class="folder-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 6h8l2 2h8v12H3V6z"/>
-            </svg>
-            <a href="/raytracer" class="project-title">Raytracer</a>
-        </div>
-    </div>
-</div>
+  let videos = [];
+  let currentIdx = 0;
+  let clipStartTime = 0;
+  let fadeProgress = 0;     // 0 = no fade, >0 = fading
+  let nextIdx = -1;
+  let running = false;
+
+  // ─── GRID SETUP ───────────────────────────────────────
+  function computeGrid() {
+    mainCanvas.width  = window.innerWidth;
+    mainCanvas.height = window.innerHeight;
+    charW = FONT_SIZE * 0.6;
+    charH = FONT_SIZE * 1.15;
+    cols = Math.floor(mainCanvas.width / charW);
+    rows = Math.floor(mainCanvas.height / charH);
+    sampleCanvas.width = cols;
+    sampleCanvas.height = rows;
+    mainCtx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
+    mainCtx.textBaseline = 'top';
+    buildTextMask();
+    positionSubBar();
+  }
+
+  function positionSubBar() {
+    const titleFS = Math.floor(mainCanvas.width * TITLE_SIZE_RATIO);
+    subBar.style.top = Math.floor(mainCanvas.height / 2 + titleFS * 0.6) + 'px';
+  }
+
+  // ─── TEXT MASK (title overlay) ────────────────────────
+  function buildTextMask() {
+    const cw = mainCanvas.width, ch = mainCanvas.height;
+    textCanvas.width = cw; textCanvas.height = ch;
+    textCtx.clearRect(0, 0, cw, ch);
+
+    const titleFS = Math.floor(cw * TITLE_SIZE_RATIO);
+    const titleY = ch / 2;
+
+    textCtx.font = `300 italic ${titleFS}px ${TITLE_FONT}`;
+    textCtx.textAlign = 'center';
+    textCtx.textBaseline = 'alphabetic';
+    textCtx.fillStyle = '#fff';
+    textCtx.fillText(TITLE_TEXT, cw / 2, titleY);
+
+    const mw = textCtx.measureText(TITLE_TEXT).width;
+    textW = Math.ceil(mw + 60);
+    textH = Math.ceil(titleFS * 1.2);
+    textX = Math.max(0, Math.floor(cw / 2 - textW / 2));
+    textY = Math.max(0, Math.floor(titleY - titleFS * 0.9));
+    textW = Math.min(textW, cw - textX);
+    textH = Math.min(textH, ch - textY);
+
+    if (textW > 0 && textH > 0) {
+      textMask = textCtx.getImageData(textX, textY, textW, textH);
+    }
+  }
+
+  computeGrid();
+  window.addEventListener('resize', computeGrid);
+
+  // ─── SAMPLE A VIDEO FRAME ─────────────────────────────
+  function sampleVideo(video) {
+    if (video.readyState < 2) return null;
+    sampleCtx.drawImage(video, 0, 0, cols, rows);
+    return sampleCtx.getImageData(0, 0, cols, rows).data;
+  }
+
+  // ─── DRAW ASCII FROM PIXEL DATA ──────────────────────
+  function drawAscii(px, alpha) {
+    if (!px) return;
+    const rampLen = CHAR_RAMP.length - 1;
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const i = (y * cols + x) * 4;
+        let lum = (0.299 * px[i] + 0.587 * px[i+1] + 0.114 * px[i+2]) / 255;
+        lum = Math.pow(Math.min(1, lum * 1.9), 0.8);
+
+        const charIdx = Math.floor(lum * rampLen);
+        if (charIdx <= 1) continue;
+
+        const brightness = Math.floor(lum * 255 * alpha);
+        if (brightness < 3) continue;
+
+        mainCtx.fillStyle = COLOR_LUT[Math.min(255, brightness)];
+        mainCtx.fillText(CHAR_RAMP[charIdx], x * charW, y * charH);
+      }
+    }
+  }
+
+  // ─── TEXT OVERLAY WITH INVERSION ──────────────────────
+  function drawTextOverlay() {
+    if (!textMask || textW <= 0 || textH <= 0) return;
+    const bgData = mainCtx.getImageData(textX, textY, textW, textH);
+    const bgPx = bgData.data;
+    const maskPx = textMask.data;
+
+    for (let i = 0; i < maskPx.length; i += 4) {
+      const m = maskPx[i];
+      if (m > 30) {
+        const bgLum = 0.299 * bgPx[i] + 0.587 * bgPx[i+1] + 0.114 * bgPx[i+2];
+        const inv = bgLum > 60 ? 0 : 255;
+        const a = Math.min(1, (m / 255) * 1.5);
+        bgPx[i]   = Math.round(bgPx[i]   * (1-a) + inv * a);
+        bgPx[i+1] = Math.round(bgPx[i+1] * (1-a) + inv * a);
+        bgPx[i+2] = Math.round(bgPx[i+2] * (1-a) + inv * a);
+      }
+    }
+    mainCtx.putImageData(bgData, textX, textY);
+  }
+
+  // ─── ADVANCE TO NEXT CLIP ─────────────────────────────
+  function startNextClip() {
+    nextIdx = (currentIdx + 1) % videos.length;
+    fadeProgress = 1;
+
+    // Make sure next video is playing from start
+    const nv = videos[nextIdx];
+    nv.currentTime = 0;
+    nv.play().catch(() => {});
+  }
+
+  // ─── MAIN RENDER LOOP ────────────────────────────────
+  function render() {
+    if (!running) return;
+    requestAnimationFrame(render);
+    if (videos.length === 0) return;
+
+    const now = performance.now();
+    const currentVideo = videos[currentIdx];
+
+    // Check if clip has played long enough
+    const elapsed = (now - clipStartTime) / 1000;
+    if (elapsed > MIN_PLAY_S && fadeProgress === 0 && videos.length > 1) {
+      startNextClip();
+    }
+
+    // Clear
+    mainCtx.fillStyle = '#000';
+    mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    mainCtx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
+
+    if (fadeProgress > 0 && nextIdx >= 0) {
+      // Crossfade: draw current fading out, next fading in
+      const t = fadeProgress / FADE_FRAMES;
+      const currentPx = sampleVideo(currentVideo);
+      const nextPx = sampleVideo(videos[nextIdx]);
+
+      drawAscii(currentPx, 1 - t);
+      drawAscii(nextPx, t);
+
+      fadeProgress++;
+
+      if (fadeProgress > FADE_FRAMES) {
+        // Fade complete, swap
+        currentVideo.pause();
+        currentIdx = nextIdx;
+        nextIdx = -1;
+        fadeProgress = 0;
+        clipStartTime = now;
+        counterEl.textContent = `${currentIdx + 1} / ${videos.length}`;
+      }
+    } else {
+      // Normal: draw current
+      const px = sampleVideo(currentVideo);
+      drawAscii(px, 1);
+    }
+
+    drawTextOverlay();
+  }
+
+  // ─── INIT: WAIT FOR VIDEOS TO LOAD ───────────────────
+  const videoEls = document.querySelectorAll('.source-video');
+
+  function initPlayback() {
+    videos = Array.from(videoEls).filter(v => v.readyState >= 2);
+
+    if (videos.length === 0) {
+      loadingMsg.textContent = 'no videos loaded';
+      return;
+    }
+
+    // Shuffle for variety on each visit
+    for (let i = videos.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [videos[i], videos[j]] = [videos[j], videos[i]];
+    }
+
+    currentIdx = 0;
+    clipStartTime = performance.now();
+    counterEl.textContent = `1 / ${videos.length}`;
+
+    // Start first video
+    videos[0].play().catch(() => {});
+
+    // Hide loading
+    loadingMsg.classList.add('hidden');
+
+    if (!running) {
+      running = true;
+      requestAnimationFrame(render);
+    }
+  }
+
+  // Wait for at least one video to be ready, then start
+  let readyCount = 0;
+  const totalVideos = videoEls.length;
+
+  videoEls.forEach(v => {
+    function onReady() {
+      readyCount++;
+      loadingMsg.textContent = `loading ${readyCount}/${totalVideos}`;
+
+      // Start as soon as first video is ready
+      if (readyCount === 1) {
+        initPlayback();
+      }
+      // Re-init once all are ready to include latecomers
+      if (readyCount === totalVideos) {
+        initPlayback();
+      }
+    }
+
+    if (v.readyState >= 2) {
+      onReady();
+    } else {
+      v.addEventListener('canplay', onReady, { once: true });
+    }
+
+    // Start loading
+    v.load();
+  });
+
+  // Mobile: tap to trigger autoplay if blocked
+  document.addEventListener('click', () => {
+    videos.forEach(v => {
+      if (v.paused && v === videos[currentIdx]) {
+        v.play().catch(() => {});
+      }
+    });
+  }, { once: true });
+
+})();
+</script>
+
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22f89c4ab2eb49bda519c95105b25bfd"}'></script>
+
+</body>
+</html>
