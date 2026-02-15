@@ -226,33 +226,10 @@
   computeGrid();
   window.addEventListener('resize', computeGrid);
 
-  // ─── SAMPLE A VIDEO FRAME (cover-fit, no stretch) ────
+  // ─── SAMPLE A VIDEO FRAME ─────────────────────────────
   function sampleVideo(video) {
     if (video.readyState < 2) return null;
-
-    const vw = video.videoWidth, vh = video.videoHeight;
-    if (!vw || !vh) return null;
-
-    const vAspect = vw / vh;
-    const cAspect = cols / rows;
-
-    let sx, sy, sw, sh;
-
-    if (vAspect > cAspect) {
-      // Video is wider — crop sides
-      sh = vh;
-      sw = vh * cAspect;
-      sx = (vw - sw) / 2;
-      sy = 0;
-    } else {
-      // Video is taller — crop top/bottom
-      sw = vw;
-      sh = vw / cAspect;
-      sx = 0;
-      sy = (vh - sh) / 2;
-    }
-
-    sampleCtx.drawImage(video, sx, sy, sw, sh, 0, 0, cols, rows);
+    sampleCtx.drawImage(video, 0, 0, cols, rows);
     return sampleCtx.getImageData(0, 0, cols, rows).data;
   }
 
