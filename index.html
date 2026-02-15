@@ -194,7 +194,9 @@
 
   function positionSubBar() {
     const titleFS = Math.floor(mainCanvas.width * TITLE_SIZE_RATIO);
-    subBar.style.top = Math.floor(mainCanvas.height / 2 + titleFS * 0.6) + 'px';
+    const isMobileView = window.innerWidth <= 768;
+    const offset = isMobileView ? titleFS * 1.4 : titleFS * 0.6;
+    subBar.style.top = Math.floor(mainCanvas.height / 2 + offset) + 'px';
   }
 
   // ─── TEXT MASK (title overlay) ────────────────────────
