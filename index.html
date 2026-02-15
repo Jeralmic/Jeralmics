@@ -82,19 +82,6 @@
        0 0 14px rgba(255,217,0,0.35);
   }
 
-  /* ---- Counter ---- */
-  #counter {
-    position: fixed;
-    top: 12px;
-    left: 16px;
-    z-index: 20;
-    color: rgba(255,255,255,0.12);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 1px;
-    pointer-events: none;
-  }
-
   /* ---- Loading state ---- */
   #loadingMsg {
     position: fixed;
@@ -111,6 +98,28 @@
   }
 
   #loadingMsg.hidden { opacity: 0; pointer-events: none; }
+
+  /* ---- Music icon ---- */
+  #musicLink {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 20;
+    width: 28px;
+    height: 28px;
+    color: rgba(255,255,255,0.15);
+    transition: color 0.3s;
+    text-decoration: none;
+  }
+
+  #musicLink:hover {
+    color: rgba(255,255,255,0.5);
+  }
+
+  #musicLink svg {
+    width: 100%;
+    height: 100%;
+  }
 
   /* ---- Hidden videos ---- */
   .source-video {
@@ -135,8 +144,12 @@
   <a href="https://uhminc.itch.io" target="_blank">In the meantime, check out my projects at uhminc.itch.io</a>
 </div>
 
-<div id="counter"></div>
+
 <div id="loadingMsg">loading</div>
+
+<a id="musicLink" href="https://youtu.be/nI6nfACLPKQ?si=t0BdfoJOWR6Sjded" target="_blank" aria-label="Listen">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg>
+</a>
 
 <!-- Videos load from repo - muted+playsinline for autoplay on mobile -->
 <video class="source-video" src="/videos/butterfly.mp4" muted playsinline loop preload="auto"></video>
@@ -170,7 +183,6 @@
   const sampleCtx   = sampleCanvas.getContext('2d', { willReadFrequently: true });
   const textCanvas  = document.getElementById('textCanvas');
   const textCtx     = textCanvas.getContext('2d');
-  const counterEl   = document.getElementById('counter');
   const subBar      = document.getElementById('subBar');
   const loadingMsg  = document.getElementById('loadingMsg');
 
@@ -298,7 +310,6 @@
     nv.play().catch(() => {});
     clipStartTime = performance.now();
     lastGoodFrame = null;
-    counterEl.textContent = `${currentIdx + 1} / ${videos.length}`;
   }
 
   // ─── MAIN RENDER LOOP ────────────────────────────────
@@ -350,7 +361,6 @@
 
     currentIdx = 0;
     clipStartTime = performance.now();
-    counterEl.textContent = `1 / ${videos.length}`;
 
     // Start first video
     videos[0].play().catch(() => {});
