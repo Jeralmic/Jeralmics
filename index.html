@@ -36,8 +36,7 @@
     background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
   }
 
-  /* ---- Sub-bar link ---- */
-  #subBar {
+    #subBar {
     position: fixed;
     z-index: 12;
     left: 50%;
@@ -82,8 +81,7 @@
        0 0 14px rgba(255,217,0,0.35);
   }
 
-  /* ---- Loading state ---- */
-  #loadingMsg {
+    #loadingMsg {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -99,8 +97,7 @@
 
   #loadingMsg.hidden { opacity: 0; pointer-events: none; }
 
-  /* ---- Music icon ---- */
-  #musicLink {
+    #musicLink {
     position: fixed;
     bottom: 16px;
     right: 16px;
@@ -121,8 +118,7 @@
     height: 100%;
   }
 
-  /* ---- Hidden videos ---- */
-  .source-video {
+    .source-video {
     position: absolute;
     top: -9999px;
     left: -9999px;
@@ -144,14 +140,12 @@
   <a href="https://uhminc.itch.io" target="_blank">In the meantime, check out my projects at uhminc.itch.io</a>
 </div>
 
-
 <div id="loadingMsg">loading</div>
 
 <a id="musicLink" href="https://youtu.be/nI6nfACLPKQ?si=t0BdfoJOWR6Sjded" target="_blank" aria-label="Listen">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg>
 </a>
 
-<!-- Videos load from repo - muted+playsinline for autoplay on mobile -->
 <video class="source-video" src="/videos/butterfly.mp4" muted playsinline loop preload="auto"></video>
 <video class="source-video" src="/videos/wave.mp4" muted playsinline loop preload="auto" data-desktop-only></video>
 <video class="source-video" src="/videos/fish.mp4" muted playsinline loop preload="auto" data-desktop-only></video>
@@ -160,23 +154,17 @@
 <script>
 (function () {
   'use strict';
-
-  // ─── CONFIG ───────────────────────────────────────────
   const CHAR_RAMP = '  .·:-~=+*⊙π∑κΞ░▒▓█';
   const FONT_FAMILY = '"Space Mono", monospace';
   const FONT_SIZE = 13;
-  const MIN_PLAY_S = 10;           // min seconds per clip
-  const TRANSITION = 'cut';        // hard cut between clips
+  const MIN_PLAY_S = 10;
+  const TRANSITION = 'cut';
 
   const TITLE_TEXT = 'Be Back Soon';
   const TITLE_FONT = '"Cormorant Garamond", serif';
   const TITLE_SIZE_RATIO = 0.065;
-
-  // pre-computed grayscale color strings
   const COLOR_LUT = new Array(256);
   for (let i = 0; i < 256; i++) COLOR_LUT[i] = `rgb(${i},${i},${i})`;
-
-  // ─── ELEMENTS ─────────────────────────────────────────
   const mainCanvas  = document.getElementById('asciiCanvas');
   const mainCtx     = mainCanvas.getContext('2d', { willReadFrequently: true });
   const sampleCanvas = document.getElementById('sampleCanvas');
@@ -185,8 +173,6 @@
   const textCtx     = textCanvas.getContext('2d');
   const subBar      = document.getElementById('subBar');
   const loadingMsg  = document.getElementById('loadingMsg');
-
-  // ─── STATE ────────────────────────────────────────────
   let cols = 0, rows = 0, charW = 0, charH = 0;
   let textMask = null, textX = 0, textY = 0, textW = 0, textH = 0;
 
@@ -194,8 +180,6 @@
   let currentIdx = 0;
   let clipStartTime = 0;
   let running = false;
-
-  // ─── GRID SETUP ───────────────────────────────────────
   function computeGrid() {
     mainCanvas.width  = window.innerWidth;
     mainCanvas.height = window.innerHeight;
@@ -217,8 +201,6 @@
     const offset = isMobileView ? titleFS * 2.5 : titleFS * 0.6;
     subBar.style.top = Math.floor(mainCanvas.height / 2 + offset) + 'px';
   }
-
-  // ─── TEXT MASK (title overlay) ────────────────────────
   function buildTextMask() {
     const cw = mainCanvas.width, ch = mainCanvas.height;
     textCanvas.width = cw; textCanvas.height = ch;
@@ -248,8 +230,6 @@
 
   computeGrid();
   window.addEventListener('resize', computeGrid);
-
-  // ─── SAMPLE A VIDEO FRAME ─────────────────────────────
   let lastGoodFrame = null;
 
   function sampleVideo(video) {
@@ -259,8 +239,6 @@
     lastGoodFrame = data;
     return data;
   }
-
-  // ─── DRAW ASCII FROM PIXEL DATA ──────────────────────
   function drawAscii(px) {
     if (!px) return;
     const rampLen = CHAR_RAMP.length - 1;
@@ -279,8 +257,6 @@
       }
     }
   }
-
-  // ─── TEXT OVERLAY WITH INVERSION ──────────────────────
   function drawTextOverlay() {
     if (!textMask || textW <= 0 || textH <= 0) return;
     const bgData = mainCtx.getImageData(textX, textY, textW, textH);
@@ -300,8 +276,6 @@
     }
     mainCtx.putImageData(bgData, textX, textY);
   }
-
-  // ─── ADVANCE TO NEXT CLIP ─────────────────────────────
   function advanceClip() {
     videos[currentIdx].pause();
     currentIdx = (currentIdx + 1) % videos.length;
@@ -311,8 +285,6 @@
     clipStartTime = performance.now();
     lastGoodFrame = null;
   }
-
-  // ─── MAIN RENDER LOOP ────────────────────────────────
   function render() {
     if (!running) return;
     requestAnimationFrame(render);
@@ -320,14 +292,10 @@
 
     const now = performance.now();
     const currentVideo = videos[currentIdx];
-
-    // Check if clip has played long enough
     const elapsed = (now - clipStartTime) / 1000;
     if (elapsed > MIN_PLAY_S && videos.length > 1) {
       advanceClip();
     }
-
-    // Clear
     mainCtx.fillStyle = '#000';
     mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
     mainCtx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
@@ -337,8 +305,6 @@
 
     drawTextOverlay();
   }
-
-  // ─── INIT: WAIT FOR VIDEOS TO LOAD ───────────────────
   const isMobile = window.innerWidth <= 768;
   const videoEls = Array.from(document.querySelectorAll('.source-video')).filter(v => {
     if (isMobile && v.hasAttribute('data-desktop-only')) {
@@ -357,15 +323,9 @@
       return;
     }
 
-    // Fixed order — no shuffle, intentional sequence
-
     currentIdx = 0;
     clipStartTime = performance.now();
-
-    // Start first video
     videos[0].play().catch(() => {});
-
-    // Hide loading
     loadingMsg.classList.add('hidden');
 
     if (!running) {
@@ -373,8 +333,6 @@
       requestAnimationFrame(render);
     }
   }
-
-  // Wait for at least one video to be ready, then start
   let readyCount = 0;
   const totalVideos = videoEls.length;
 
@@ -382,12 +340,9 @@
     function onReady() {
       readyCount++;
       loadingMsg.textContent = `loading ${readyCount}/${totalVideos}`;
-
-      // Start as soon as first video is ready
       if (readyCount === 1) {
         initPlayback();
       }
-      // Re-init once all are ready to include latecomers
       if (readyCount === totalVideos) {
         initPlayback();
       }
@@ -398,12 +353,8 @@
     } else {
       v.addEventListener('canplay', onReady, { once: true });
     }
-
-    // Start loading
     v.load();
   });
-
-  // Mobile: tap to trigger autoplay if blocked
   document.addEventListener('click', () => {
     videos.forEach(v => {
       if (v.paused && v === videos[currentIdx]) {
@@ -415,7 +366,6 @@
 })();
 </script>
 
-<!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "22f89c4ab2eb49bda519c95105b25bfd"}'></script>
 
 </body>
