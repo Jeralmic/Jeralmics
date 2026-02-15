@@ -44,7 +44,9 @@
     transform: translateX(-50%);
     pointer-events: auto;
     padding: 6px 18px;
-    white-space: nowrap;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
   }
 
   #subBar a {
@@ -130,10 +132,10 @@
 <div id="loadingMsg">loading</div>
 
 <!-- Videos load from repo - muted+playsinline for autoplay on mobile -->
-<video class="source-video" src="/videos/rose.mp4" muted playsinline loop preload="auto"></video>
+<video class="source-video" src="/videos/rose.mp4" muted playsinline loop preload="auto" data-desktop-only></video>
 <video class="source-video" src="/videos/butterfly.mp4" muted playsinline loop preload="auto"></video>
-<video class="source-video" src="/videos/runner.mp4" muted playsinline loop preload="auto"></video>
-<video class="source-video" src="/videos/tunnel.mp4" muted playsinline loop preload="auto"></video>
+<video class="source-video" src="/videos/runner.mp4" muted playsinline loop preload="auto" data-desktop-only></video>
+<video class="source-video" src="/videos/tunnel.mp4" muted playsinline loop preload="auto" data-desktop-only></video>
 
 <script>
 (function () {
@@ -227,10 +229,14 @@
   window.addEventListener('resize', computeGrid);
 
   // ─── SAMPLE A VIDEO FRAME ─────────────────────────────
+  let lastGoodFrame = null;
+
   function sampleVideo(video) {
-    if (video.readyState < 2) return null;
+    if (video.readyState < 2) return lastGoodFrame;
     sampleCtx.drawImage(video, 0, 0, cols, rows);
-    return sampleCtx.getImageData(0, 0, cols, rows).data;
+    const data = sampleCtx.getImageData(0, 0, cols, rows).data;
+    lastGoodFrame = data;
+    return data;
   }
 
   // ─── DRAW ASCII FROM PIXEL DATA ──────────────────────
@@ -282,6 +288,7 @@
     nv.currentTime = 0;
     nv.play().catch(() => {});
     clipStartTime = performance.now();
+    lastGoodFrame = null;
     counterEl.textContent = `${currentIdx + 1} / ${videos.length}`;
   }
 
@@ -312,7 +319,15 @@
   }
 
   // ─── INIT: WAIT FOR VIDEOS TO LOAD ───────────────────
-  const videoEls = document.querySelectorAll('.source-video');
+  const isMobile = window.innerWidth <= 768;
+  const videoEls = Array.from(document.querySelectorAll('.source-video')).filter(v => {
+    if (isMobile && v.hasAttribute('data-desktop-only')) {
+      v.removeAttribute('preload');
+      v.removeAttribute('src');
+      return false;
+    }
+    return true;
+  });
 
   function initPlayback() {
     videos = Array.from(videoEls).filter(v => v.readyState >= 2);
