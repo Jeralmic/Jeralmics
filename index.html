@@ -65,6 +65,13 @@
       -1px  0   0 #000, 1px  0   0 #000;
   }
 
+  @media (max-width: 768px) {
+    #subBar a {
+      font-size: 0.55rem;
+      letter-spacing: 1px;
+    }
+  }
+
   #subBar a:hover {
     color: #ffe866;
     text-shadow:
@@ -195,7 +202,7 @@
   function positionSubBar() {
     const titleFS = Math.floor(mainCanvas.width * TITLE_SIZE_RATIO);
     const isMobileView = window.innerWidth <= 768;
-    const offset = isMobileView ? titleFS * 1.4 : titleFS * 0.6;
+    const offset = isMobileView ? titleFS * 2.5 : titleFS * 0.6;
     subBar.style.top = Math.floor(mainCanvas.height / 2 + offset) + 'px';
   }
 
