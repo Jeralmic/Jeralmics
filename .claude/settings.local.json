@@ -16,7 +16,12 @@
       "Bash(rm -f pointer_b64.txt /tmp/pointer_b64.txt 2>/dev/null; bundle exec jekyll build 2>&1 | tail -4 && ls assets/img/ | grep -i pointer)",
       "Bash(grep -oE \"\\\\\\\\\\) [0-9]+ [0-9]+, \\(default|pointer\\);\" assets/css/main.css)",
       "Bash(ls -lat assets/img/ 2>&1 | head -8 && echo \"---Downloads---\" && ls -lat ~/Downloads/ 2>/dev/null | head -5)",
-      "Read(//c/Users/xstre/Downloads/**)"
+      "Read(//c/Users/xstre/Downloads/**)",
+      "PowerShell(Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.IPAddress -match '^\\(192\\\\.168|10\\\\.|172\\\\.\\(1[6-9]|2[0-9]|3[0-1]\\)\\)\\\\.' -and $_.InterfaceAlias -notmatch 'Loopback|vEthernet|WSL' } | Select-Object IPAddress, InterfaceAlias | Format-Table -AutoSize)",
+      "PowerShell($result = Test-NetConnection -ComputerName 127.0.0.1 -Port 4000 -InformationLevel Quiet -WarningAction SilentlyContinue; Write-Output \"localhost:4000 reachable: $result\"; Write-Output \"---\"; netstat -an | Select-String \":4000\" | Select-Object -First 5)",
+      "PowerShell(Get-NetFirewallProfile | Select-Object Name, Enabled | Format-Table -AutoSize; Write-Output \"---existing rules for port 4000 or ruby---\"; Get-NetFirewallRule -Enabled True -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -match 'ruby|jekyll|4000' } | Select-Object DisplayName, Direction, Action | Format-Table -AutoSize)",
+      "PowerShell(Get-NetFirewallRule -Enabled True | Where-Object { $_.DisplayName -match 'ruby' } | ForEach-Object { Write-Output \"$\\($_.DisplayName\\) | Profile: $\\($_.Profile\\) | Action: $\\($_.Action\\) | Direction: $\\($_.Direction\\)\" }; Write-Output \"---current Wi-Fi 2 connection profile---\"; Get-NetConnectionProfile -InterfaceAlias 'Wi-Fi 2' | Select-Object Name, NetworkCategory, IPv4Connectivity | Format-List)",
+      "PowerShell($lanResult = Test-NetConnection -ComputerName 192.168.1.159 -Port 4000 -InformationLevel Quiet -WarningAction SilentlyContinue; Write-Output \"Can THIS PC reach 192.168.1.159:4000 \\(its own LAN IP\\)? $lanResult\")"
     ],
     "additionalDirectories": [
       "\\tmp"

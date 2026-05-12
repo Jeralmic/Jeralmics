@@ -48,8 +48,159 @@ body { min-height: 100vh; overflow-x: hidden; }
   gap: 1.8rem;
 }
 
+/* mobile sticky nav — hidden on desktop */
+.mobile-header,
+.mobile-menu { display: none; }
+
 @media (max-width: 800px) {
-  .sidebar { border-right: none; border-bottom: 1px solid var(--rule); padding: 26px 22px; }
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 12px 22px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .mh-brand {
+    font-family: var(--sans);
+    font-weight: 900;
+    font-size: 1.05rem;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Plus button — rotates 45° into × when open. Wii-channel energy. */
+  .mh-toggle {
+    background: transparent;
+    border: 2px solid var(--ink);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.2s var(--ease-out);
+  }
+  .mh-toggle:hover { background: var(--ink); }
+  .mh-toggle:hover .mh-plus::before,
+  .mh-toggle:hover .mh-plus::after { background: var(--bg); }
+  .mh-toggle[aria-expanded="true"] { background: var(--ink); }
+  .mh-toggle[aria-expanded="true"] .mh-plus::before,
+  .mh-toggle[aria-expanded="true"] .mh-plus::after { background: var(--bg); }
+  .mh-plus {
+    display: block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    transition: transform 0.4s var(--pop);
+  }
+  .mh-plus::before,
+  .mh-plus::after {
+    content: "";
+    position: absolute;
+    background: var(--ink);
+    transition: background 0.2s;
+  }
+  .mh-plus::before {
+    left: 0; right: 0; top: 50%;
+    height: 2.5px;
+    margin-top: -1.25px;
+  }
+  .mh-plus::after {
+    top: 0; bottom: 0; left: 50%;
+    width: 2.5px;
+    margin-left: -1.25px;
+  }
+  .mh-toggle[aria-expanded="true"] .mh-plus {
+    transform: rotate(45deg);
+  }
+
+  /* Dropdown menu — sticky under the header so it stays accessible while open */
+  .mobile-menu {
+    flex-direction: column;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 22px 14px;
+    position: sticky;
+    top: 60px;
+    z-index: 49;
+  }
+  .mobile-menu[aria-hidden="false"] { display: flex; }
+  .mm-link {
+    display: block;
+    padding: 0.55rem 0;
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: -0.015em;
+    transition: color 0.2s;
+  }
+  .mm-link:hover { color: var(--ink); }
+  .mm-link.active { color: var(--ink); }
+  .mm-link.active::before {
+    content: "› ";
+    color: var(--ink);
+    font-weight: 900;
+  }
+  .mm-sep {
+    height: 1px;
+    background: var(--rule);
+    margin: 0.4rem 0;
+  }
+
+  /* Sidebar on mobile: tagline only — nav and elsewhere live in the menu now */
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 22px;
+    gap: 0.7rem;
+  }
+  .sidebar .name { display: none; }
+  .sidebar .label { display: none; }
+  .sidebar > div:nth-child(2) { display: none; }
+  .sidebar > div:nth-child(3) { display: none; }
+  .tag {
+    font-size: 0.85rem;
+    max-width: none;
+  }
+
+  /* Force single-column tile grids on mobile so iOS Safari can't render them side-by-side */
+  .currently-tiles,
+  .tiles {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  /* Defensive: don't let any grid/flex child push past the viewport */
+  .main,
+  .section,
+  .currently-tiles,
+  .tiles,
+  .tile {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Tighter main padding so the tiles get more breathing room */
+  .main { padding: 28px 20px 40px; }
+}
+
+@media (hover: none) {
+  .nav-item:hover,
+  .links a:hover,
+  .mm-link:hover {
+    transform: none;
+  }
 }
 
 .name {

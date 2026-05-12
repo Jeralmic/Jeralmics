@@ -31,6 +31,45 @@
 </head>
 <body>
 
+<header class="mobile-header">
+  <a class="mh-brand" href="/">jeralmi canela</a>
+  <button class="mh-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+    <span class="mh-plus" aria-hidden="true"></span>
+  </button>
+</header>
+<nav class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a class="mm-link" href="/">home</a>
+  <a class="mm-link active" href="/about/">about</a>
+  <div class="mm-sep" aria-hidden="true"></div>
+  <a class="mm-link" href="https://uhminc.itch.io" target="_blank">itch</a>
+  <a class="mm-link" href="https://twitter.com/Jeralmics" target="_blank">twitter</a>
+  <a class="mm-link" href="mailto:jeralmicw@gmail.com">email</a>
+</nav>
+<script>
+(function () {
+  var btn = document.querySelector('.mh-toggle');
+  var menu = document.getElementById('mobile-menu');
+  if (!btn || !menu) return;
+  function setOpen(open) {
+    btn.setAttribute('aria-expanded', String(open));
+    menu.setAttribute('aria-hidden', String(!open));
+  }
+  btn.addEventListener('click', function () {
+    setOpen(btn.getAttribute('aria-expanded') !== 'true');
+  });
+  menu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+})();
+</script>
+
+
 <div class="app">
   <aside class="sidebar">
 
@@ -79,7 +118,7 @@
       </div>
     </div>
     <div class="about-prose">
-      <p>i love making things that combine <span class="pop">art</span>, <span class="pop">programming</span>, and <span class="pop">storytelling</span>. typically that comes in the form of games.</p>
+      <p>i love making things that combine art, programming, and storytelling. typically that comes in the form of games.</p>
 
       <p>want to talk? <a href="mailto:jeralmicw@gmail.com">jeralmicw@gmail.com</a>.</p>
     </div>
