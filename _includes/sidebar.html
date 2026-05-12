@@ -1,0 +1,33 @@
+<aside class="sidebar">
+
+  <div>
+    <h1 class="name">jeralmi canela</h1>
+    <p class="tag">
+      makes games and other things.<br>part of <a class="uhm" href="https://uhminc.itch.io" target="_blank">Uhm…Games?</a> with friends.
+    </p>
+  </div>
+
+  <div>
+    <div class="label">pages</div>
+    <nav class="nav">
+      <a class="nav-item{% if page.url == '/' %} active{% endif %}" href="{{ '/' | relative_url }}">home</a>
+      <a class="nav-item{% if page.url == '/about/' %} active{% endif %}" href="{{ '/about/' | relative_url }}">about</a>
+    </nav>
+  </div>
+
+  <div>
+    <div class="label">elsewhere</div>
+    <div class="links">
+      <a href="https://uhminc.itch.io" target="_blank">
+        <span class="key">01</span>itch
+      </a>
+      <a href="https://twitter.com/Jeralmics" target="_blank">
+        <span class="key">02</span>twitter
+      </a>
+      <a href="mailto:jeralmicw@gmail.com">
+        <span class="key">03</span>email
+      </a>
+    </div>
+  </div>
+
+</aside>

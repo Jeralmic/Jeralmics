@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sI -o /dev/null -w \"santa: %{http_code}\\\\n\" \"https://img.itch.zone/aW1nLzI1MjI3MDM3LnBuZw==/original/1aKPJP.png\")",
+      "Bash(curl -sI -o /dev/null -w \"stars: %{http_code}\\\\n\" \"https://img.itch.zone/aW1nLzI0ODYzOTUzLnBuZw==/original/V9rr8A.png\")",
+      "Bash(bundle exec *)",
+      "Bash(python -c \"from PIL import Image; print\\('PIL:', Image.__version__\\)\")",
+      "Bash(python)",
+      "Bash(python -c \"import cairosvg; print\\('cairosvg', cairosvg.__version__\\)\")",
+      "Bash(python -c \"from svglib.svglib import svg2rlg; print\\('svglib ok'\\)\")",
+      "Bash(pip install *)",
+      "Bash(python -c \"from svglib.svglib import svg2rlg; from reportlab.graphics import renderPM; print\\('ok'\\)\")",
+      "Bash(xxd)",
+      "Bash(python *)",
+      "Read(//tmp/**)",
+      "Bash(rm -f pointer_b64.txt /tmp/pointer_b64.txt 2>/dev/null; bundle exec jekyll build 2>&1 | tail -4 && ls assets/img/ | grep -i pointer)",
+      "Bash(grep -oE \"\\\\\\\\\\) [0-9]+ [0-9]+, \\(default|pointer\\);\" assets/css/main.css)",
+      "Bash(ls -lat assets/img/ 2>&1 | head -8 && echo \"---Downloads---\" && ls -lat ~/Downloads/ 2>/dev/null | head -5)",
+      "Read(//c/Users/xstre/Downloads/**)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
+    ]
+  }
+}
