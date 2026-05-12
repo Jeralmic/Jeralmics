@@ -191,8 +191,24 @@ body { min-height: 100vh; overflow-x: hidden; }
     max-width: 100%;
   }
 
-  /* Tighter main padding so the tiles get more breathing room */
-  .main { padding: 28px 20px 40px; }
+  /* Bump base size up for legibility (proportionally scales tag/blurb/tile heads/labels) */
+  html, body { font-size: 15px; }
+
+  /* Smallest text needs its own bump — was ~8.4px at 14/0.6rem, well below readable minimum */
+  .tile-name .sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+  }
+  .photo-cap .sub {
+    font-size: 0.7rem;
+  }
+
+  /* Bottom padding accounts for iOS Safari's home indicator + address bar */
+  .main { padding: 28px 20px calc(48px + env(safe-area-inset-bottom)); }
+
+  /* Use dynamic viewport height so layout adjusts when Safari toolbars collapse */
+  .app { min-height: 100dvh; }
+  body { min-height: 100dvh; }
 }
 
 @media (hover: none) {
