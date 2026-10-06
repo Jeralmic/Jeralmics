@@ -1,0 +1,19 @@
+# Jeralmi Canela
+
+> Jeralmi Canela (also known as Jeralmics) is a game developer. Personal site: https://jeralmics.com/
+
+Jeralmi didn't start out as a programmer or an artist, but with ideas, and learned whatever it took to make them real: code, Blender, Unreal Engine. Jeralmi spent a summer interning at Ghost Story Games; Jeralmi's best jam game so far placed #2 for Best Gameplay at thatgamejam, run by thatgamecompany. Outside of games, Jeralmi led a youth research project for Agncy, a nonprofit design firm, on how Boston students see careers in biotech.
+
+## Work
+
+- Something New (in progress): lead developer, with Uhm…Games?, a studio Jeralmi runs with friends. Updates: https://x.com/Uhm_Inc
+- Elevator Brawl: a 3D beat 'em up with boss battles. Lead developer. Epic MegaJam 2025. https://aquagon.itch.io/elevator-brawl
+- Secret Santa Delivery: you're a cat who drives a truck delivering Secret Santa gifts. Lead developer. Comfy Jam: Winter 2026, #4 in Macrow's Picks. https://uhminc.itch.io/secret-santa-delivery
+- Shaped in Stars: a 2D puzzle platformer about connecting two realities with a rift ability. Programmer and designer. thatgamejam #01, #2 for Best Gameplay out of 249 entries. https://lonksadventures.itch.io/shaped-in-stars
+- BUILD Alumni: the alumni network site for BUILD.org. Designer and programmer. https://build.org/alumni
+
+## Contact
+
+- Email: jeralmicw@gmail.com
+- Twitter / X: https://x.com/Jeralmics
+- itch.io (Uhm…Games?): https://uhminc.itch.io
