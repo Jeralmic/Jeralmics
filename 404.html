@@ -1,16 +1,29 @@
 ---
-layout: default
-title: 404 · jeralmi canela
-description: page not found.
+layout: null
 permalink: /404.html
 sitemap: false
 ---
-<div class="view">
-  <div class="main-title">
-    <span class="big">404</span>
-  </div>
-
-  <p class="currently-blurb">
-    this page doesn't exist (or moved). try the <a href="{{ '/' | relative_url }}">home page</a> instead.
-  </p>
-</div>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nothing grew here · Jeralmi Canela</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen&family=Archivo+Narrow:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-content: center; gap: 14px; padding: 16px; text-align: center;
+    background: #f6f7f2; color: #26262b; font: 500 18px/1.5 "Archivo Narrow", "Arial Narrow", sans-serif; }
+  .chip { justify-self: center; font: 11px "Silkscreen", monospace; background: #26262b; color: #d9ee6a; padding: 4px 8px; }
+  h1 { margin: 0; font-size: 30px; }
+  p { margin: 0; color: #686b63; }
+  a { color: #26262b; text-decoration-color: #3c9a22; text-underline-offset: 3px; }
+</style>
+</head>
+<body>
+  <span class="chip">404</span>
+  <h1>Nothing grew here.</h1>
+  <p>This page doesn't exist, or it moved. <a href="/">Back to the garden</a>.</p>
+</body>
+</html>

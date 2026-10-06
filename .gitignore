@@ -1,0 +1,7 @@
+# design workspace: notes with private details and reference material that isn't ours to publish
+_redesign/
+.superpowers/
+.claude/launch.json
+# Jekyll output and caches
+.jekyll-cache/
+.sass-cache/

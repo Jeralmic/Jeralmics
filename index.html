@@ -1,103 +1,1228 @@
----
-layout: default
-title: jeralmi canela
-description: jeralmi canela. makes games and other things.
----
-<div class="view">
+<!doctype html>
+<html lang="en">
+<head>
+<title>Jeralmi Canela</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Jeralmi Canela makes games: jam games, something new in the works with Uhm…Games?, and the odd website.">
+<link rel="canonical" href="https://jeralmics.com/">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#f6f7f2">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jeralmi Canela">
+<meta property="og:description" content="Jeralmi Canela makes games: jam games, something new in the works with Uhm…Games?, and the odd website.">
+<meta property="og:url" content="https://jeralmics.com/">
+<meta property="og:image" content="https://jeralmics.com/assets/img/currently-01.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="632">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@Jeralmics">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=Archivo+Narrow:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  /* a 2003 Flash portfolio printed in a design annual: one white stage with crop marks.
+     desktop: lime index | framed picture | memory card + details. phone: a list that opens in place. */
+  :root {
+    color-scheme: light;
+    --paper: #f6f7f2;
+    --stage: #ffffff;
+    --ink: #26262b;
+    --grey: #686b63;      /* darkened a touch so small text reads on a phone in daylight */
+    --lime: #d9ee6a;
+    --lime-soft: #e6eccd;
+    --green: #3c9a22;
+    --pixel: "Silkscreen", "Courier New", monospace;   /* tiny labels only */
+    --mono: "Share Tech Mono", "Courier New", monospace;
+    --body: "Archivo Narrow", "Arial Narrow", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { background: var(--paper); }
+  body { margin: 0; min-height: 100vh; color: var(--ink); background: var(--paper); font: 500 16px/1.5 var(--body); padding-block: 48px 40px; padding-inline: 16px; display: flex; flex-direction: column; align-items: center; }
+  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .07; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  a { color: inherit; }
+  :focus-visible { outline: 2px dotted var(--ink); outline-offset: 2px; }
+  .tiny { font: 11px/1.4 var(--pixel); color: var(--grey); }
 
-  <section class="section">
-    <div class="main-title">
-      <span class="big">currently</span>
-    </div>
+  .stage { position: relative; width: 100%; max-width: 1060px; background: var(--stage); padding: 60px 72px 50px; box-shadow: 0 1px 0 #e3e5dc, 0 20px 50px rgba(60,70,40,.06); }
+  .crop { position: absolute; width: 14px; height: 14px; border: 0 solid var(--ink); }
+  .crop.tl { top: 22px; left: 22px; border-top-width: 1.5px; border-left-width: 1.5px; }
+  .crop.tr { top: 22px; right: 22px; border-top-width: 1.5px; border-right-width: 1.5px; }
+  .crop.bl { bottom: 22px; left: 22px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .crop.br { bottom: 22px; right: 22px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
 
-    <p class="currently-blurb">
-      working on something new with friends. screenshots are early. follow on <a href="https://twitter.com/Uhm_Inc" target="_blank">twitter</a> or <a href="https://www.instagram.com/uhmgames/" target="_blank">instagram</a> for updates.
-    </p>
+  /* masthead: who, what, how to reach me */
+  .mast { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+  .mast h1 { font: 700 38px/1 var(--body); letter-spacing: -.5px; margin: 0; }
+  .mast .lede { margin: 8px 0 0; font-size: 17px; max-width: 44ch; }
+  .reach { display: flex; gap: 18px; flex-wrap: wrap; font: 14px var(--mono); }
+  .reach a { text-decoration: none; border-bottom: 2px solid var(--lime); }
+  .reach a:hover { border-color: var(--green); }
 
-    <div class="currently-tiles">
+  /* desktop body */
+  .grid { display: grid; grid-template-columns: 220px minmax(0, 1fr) 240px; gap: 14px; align-items: start; }
+  .index { list-style: none; margin: 0; padding: 14px 12px 16px; display: grid; gap: 2px; align-content: start; text-align: right;
+    background: radial-gradient(ellipse at 20% 10%, #f3fbc6 0%, transparent 60%), linear-gradient(160deg, #e9f59d, var(--lime) 55%, #cfe25a); }
+  .index button { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; padding: 5px 8px; display: grid; }
+  .index .n { font: 600 17px/1.2 var(--body); }
+  .index .k { font: 13px var(--mono); color: #5d6a2c; }
+  .index button:hover .n { color: var(--green); }
+  .index button[aria-current="true"] { background: var(--ink); }
+  .index button[aria-current="true"] .n { color: var(--lime); }
+  .index button[aria-current="true"] .k { color: #b8c98a; }
+  .index button:focus-visible { outline: 2px dotted var(--ink); }
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-left: 6px; vertical-align: 2px; animation: blink 1s steps(2) infinite; }
 
-      <a class="tile" href="https://twitter.com/Uhm_Inc" target="_blank">
-        <div class="tile-frame">
-          <img src="{{ '/assets/img/currently-01.jpg' | relative_url }}" alt="early screenshot">
-        </div>
-        <div class="tile-plate">
-          <div class="tile-name">
-            <span class="head">wip</span>
-            <span class="sub">screenshot 01</span>
-          </div>
-          <span class="tile-arrow">↗</span>
-        </div>
-      </a>
+  .frame { background: var(--lime-soft); padding: 8px; }
+  .pic { aspect-ratio: 4 / 3; background: #d5dcbd; overflow: hidden; position: relative; }
+  .pic img, .pic video, .pic iframe { width: 100%; height: 100%; object-fit: cover; display: block; border: 0; }
+  /* a YouTube video where it can't be embedded: a tile that opens it */
+  .ytile { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 12px; background: var(--ink); color: var(--lime);
+    text-decoration: none; font: 11px var(--pixel); letter-spacing: .5px; text-align: center; padding: 12px; }
+  .ytile .yplay { width: 0; height: 0; border-style: solid; border-width: 14px 0 14px 24px; border-color: transparent transparent transparent var(--lime); }
+  .ytile:hover .yplay { border-left-color: #fff; }
+  .pic.more-shots, .more .pic { cursor: pointer; }
+  /* the count and the next button under a picture with more than one shot */
+  .shotnav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 8px 2px 0; font: 13px var(--mono); color: var(--grey); height: 22px; }
+  .shotnav:empty { display: none; }
+  /* on desktop the row keeps its place even with one picture, so the box never changes height between projects */
+  .grid .shotnav:empty { display: flex; visibility: hidden; }
+  .shotnext { all: unset; cursor: pointer; color: var(--ink); border-bottom: 2px solid var(--lime); font: 14px var(--mono); }
+  .shotnext:hover { border-color: var(--green); }
+  .shotnext:focus-visible { outline: 2px dotted var(--ink); outline-offset: 2px; }
+  .banner { position: absolute; inset: 0; display: grid; place-items: center; font: 700 26px/1.1 var(--body); color: #fff; text-align: center; padding: 12px; }
+  .notes { position: absolute; inset: 0; background: #fff; padding: 22px 26px; display: grid; gap: 16px; align-content: start; overflow: auto; }
+  .notes p { margin: 0; font-size: 18px; line-height: 1.4; max-width: 42ch; }
+  .notes .tiny.forming { color: var(--green); }
 
-    </div>
-  </section>
+  .side { display: grid; gap: 16px; }
+  .side .desc { margin: 0; font-size: 17px; }   /* the description sits above the button, beside the picture */
+  .play { justify-self: stretch; display: block; text-align: center; padding: 13px 16px; background: var(--green); color: #fff; text-decoration: none; font: 600 17px var(--body); box-shadow: inset 0 -3px 0 rgba(0,0,0,.18); }
+  .play:hover { background: #33861c; }
+  .play:active { box-shadow: none; transform: translateY(1px); }
 
-  <section class="section">
-    <div class="main-title">
-      <span class="big">games</span>
-    </div>
+  /* phone list: hidden on desktop */
+  .list { display: none; list-style: none; margin: 0; padding: 0; }
 
-    <div class="tiles">
-      <a class="tile" href="https://aquagon.itch.io/elevator-brawl" target="_blank">
-        <div class="tile-frame">
-          <img src="{{ '/assets/img/elevator-brawl.jpg' | relative_url }}" alt="elevator brawl" loading="lazy" decoding="async">
-        </div>
-        <div class="tile-plate">
-          <div class="tile-name">
-            <span class="head">elevator brawl</span>
-            <span class="sub">action</span>
-          </div>
-          <span class="tile-arrow">↗</span>
-        </div>
-      </a>
+  /* the sound switch: a lime pixel speaker on the same ink chip as the year, in the corner, always in reach */
+  .soundbtn { all: unset; box-sizing: border-box; position: fixed; z-index: 50; right: calc(14px + env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; background: var(--ink); color: var(--lime); transition: background-color .2s; }
+  .soundbtn svg { display: block; fill: currentColor; }
+  .soundbtn .cross { display: none; }
+  .soundbtn[aria-pressed="false"] { color: #b8c98a; }
+  .soundbtn[aria-pressed="false"] .waves { display: none; }
+  .soundbtn[aria-pressed="false"] .cross { display: inline; }
+  .soundbtn:hover { background: #3a3a41; }
+  .soundbtn:focus-visible { outline: 2px dotted var(--ink); outline-offset: 2px; }
+  .replay { all: unset; cursor: pointer; text-decoration: underline; text-decoration-color: var(--lime); text-underline-offset: 3px; }
+  .replay:focus-visible { outline: 2px dotted var(--ink); }
+  .foot { width: 100%; max-width: 1060px; text-align: center; margin-top: 18px; font: 12px var(--mono); color: var(--grey); }
 
-      <a class="tile" href="https://uhminc.itch.io/secret-santa-delivery" target="_blank">
-        <div class="tile-frame">
-          <img src="https://img.itch.zone/aW1nLzI1MjI3MDM3LnBuZw==/original/1aKPJP.png" alt="secret santa delivery" loading="lazy" decoding="async">
-        </div>
-        <div class="tile-plate">
-          <div class="tile-name">
-            <span class="head">secret santa delivery</span>
-            <span class="sub">adventure</span>
-          </div>
-          <span class="tile-arrow">↗</span>
-        </div>
-      </a>
+  @keyframes blink { 50% { opacity: .25; } }
 
-      <a class="tile" href="https://lonksadventures.itch.io/shaped-in-stars" target="_blank">
-        <div class="tile-frame">
-          <img src="https://img.itch.zone/aW1nLzI0ODYzOTUzLnBuZw==/original/V9rr8A.png" alt="shaped in stars" loading="lazy" decoding="async">
-        </div>
-        <div class="tile-plate">
-          <div class="tile-name">
-            <span class="head">shaped in stars</span>
-            <span class="sub">puzzle</span>
-          </div>
-          <span class="tile-arrow">↗</span>
-        </div>
-      </a>
-    </div>
-  </section>
+  /* work / about tabs on the lime panel */
+  .grid .panel { display: flex; flex-direction: column; background: radial-gradient(ellipse at 20% 10%, #f3fbc6 0%, transparent 60%), linear-gradient(160deg, #e9f59d, var(--lime) 55%, #cfe25a); }
+  .grid .index { background: none; }
+  .tabs { display: flex; gap: 2px; padding: 10px 12px 0; }
+  .grid .tabs { justify-content: flex-end; }
+  .tabs button { all: unset; cursor: pointer; font: 11px var(--pixel); padding: 4px 8px; color: #5d6a2c; }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: var(--lime); }
+  .tabs button:focus-visible { outline: 2px dotted var(--ink); }
+  .notes-list-unused { list-style: none; margin: 0; padding: 14px 16px 16px; display: grid; gap: 14px; align-content: start; overflow: auto; flex: 1; min-height: 0; }
+  .notes-list p { margin: 2px 0 0; font: 500 16px/1.35 var(--body); }
+  .notes-list .tiny.forming { color: var(--green); }
+  .mpanel { display: none; }
+  .desc { margin: 10px 2px 0; font: 500 16px/1.45 var(--body); color: #4c4f48; max-width: 52ch; }
+  .desc .credit { display: block; margin-top: 8px; font: 500 14px/1.4 var(--body); color: var(--grey); }   /* my part, and where it was made */
 
-  <section class="section">
-    <div class="main-title">
-      <span class="big">web design</span>
-    </div>
 
-    <div class="tiles">
-      <a class="tile" href="https://build.org/alumni" target="_blank">
-        <div class="tile-frame">
-          <img src="{{ '/assets/img/build-alumni.jpg' | relative_url }}" alt="build alumni" loading="lazy" decoding="async">
-        </div>
-        <div class="tile-plate">
-          <div class="tile-name">
-            <span class="head">BUILD Alumni</span>
-            <span class="sub">contract</span>
-          </div>
-          <span class="tile-arrow">↗</span>
-        </div>
-      </a>
-    </div>
-  </section>
+  /* the about tab (version B) */
+  .about-pane { padding: 14px 16px 16px; overflow: auto; flex: 1; min-height: 0; font: 500 15px/1.45 var(--body); }
+  .about-pane p, .about-text p { margin: 0 0 10px; max-width: 52ch; }
+  .about-pane a, .about-text a { color: var(--ink); text-decoration-color: var(--green); text-underline-offset: 3px; }
+  .blank { color: #9da094; font-style: italic; }
+  .pic.portrait { aspect-ratio: 4 / 5; }
+  .pic.portrait img { object-position: 50% 30%; }
+  .mpanel .about-pane { background: var(--lime-soft); padding: 12px; }
+  .mpanel .about-pane .frame { margin-bottom: 12px; }
+  .grid .pic.as-portrait img { object-position: 50% 30%; }
 
+  /* the second section: the garden from above, and (version A) me */
+  .stage2 { padding-top: 48px; }
+  .garden-wrap canvas { display: block; margin: 0 auto; cursor: pointer; image-rendering: pixelated; image-rendering: crisp-edges; }
+  .yhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .year { font: 13px/1 var(--pixel); background: var(--ink); color: var(--lime); padding: 8px 16px; letter-spacing: 1px; }
+  .count { font: 13px var(--mono); color: var(--grey); }
+  .count b { color: var(--green); font-weight: 400; }
+  .yday { margin: -8px 0 14px; min-height: 1.6em; font: 13px/1.6 var(--mono); color: var(--grey); }
+  .yday b { font-weight: 400; color: var(--ink); }
+  /* a small key for the garden */
+  .ykey { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: -6px 0 16px; font: 12px var(--mono); color: var(--grey); }
+  .ykey .sw { display: inline-block; width: 10px; height: 10px; margin-right: 7px; vertical-align: -1px; }
+  .ykey .sw.mag { background: #c23b8f; }
+  .ykey .sw.today { background: var(--lime); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: -1px; padding: 0; }
+  /* the lore card over a special plant: a small stage of its own, hung from the plant by a hairline */
+  .lore { position: absolute; z-index: 5; width: max-content; max-width: min(270px, 82vw); transform: translate(-50%, calc(-100% - 22px));
+    background: var(--lime-soft); padding: 6px; animation: lorein .35s ease-out; }
+  .lore::after { content: ""; position: absolute; left: var(--tip, 50%); top: 100%; width: 1px; height: 18px; background: var(--ink); }
+  .lore::before { content: ""; position: absolute; left: var(--tip, 50%); top: calc(100% + 17px); width: 5px; height: 5px; margin-left: -2px; background: var(--ink); }
+  .lore-in { position: relative; background: var(--stage); padding: 14px 16px 15px; font: 500 15px/1.4 var(--body); color: var(--ink); }
+  .lore .lc { position: absolute; width: 7px; height: 7px; border: 0 solid var(--ink); }
+  .lore .lc.tl { top: 4px; left: 4px; border-top-width: 1px; border-left-width: 1px; }
+  .lore .lc.tr { top: 4px; right: 4px; border-top-width: 1px; border-right-width: 1px; }
+  .lore .lc.bl { bottom: 4px; left: 4px; border-bottom-width: 1px; border-left-width: 1px; }
+  .lore .lc.br { bottom: 4px; right: 4px; border-bottom-width: 1px; border-right-width: 1px; }
+  /* on a phone, a tapped plant shows its date right beside it */
+  .ytip { position: absolute; z-index: 4; transform: translate(-50%, calc(-100% - 4px)); font: 10px/1 var(--pixel); background: var(--ink); color: var(--lime);
+    padding: 5px 8px; letter-spacing: .5px; white-space: nowrap; pointer-events: none; animation: lorein .25s ease-out; }
+  .lore .lore-date { display: inline-block; font: 10px/1 var(--pixel); background: var(--ink); color: var(--lime); padding: 5px 8px; letter-spacing: .5px; margin-bottom: 9px; }
+  .lore b { display: block; font: 600 18px/1.2 var(--body); }
+  .lore p { margin: 5px 0 0; color: #4c4f48; }
+  .lore a { display: inline-block; margin-top: 9px; font: 14px var(--mono); color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--lime); }
+  .lore a:hover { border-color: var(--green); }
+  @keyframes lorein { from { opacity: 0; margin-top: 4px; } to { opacity: 1; margin-top: 0; } }
+  @keyframes lorein { from { opacity: 0; margin-top: 4px; } to { opacity: 1; margin-top: 0; } }
+  .about-a { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
+  .stage2 .garden-wrap { margin-top: 40px; }
+  .about-text { font: 500 18px/1.5 var(--body); }
+  body.v-a .tabs { display: none; }
+  body.v-b .about-a { display: none; }
+  .versions { position: fixed; left: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 90; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    background: #fff; border: 1px solid #dfe3d2; padding: 6px 10px; font: 11px var(--pixel); color: var(--grey); box-shadow: 0 4px 14px rgba(60,70,40,.08); }
+  .versions b { font-weight: 400; color: var(--ink); }
+  .versions label { display: flex; gap: 5px; align-items: center; cursor: pointer; }
+  .versions input { accent-color: var(--green); margin: 0; }
+  @media (max-width: 860px) {
+    .pages { gap: 0; }
+    .stage2 { padding-top: 34px; }
+    .about-a { grid-template-columns: 1fr; gap: 16px; }
+    .about-a .frame { max-width: 240px; }
+  }
+
+  /* ---- tests: breath, roots, weather. each one switches off from the panel ---- */
+  .pages { position: relative; width: 100%; max-width: 1060px; display: grid; gap: 28px; }
+  .stage > .mast, .stage > .grid, .stage > .mpanel, .stage > .garden-wrap, .stage > .about-a { position: relative; z-index: 2; }
+  canvas.roots { z-index: 1; }
+  .stage > .crop { z-index: 2; }
+  canvas.roots, canvas.weather { position: absolute; left: 0; top: 0; pointer-events: none; image-rendering: pixelated; image-rendering: crisp-edges; }
+
+  /* breath: the page keeps a body's pace, 4 s in and 6 s out; nothing blinks */
+  @keyframes breathe { 0%, 100% { transform: scale(1); opacity: .55; } 40% { transform: scale(1.12); opacity: 1; } }
+  @keyframes glow { 0%, 100% { filter: brightness(1); } 40% { filter: brightness(1.2); } }
+  @keyframes drift { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-3px); } }
+  body.breath .dot { animation: breathe 10s ease-in-out infinite; }
+  body.breath .grid .frame { animation: drift 10s ease-in-out infinite; }
+  body.breath .index button, body.breath .play, body.breath .reach a { transition: transform .9s cubic-bezier(.2, .7, .2, 1), background-color .3s, color .3s; }
+  body.breath .index button:hover, body.breath .play:hover, body.breath .reach a:hover { transform: translateY(-2px); }
+
+  body.weather .stage:not(.stage2) { padding-top: 104px; }
+  @media (max-width: 860px) { body.weather .stage:not(.stage2) { padding-top: 84px; } }
+
+  /* startup: three poses of one sleeper, lying, lifting, floating, on dark navy; then the screen dissolves */
+  .boot { position: fixed; inset: 0; z-index: 100; cursor: pointer; background: var(--paper); overflow: hidden; transition: opacity .45s ease; }
+  .boot.out { opacity: 0; pointer-events: none; }
+  .boot canvas { position: absolute; left: 0; top: 0; image-rendering: pixelated; image-rendering: crisp-edges; }
+  .b-mark { position: absolute; left: 50%; transform: translateX(-50%); font: 11px var(--pixel); color: var(--grey); letter-spacing: 1px; white-space: nowrap; }
+  .b-mark i { font-style: normal; animation: blink 1s steps(2) infinite; }
+  .boot .skip { position: absolute; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); font: 11px var(--pixel); color: #b4b7ac; }
+
+
+
+
+  @media (max-width: 860px) {
+    body { padding-inline: 0; padding-block: 0 28px; }
+    .stage { padding: 40px 18px 30px; box-shadow: none; }
+    .crop.tl, .crop.tr { top: 12px; } .crop.bl, .crop.br { bottom: 12px; }
+    .crop.tl, .crop.bl { left: 10px; } .crop.tr, .crop.br { right: 10px; }
+    .mast { margin-bottom: 26px; gap: 14px; }
+    .mast h1 { font-size: 34px; }
+    .reach { gap: 16px; font-size: 15px; }
+    .grid { display: none; }
+    .mpanel { display: block; }
+
+    .list { display: grid; gap: 8px; }
+    .list > li { background: #fff; }
+    .row { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 6px; background: var(--lime-soft); }
+    .row .th { aspect-ratio: 4 / 3; overflow: hidden; position: relative; background: #d5dcbd; }
+    .row .th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .row .th .banner { font-size: 11px; padding: 4px; }
+    .row .th .notes { padding: 6px; background: repeating-linear-gradient(180deg, #fff 0 7px, #d8e6f0 7px 8px); }
+    .row .n { font: 600 18px/1.15 var(--body); display: block; }
+    .row .k { font: 13px var(--mono); color: var(--grey); }
+    .row .chev { font: 14px var(--mono); color: var(--grey); padding-right: 6px; transition: transform .2s; }
+    .row[aria-expanded="true"] { background: var(--ink); color: var(--lime); }
+    .row[aria-expanded="true"] .k { color: #b8c98a; }
+    .row[aria-expanded="true"] .chev { transform: rotate(90deg); color: var(--lime); }
+    .more { padding: 12px 6px 16px; display: grid; gap: 12px; }
+    .more .frame { padding: 6px; }
+    .more .desc { margin: 0; }
+    .more .notes { position: static; padding: 4px 0; }
+
+    .foot { padding-inline: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="boot" id="boot" aria-hidden="true" hidden>
+  <canvas id="bootfield"></canvas>
+  <div class="b-mark" id="bmark">waking up<i>_</i></div>
+  <span class="skip">tap to skip</span>
 </div>
+
+<div class="pages" id="pages">
+<main class="stage">
+  <i class="crop tl"></i><i class="crop tr"></i><i class="crop bl"></i><i class="crop br"></i>
+
+  <header class="mast">
+    <div>
+      <h1>Jeralmi Canela</h1>
+    </div>
+    <nav class="reach" aria-label="contact">
+      <a href="mailto:jeralmicw@gmail.com">jeralmicw@gmail.com</a>
+      <a href="https://uhminc.itch.io" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://x.com/Jeralmics" target="_blank" rel="noopener">Twitter</a>
+    </nav>
+  </header>
+
+  <!-- desktop -->
+  <div class="grid">
+    <div class="panel">
+      <ul class="index" id="index" data-pane="work" aria-label="my work"></ul>
+    </div>
+    <section aria-live="polite">
+      <div class="frame"><div class="pic" id="pic"></div></div>
+      <div class="shotnav" id="shotnav"></div>
+    </section>
+    <aside class="side">
+      <p class="desc" id="desc" aria-live="polite"></p>
+      <a class="play" id="play" href="#" target="_blank" rel="noopener"></a>
+    </aside>
+  </div>
+
+  <!-- phone -->
+  <div class="mpanel">
+    <ul class="list" id="list" data-pane="work" aria-label="my work"></ul>
+  </div>
+</main>
+
+<section class="stage stage2" id="stage2" aria-label="garden and about">
+  <i class="crop tl"></i><i class="crop tr"></i><i class="crop bl"></i><i class="crop br"></i>
+  <div class="about-a" id="aboutA"><span id="about"></span>
+    <div class="frame"><div class="pic portrait"><img alt="Jeralmi" src="/assets/img/jeralmi-photo.jpg"></div></div>
+    <div class="about-text"><p>Hi, I&rsquo;m Jeralmi. I make games. I didn&rsquo;t start out as a programmer or an artist. I started with ideas and learned whatever it took to make them real: code, Blender, Unreal.</p>
+<p>I spent a summer interning at Ghost Story Games, and my best jam so far placed #2 for Best Gameplay at <a href="https://itch.io/jam/thatgamejam01/rate/4171860" target="_blank" rel="noopener">thatgamejam</a>, run by thatgamecompany (yes, the Journey people). Outside of games, I led a youth research project for <a href="https://agncy.org/Biotech-Pathways-Webinar" target="_blank" rel="noopener">Agncy</a>, a nonprofit design firm, on how Boston students see careers in biotech.</p>
+<p>If you wanna do business, hit me up: <a href="mailto:jeralmicw@gmail.com">jeralmicw@gmail.com</a></p></div>
+  </div>
+  <div class="garden-wrap">
+    <div class="yhead"><span class="year" id="year">2026</span><span class="count" id="count"></span></div>
+    <div class="yday" id="yday" aria-live="polite">One plant for every day of 2026 so far</div>
+    <div class="ykey" aria-hidden="true"><span><i class="sw mag"></i>Shipped</span><span><i class="sw today"></i>Today</span></div>
+    <ul class="sr-only" id="markslist" aria-label="Things I shipped this year"></ul>
+    <canvas id="garden" aria-label="a garden of the year: a small plant for each day so far, a dot for each day to come"></canvas>
+  </div>
+</section>
+</div>
+<footer class="foot">© <span id="cy">2026</span> Jeralmi Canela &nbsp; <button type="button" class="replay" onclick="window.swReplay && window.swReplay()">Replay intro</button></footer>
+<button type="button" class="soundbtn" id="soundbtn" aria-pressed="true" aria-label="Sound on" title="Sound on">
+  <svg viewBox="0 0 12 8" width="24" height="16" aria-hidden="true" shape-rendering="crispEdges"><g><rect x="4" y="0" width="1" height="1"/><rect x="5" y="0" width="1" height="1"/><rect x="3" y="1" width="1" height="1"/><rect x="4" y="1" width="1" height="1"/><rect x="5" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="1" y="2" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/></g><g class="waves"><rect x="9" y="1" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/></g><g class="cross"><rect x="7" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/></g></svg>
+</button>
+
+<script>
+/* startup: once per visit (per browser session); "replay startup" in the footer plays it again */
+(function () {
+  var boot = document.getElementById('boot');
+  window.swIntro = { done: false, then: [] };
+  function finish() {
+    boot.hidden = true; boot.classList.remove('out');
+    if (window.swIntro.done) return;
+    window.swIntro.done = true;
+    window.swIntro.then.forEach(function (f) { f(); });
+  }
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches, seen = false;
+  try { seen = sessionStorage.getItem('jc-boot') === '1'; sessionStorage.setItem('jc-boot', '1'); } catch (e) {}
+
+  /* a slow breath under the sleeper as it lifts. a first visit is silent (browsers allow sound only after a tap),
+     so it's heard when "Replay intro" is clicked, which now replays in place instead of reloading */
+  function breathe() {
+    try { if (localStorage.getItem('jc-sound') === 'off') return; } catch (e) {}
+    /* only after a click on this page (Replay intro); a sound queued earlier would play later, out of place */
+    if (!(navigator.userActivation && navigator.userActivation.hasBeenActive)) return;
+    var a = window.__jcIntroAC;
+    if (!a) { try { a = window.__jcIntroAC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; } }
+    if (a.state === 'suspended') a.resume();
+    var t = a.currentTime + .05, buf = a.createBuffer(1, a.sampleRate * 4, a.sampleRate), d = buf.getChannelData(0), last = 0;
+    for (var i = 0; i < d.length; i++) { last = (last + .04 * (Math.random() * 2 - 1)) / 1.04; d[i] = last * 3; }
+    var src = a.createBufferSource(), lp = a.createBiquadFilter(), g = a.createGain();
+    src.buffer = buf; lp.type = 'lowpass'; lp.Q.value = .6;
+    lp.frequency.setValueAtTime(260, t); lp.frequency.linearRampToValueAtTime(900, t + 2.1); lp.frequency.linearRampToValueAtTime(320, t + 3.6);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.09, t + 2); g.gain.exponentialRampToValueAtTime(.0001, t + 3.7);
+    src.connect(lp); lp.connect(g); g.connect(a.destination); src.start(t); src.stop(t + 3.8);
+    [220, 330].forEach(function (f, k) {                                /* and a faint warm tone underneath */
+      var o = a.createOscillator(), og = a.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(f, t); o.frequency.linearRampToValueAtTime(f * 1.06, t + 3);
+      og.gain.setValueAtTime(.0001, t); og.gain.exponentialRampToValueAtTime(.012 - k * .004, t + 2.2); og.gain.exponentialRampToValueAtTime(.0001, t + 3.6);
+      o.connect(og); og.connect(a.destination); o.start(t); o.stop(t + 3.7);
+    });
+  }
+
+  /* 13 frames of one sleeper waking: lying (0), lifting (6), floating (12), morphed in between; positions baked in */
+  var FRAMES = [["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...................................................#####.......................", ".........................................##################....................", "................................#############################.######...........", "........#...#..............##########################################..........", "........##..#...........#############################################..........", "........######......####################.#############################.........", "........###############################...############################.........", ".........##############################...###################..######..........", ".........#################..........###....#################....####...........", "..................#####...............#......######............................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................########.......................", ".........................................#################.....................", "...............................##############################.#####............", "..........................##########################################...........", "............#.........###############################################..........", ".........#####....#####################..############################..........", ".........##############################..############################..........", ".........##############################...##################...#####...........", "..........###############............#......#############.......###............", ".................####..........................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................########.......................", "........................................#################......................", "................................############################..###..............", "............................#######################################............", "..........................##########################################...........", ".....................###############################################...........", "..........#############################..###########################...........", "..........############################....##################..######...........", "...........################.................############........###............", "...............#########.....................######............................", ".................#.............................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................#######........................", ".........................................################......................", ".................................##########################...#................", "..............................####################################.............", "...........................########################################............", "........................###########################################............", "................###################################################............", "............##.#######################...##########################............", "............#################................#############....#####............", ".............############.....................#######..........................", "...............########.......................####.............................", ".................#.............................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................#######........................", "..........................................###############......................", ".................................#########################.....................", "..............................##################################...............", "............................######################################.............", "..........................########################################.............", "...............###..###############################################............", "...............#######################.###########################.............", "............##################.................##########....#####.............", "............################..................#########.......###..............", ".............############....................#######...........................", "..............########.......................####..............................", "................#..............................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................######.........................", "..........................................##############.......................", ".....................................####################......................", "................................###########################..##................", ".............................###################################...............", "...........................######################################..............", "...............##........#########################################.............", "...............###..##########################...#################.............", "...............###############.........#####.....#########..######.............", "...............#############....................#######.....#####..............", "............###############...................#######..........................", ".............############....................######............................", "..............########......................#####..............................", "...............###.........................###.................................", "...........................................##..................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................######.........................", ".............................................##########........................", "........................................################.......................", ".................................#########################.....................", "..............................#################################................", "............................####################################...............", "...............#..........#######################################..............", "...............###....#######################.....###############..............", "...............####################...#####.......########.######..............", "...............##############...................########....#####..............", "............################...................#######.......###...............", "............#############....................#######...........................", ".............##########.....................######.............................", "..............######.......................#####...............................", "...............###........................####.................................", "..........................................###..................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..................................................##...........................", "..............................................########.........................", ".........................................##############........................", "...................................######################......................", "...............................############################....................", ".............................##################################................", "...........................#####################################...............", ".........................#####################...###############...............", "................#.....######################......##############...............", "................##############...................########...####...............", "................############...................#######.......#.................", "..............#############...................######...........................", "..............##########.....................#####.............................", "...............######.......................###................................", "................##..........................#..................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................###............................", ".............................................#########.........................", "........................................###############........................", "...................................#####################.......................", "...............................###########################.....................", ".............................################################..................", "...........................####################################................", "..........................###################....##############................", ".......................############...####.......#########..###................", ".................#############..................#########......................", "................#############..................######..........................", "................###########...................#####............................", "...............##########.....................##...............................", "................#######........................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "................................................##.............................", "..........................................###########..........................", ".....................................##################........................", ".................................########################......................", "..............................############################.....................", ".............................###############################...................", "...........................##################...############...................", ".........................#################.......##########....................", ".......................#########................##########.....................", "....................#########..................######..##......................", ".................###########...................####............................", "................###########....................................................", "..................#######......................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", ".............................................######............................", ".........................................############..........................", ".....................................#################.........................", ".................................#######################.......................", "..............................############################.....................", ".............................##############################....................", "...........................################.....###########....................", "..........................##############........###########....................", "........................########................##########.....................", ".......................#######.................####....##......................", "...................##########...................#..............................", "..................##########...................................................", "...................#######.....................................................", "......................##.......................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...........................................########............................", "........................................############...........................", ".....................................################..........................", "..................................#####################........................", "...............................##########################......................", ".............................#############################.....................", "...........................###############......###########....................", "..........................###########...........###########....................", ".........................#######...............#####..####.....................", "........................######..................#......###.....................", "......................#######..................................................", "...................#########...................................................", "...................#######.....................................................", "......................##.......................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."], ["...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", ".............................................#####.............................", ".........................................###########...........................", "......................................###############..........................", "...................................###################.........................", "................................########################.......................", "...............................###########################.....................", ".............................##############.....###########....................", "............................#############.......###########....................", "..........................########..............###########....................", ".........................######................####....####....................", ".......................#######.................................................", "...................##########..................................................", "...................#########...................................................", ".....................######....................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "...............................................................................", "..............................................................................."]], GW = 79, GH = 48;
+  var cv = document.getElementById('bootfield'), ctx = cv.getContext('2d'), mark = document.getElementById('bmark'), S, LW, LH, ox, oy;
+  function size() {
+    var W = innerWidth, H = innerHeight; S = Math.max(3, Math.floor(Math.min(W * .62, 600) / GW));
+    LW = Math.ceil(W / S); LH = Math.ceil(H / S);
+    cv.width = LW; cv.height = LH; cv.style.width = LW * S + 'px'; cv.style.height = LH * S + 'px';
+    ox = Math.round(LW / 2 - GW / 2); oy = Math.round(LH * .44 - GH / 2);
+    mark.style.top = (oy + GH + 4) * S + 'px';
+  }
+  var CELLS = FRAMES.map(function (rows) { var c = []; rows.forEach(function (r, y) { for (var x = 0; x < r.length; x++) if (r[x] === '#') c.push(x, y); }); return c; });
+  function draw(i, dy, color) { var c = CELLS[i]; ctx.fillStyle = color; for (var k = 0; k < c.length; k += 2) ctx.fillRect(ox + c[k], oy + c[k + 1] + dy, 1, 1); }
+  /* sage (the used blocks) -> lime (the menu) -> green (the buttons) */
+  function mix(a, b, q) { var x = parseInt(a.slice(1), 16), y = parseInt(b.slice(1), 16), o = '#';
+    for (var sh = 16; sh >= 0; sh -= 8) { var v = Math.round(((x >> sh) & 255) * (1 - q) + ((y >> sh) & 255) * q); o += (v < 16 ? '0' : '') + v.toString(16); } return o; }
+  function tone(i) { return i <= 6 ? mix('#bcc69e', '#c3d84f', i / 6) : mix('#c3d84f', '#3c9a22', (i - 6) / 6); }
+
+  var t0 = 0, leaving = true;
+  function frame(now) {
+    if (leaving) return;
+    var t = (now - t0) / 1000;
+    ctx.fillStyle = '#f6f7f2'; ctx.fillRect(0, 0, LW, LH);
+    /* asleep: the lying pose fades in whole */
+    ctx.globalAlpha = Math.min(1, t / .5); draw(0, 0, tone(0)); ctx.globalAlpha = 1;
+    /* waking: one figure steps through the frames at ~11 fps, the lifting pose stays behind */
+    if (t > .8) {
+      var f = Math.min(12, Math.floor((t - .8) / .09));
+      if (f >= 6) draw(6, 0, tone(6));
+      var bob = f === 12 ? Math.round(Math.sin((t - .8 - 12 * .09) * 3)) : 0;
+      draw(f, bob, tone(f));
+    }
+    if (t > 3.5) { exit(); return; }
+    requestAnimationFrame(frame);
+  }
+  function play() {
+    size(); boot.classList.remove('out'); boot.hidden = false;
+    t0 = performance.now(); leaving = false; breathe();
+    requestAnimationFrame(frame);
+  }
+  window.swReplay = function () { if (reduce) return; play(); };
+
+  /* out: a plain fade into the page */
+  function exit() {
+    if (leaving) return; leaving = true;
+    boot.classList.add('out');
+    setTimeout(finish, reduce ? 0 : 460);
+  }
+  boot.addEventListener('click', exit);
+  document.addEventListener('keydown', function () { if (!leaving) exit(); });
+  if (seen || reduce) finish(); else play();
+})();
+</script>
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* shots: the project's screenshots and gameplay videos (a YouTube link, or a .mp4); the first is the one shown. 'file.jpg#x,y,zoom' shows a crop (the stand-ins use this
+     until the real screenshots arrive). no shots = the banner is shown */
+  var SAVES = [
+    { name: 'Something New', kind: 'In progress', writing: true,
+      shots: ['/assets/img/currently-01.jpg'],
+      about: 'Too early to say much. It changes every week.', credit: 'Lead developer · Uhm…Games?, a studio I run with friends', link: 'https://x.com/Uhm_Inc', cta: 'Follow updates on Twitter' },
+    { name: 'Elevator Brawl', kind: 'Beat ’em up',
+      thumb: '/assets/img/shots/eb-cover.jpg', shots: ['/assets/img/shots/eb-clip1.mp4', 'https://youtu.be/RD7W_eo1Auo', '/assets/img/shots/eb-still.jpg', '/assets/img/shots/eb-clip2.mp4', '/assets/img/shots/eb-clip3.mp4'],
+      about: 'Fists, teeth, and one very crowded elevator. A 3D beat ’em up with boss battles.', credit: 'Lead developer · Epic MegaJam 2025', link: 'https://aquagon.itch.io/elevator-brawl', cta: 'Play on itch.io' },
+    { name: 'Secret Santa Delivery', kind: 'Adventure', banner: '#d9463f',
+      shots: ['/assets/img/shots/ssd-cover.jpg', 'https://youtu.be/6dTnHTngXQY', '/assets/img/shots/ssd-1.jpg', '/assets/img/shots/ssd-3.jpg', '/assets/img/shots/ssd-5.jpg', '/assets/img/shots/ssd-2.jpg', '/assets/img/shots/ssd-4.jpg'],
+      about: 'You’re a cat. You drive a truck. You deliver Secret Santa gifts, but one of them goes to the cave…', credit: 'Lead developer · Comfy Jam: Winter 2026 · #4 in Macrow’s Picks', link: 'https://uhminc.itch.io/secret-santa-delivery', cta: 'Play on itch.io' },
+    { name: 'Shaped in Stars', kind: 'Puzzle platformer', banner: '#2a3a94',
+      thumb: '/assets/img/shots/sis-cover.jpg', shots: ['/assets/img/shots/sis-cover.jpg', 'https://youtu.be/c13i625FJ2o', '/assets/img/shots/sis-2.jpg', '/assets/img/shots/sis-3.jpg', '/assets/img/shots/sis-1.jpg', '/assets/img/shots/sis-4.jpg'],
+      about: 'Two realities, one ruined world, and a rift ability to stitch them back together.', credit: 'Programmer and designer · thatgamejam #01 · #2 for Best Gameplay', link: 'https://lonksadventures.itch.io/shaped-in-stars', cta: 'Play on itch.io' },
+    { name: 'BUILD Alumni', kind: 'Web design',
+      shots: ['/assets/img/build-alumni.jpg'],
+      about: 'Where BUILD.org’s alumni reconnect, find internships and scholarships, and coach the next generation.', credit: 'Designer and programmer · launched June 2026', link: 'https://build.org/alumni', cta: 'Visit BUILD Alumni' }
+  ];
+  SAVES.forEach(function (s) { s.shots = s.shots || []; s.at = 0; });
+  /* about: one line in the project's own voice (what it's like to play or use). credit: a small grey line with my part and where it was made.
+     no collaborator names; a role ("Lead developer" = most of the code, design and art) says it was a team without naming anyone */
+  function descHTML(s) { return (s.about || '') + (s.credit ? '<span class="credit">' + s.credit + '</span>' : ''); }
+
+  /* gameplay videos: a YouTube link plays embedded on the real site; where embedding is blocked
+     (this preview), it becomes a tile that opens the video. a .mp4 / .webm clip plays silently on a loop */
+  var EMBED = /(^|\.)jeralmics\.com$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
+  function youtubeId(src) { var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/.exec(src); return m ? m[1] : null; }
+  function isVideo(src) { return !!youtubeId(src) || /\.(mp4|webm)$/i.test(src); }
+  function shotImg(src) {
+    var yt = youtubeId(src);
+    if (yt && EMBED) return '<iframe src="https://www.youtube-nocookie.com/embed/' + yt + '?rel=0" title="Gameplay video" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>';
+    if (yt) return '<a class="ytile" href="https://www.youtube.com/watch?v=' + yt + '" target="_blank" rel="noopener"><span class="yplay" aria-hidden="true"></span><span>Watch the gameplay on YouTube</span></a>';
+    if (/\.(mp4|webm)$/i.test(src)) return '<video src="' + src + '" muted autoplay loop playsinline></video>';
+    var m = src.split('#'), st = '';
+    if (m[1]) { var c = m[1].split(','); st = ' style="object-position:' + c[0] + '% ' + c[1] + '%;transform:scale(' + c[2] + ');transform-origin:' + c[0] + '% ' + c[1] + '%"'; }
+    return '<img alt="" src="' + m[0] + '"' + st + '>';
+  }
+  function picture(s, k) {
+    if (s.notes) return '<div class="notes">' + s.notes.map(function (n) { return '<div><div class="tiny' + (n[0] === 'settled' ? '' : ' forming') + '">' + n[0] + '</div><p>' + n[1] + '</p></div>'; }).join('') + '</div>';
+    if (s.shots.length) return shotImg(s.shots[k || 0]);
+    return '<div class="banner" style="background:' + s.banner + '">' + s.name + '</div>';
+  }
+  /* a thumbnail is always a picture, never a video: the itch.io cover when there is one, else the first picture */
+  function thumb(s) {
+    if (s.thumb) return shotImg(s.thumb);
+    for (var k = 0; k < s.shots.length; k++) if (!isVideo(s.shots[k])) return picture(s, k);
+    return '<div class="banner" style="background:' + (s.banner || '#26262b') + '">' + s.name + '</div>';
+  }
+  /* more than one shot: a count and a button to the next one; tapping the picture does the same */
+  function navInner(s) { var n = s.shots.length; return n > 1 ? '<span>' + (s.at + 1) + ' / ' + n + '</span><button type="button" class="shotnext">Next ›</button>' : ''; }
+  function nextShot(i, picEl, navEl) {
+    var s = SAVES[i]; if (s.shots.length < 2) return;
+    s.at = (s.at + 1) % s.shots.length; picEl.innerHTML = picture(s, s.at); navEl.innerHTML = navInner(s); tick();
+  }
+
+  /* desktop */
+  var index = document.getElementById('index'), navs = [], sel = -1;
+  var pic = document.getElementById('pic'), descEl = document.getElementById('desc'), play = document.getElementById('play'), shotnav = document.getElementById('shotnav');
+  shotnav.addEventListener('click', function (e) { if (e.target.closest('.shotnext')) nextShot(sel, pic, shotnav); });
+  pic.addEventListener('click', function (e) { if (!e.target.closest('a, iframe, video')) nextShot(sel, pic, shotnav); });
+  SAVES.forEach(function (s, i) {
+    var li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = '<span class="n">' + s.name + (s.writing ? '<span class="dot" title="in progress"></span>' : '') + '</span><span class="k">' + s.kind + '</span>';
+    onHover(b, tick);
+    b.addEventListener('click', function () { choose(i); });
+    li.appendChild(b); index.appendChild(li); navs.push(b);
+  });
+  function choose(i, quiet) {
+    if (sel >= 0) navs[sel].removeAttribute('aria-current');
+    sel = i; navs[i].setAttribute('aria-current', 'true');
+    var s = SAVES[i];
+    if (!quiet) { click(); linkTo(i); }
+    pic.innerHTML = picture(s, s.at); shotnav.innerHTML = navInner(s);
+    pic.classList.toggle('more-shots', s.shots.length > 1);
+    descEl.innerHTML = descHTML(s);
+    if (s.link) { play.hidden = false; play.href = s.link; play.textContent = s.cta; } else play.hidden = true;
+  }
+  document.addEventListener('keydown', function (e) {
+    if (window.innerWidth <= 860 || (e.key !== 'ArrowDown' && e.key !== 'ArrowUp')) return;
+    e.preventDefault();
+    var j = (sel + (e.key === 'ArrowDown' ? 1 : -1) + SAVES.length) % SAVES.length;
+    choose(j); navs[j].focus();
+  });
+
+  /* phone: rows that open in place */
+  var list = document.getElementById('list'), rows = [];
+  function openRow(i, quiet) {
+    var r = rows[i], open = quiet ? true : r.b.getAttribute('aria-expanded') !== 'true';
+    rows.forEach(function (q) { q.b.setAttribute('aria-expanded', 'false'); q.more.hidden = true; });
+    r.b.setAttribute('aria-expanded', String(open)); r.more.hidden = !open;
+    if (open) {
+      r.more.querySelector('.pic').innerHTML = picture(SAVES[i], SAVES[i].at); r.more.querySelector('.shotnav').innerHTML = navInner(SAVES[i]);
+      sel = i; if (quiet) return;
+      click(); linkTo(i);
+      r.b.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  SAVES.forEach(function (s, i) {
+    var li = document.createElement('li');
+    li.innerHTML = '<button type="button" class="row" aria-expanded="false" aria-controls="more' + i + '">' +
+      '<span class="th">' + thumb(s) + '</span><span><span class="n">' + s.name + (s.writing ? '<span class="dot"></span>' : '') + '</span><span class="k">' + s.kind + '</span></span><span class="chev" aria-hidden="true">&#9654;</span></button>' +
+      '<div class="more" id="more' + i + '" hidden>' +
+        (s.notes ? picture(s) : '<div class="frame"><div class="pic">' + picture(s, 0) + '</div></div><div class="shotnav"></div>') +
+        (s.about ? '<p class="desc">' + descHTML(s) + '</p>' : '') +
+        (s.link ? '<a class="play" href="' + s.link + '" target="_blank" rel="noopener">' + s.cta + '</a>' : '') +
+      '</div>';
+    var b = li.querySelector('.row'), more = li.querySelector('.more'), mpic = more.querySelector('.pic'), mnav = more.querySelector('.shotnav');
+    if (mnav) {
+      mnav.addEventListener('click', function (e) { if (e.target.closest('.shotnext')) nextShot(i, mpic, mnav); });
+      mpic.addEventListener('click', function (e) { if (!e.target.closest('a, iframe, video')) nextShot(i, mpic, mnav); });
+    }
+    rows.push({ b: b, more: more });
+    b.addEventListener('click', function () { openRow(i); });
+    list.appendChild(li);
+  });
+
+  /* work / about tabs (version B). about shows me in the frame */
+  function showAbout() {
+    pic.innerHTML = '<img alt="Jeralmi" src="/assets/img/jeralmi-photo.jpg">'; pic.classList.add('as-portrait');
+    descEl.textContent = "that's me.";
+    play.hidden = false; play.href = 'mailto:jeralmicw@gmail.com'; play.textContent = 'write to me';
+  }
+  document.querySelectorAll('.tabs').forEach(function (tabs) {
+    var btns = tabs.querySelectorAll('button'), scope = tabs.parentElement;
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); });
+        var about = b.dataset.tab === 'about';
+        scope.querySelector('[data-pane="work"]').hidden = about;
+        scope.querySelector('[data-pane="about"]').hidden = !about;
+        if (scope.classList.contains('panel')) { if (about) showAbout(); else { pic.classList.remove('as-portrait'); choose(sel, true); } }
+        click();
+      });
+    });
+  });
+  /* the panel keeps its height when the tab changes, so nothing around it moves */
+  var panel = document.querySelector('.grid .panel');
+  function holdPanel() { if (document.getElementById('index').hidden) return; panel.style.height = ''; panel.style.height = panel.offsetHeight + 'px'; }
+  holdPanel(); window.addEventListener('resize', holdPanel);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(holdPanel);
+
+  /* the A / B switch for where "about" lives; remembered in this browser */
+  var ver = 'a';
+  function setVer(v) {
+    ver = v; document.body.classList.toggle('v-a', v === 'a'); document.body.classList.toggle('v-b', v === 'b');
+    if (v === 'a') document.querySelectorAll('.tabs button[data-tab="work"]').forEach(function (b) { if (b.getAttribute('aria-selected') !== 'true') b.click(); });
+    try { localStorage.setItem('jc-about', v); } catch (e) {}
+    holdPanel();
+  }
+  document.querySelectorAll('#versions input').forEach(function (r) { r.checked = r.value === ver; r.addEventListener('change', function () { setVer(r.value); }); });
+  setVer(ver);
+  choose(0, true);
+
+  /* every project has its own link (jeralmics.com/#elevator-brawl) to send someone straight to it */
+  function slug(s) { return s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  function linkTo(i) { try { history.replaceState(null, '', '#' + slug(SAVES[i])); } catch (e) {} }
+  var start = 0, wanted = location.hash.slice(1);
+  SAVES.forEach(function (s, i) { if (slug(s) === wanted) start = i; });
+  if (start) choose(start, true);
+  /* on a phone, a project is open from the start, so the first screen shows a picture */
+  if (window.matchMedia('(max-width: 860px)').matches) openRow(start, true);
+
+  /* sound on / off, for the whole page; remembered in this browser */
+  var soundBtn = document.getElementById('soundbtn');
+  try { if (localStorage.getItem('jc-sound') === 'off') window.jcSound = false; } catch (e) {}
+  function soundLabel() { var on = window.jcSound !== false, l = on ? 'Sound on' : 'Sound off'; soundBtn.setAttribute('aria-pressed', String(on)); soundBtn.setAttribute('aria-label', l); soundBtn.title = l; }
+  soundBtn.addEventListener('click', function () {
+    window.jcSound = window.jcSound === false; soundLabel();
+    try { localStorage.setItem('jc-sound', window.jcSound ? 'on' : 'off'); } catch (e) {}
+  });
+  soundLabel();
+
+  /* small rollover sounds; browsers allow them after the first tap */
+  var ac = null;
+  function wake() { if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } }
+  document.addEventListener('pointerdown', wake, { once: true });
+  /* the original little beeps for hovering and clicking (Jeralmi preferred them to the wooden version) */
+  function live() { return ac && ac.state === 'running' && window.jcSound !== false ? ac : null; }
+  function tone(f, d, v, type) {
+    var a = live(); if (!a) return;
+    var o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+    o.type = type || 'square'; o.frequency.value = f; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d + .02);
+  }
+  /* no two at once: a hover tick never lands on top of a click, and ticks don't stack when the pointer sweeps */
+  var lastTick = 0, lastClick = 0;
+  function tick() { var n = performance.now(); if (n - lastClick < 250 || n - lastTick < 60) return; lastTick = n; tone(2400, .02, .025); }
+  function click() { lastClick = performance.now(); tone(1200, .05, .03); }
+  /* hover sounds only for a real mouse: on a touchscreen a tap also counts as a hover and would double up */
+  function onHover(el, fn) { el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') fn(); }); }
+  /* the bird's chirp: when the bird on the wire lands (now and then), and on the Twitter link */
+  window.jcPlay = { chirp: function () {
+    var a = live(); if (!a || document.hidden) return;
+    [0, .09].forEach(function (w, k) {
+      var t = a.currentTime + w, o = a.createOscillator(), g = a.createGain(); o.type = 'sine';
+      o.frequency.setValueAtTime(3000 + k * 300, t); o.frequency.exponentialRampToValueAtTime(4200 + k * 300, t + .05);
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.012, t + .008); g.gain.exponentialRampToValueAtTime(.0001, t + .07);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + .09);
+    });
+  } };
+  /* the Twitter link at the top chirps like the bird; every other link and button ticks */
+  document.querySelectorAll('.reach a, .play').forEach(function (el) {
+    var bird = el.closest('.reach') && /(x|twitter)\.com\//.test(el.getAttribute('href') || '');
+    onHover(el, bird ? function () { window.jcPlay.chirp(); } : tick);
+    if (bird) el.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') { wake(); window.jcPlay.chirp(); } });
+  });
+
+})();
+</script>
+<script>
+/* the year garden: one small pixel plant for every day of the year so far, a dot for every day to come.
+   each plant is drawn once into a small canvas and stamped; only today's square, a few gestures, a breeze and the odd mote move */
+function YearGarden(o) {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ICONS = [
+    ['...#.#...', '..#.#.#..', '...###...', '..#.#.#..', '...#.#...', '....#....', '..#.#....', '...##....', '....#....'],
+    ['..#.#.#..', '..#####..', '..#...#..', '...###...', '....#....', '.#..#....', '..#.#.#..', '...###...', '....#....'],
+    ['.........', '.........', '.##...##.', '#..#.#..#', '.##.#.##.', '....#....', '....#....', '....#....', '...###...'],
+    ['.........', '..#####..', '.#.#.#.#.', '#########', '...#.#...', '...#.#...', '...#.#...', '..#####..', '.........'],
+    ['.........', '#...#...#', '#..#.#..#', '.#.#.#.#.', '.#.#.#.#.', '.##...##.', '..#.#.#..', '..#.#.#..', '#########'],
+    ['..##.##..', '.#..#..#.', '.#..#..#.', '..##.##..', '.#..#..#.', '..##.##..', '....#....', '...#.....', '...#.....'],
+    ['....###..', '...#...#.', '..#.....#', '..#.....#', '...#.#.#.', '....#....', '....#....', '..#.#....', '...##....'],
+    ['..#.#.#..', '.#.....#.', '#..#.#..#', '...###...', '#..#.#..#', '.#.....#.', '..#.#.#..', '....#....', '....#....'],
+    ['...###...', '..#...#..', '..#.##.#.', '..#.#..#.', '...#..#..', '....##...', '....#....', '.##.#....', '...##....'],
+    ['.........', '..#.#.#..', '.#.#.#.#.', '..#.#.#..', '.#.#.#.#.', '...#.#...', '....#....', '....#....', '...###...'],
+    ['....#....', '...###...', '..#.#.#..', '.#..#..#.', '....#....', '..#.#.#..', '.#..#..#.', '....#....', '....#....'],
+    ['...###...', '..#####..', '.#######.', '..#####..', '...###...', '....#....', '....#....', '...###...', '.........'],
+    ['....#....', '.#..#..#.', '..#.#.#..', '...###...', '#########', '...###...', '..#.#.#..', '.#..#..#.', '....#....'],
+    ['.........', '.#.....#.', '.##...##.', '.#.#.#.#.', '..#.#.#..', '...###...', '....#....', '....#....', '....#....'],
+    ['.........', '...##....', '..#..#...', '.#....#..', '.#...#...', '..#.#..#.', '...#..##.', '....##...', '....#....'],
+    ['..#...#..', '.###.###.', '..#...#..', '..#...#..', '...#.#...', '....#....', '....#....', '...#.#...', '..#...#..'],
+    ['....#....', '...###...', '.#.###...', '.#.###.#.', '.#####.#.', '...#####.', '...###...', '...###...', '..#####..'],
+    ['....#....', '...###...', '..#####..', '...###...', '..#####..', '.#######.', '...###...', '....#....', '...###...'],
+    ['..#.#.#..', '.#######.', '..##.##..', '.#######.', '..#.#.#..', '....#....', '.##.#....', '...##.##.', '....#....'],
+    ['..#...#..', '.##..##..', '.##..##.#', '.##..##.#', '..#.#.#.#', '..#.#.#..', '..#.#.#..', '..#.#.#..', '.#######.'],
+    ['..#...#..', '..#..##..', '.###.#...', '..#..#...', '..#..###.', '.###.#...', '..#..#.#.', '..#..##..', '..#..#...'],
+    ['....#....', '.#..#..#.', '..#.#.#..', '#..###..#', '.#.###.#.', '..#####..', '.#######.', '..#####..', '.........'],
+    ['...###...', '..#.#.#..', '.#.##..#.', '.#..#.#..', '..###.#..', '....##...', '.##.#....', '...##....', '....#....'],
+    ['....#....', '...#.#...', '....#....', '...#.#...', '....#....', '...#.#...', '....#....', '....#....', '....#....'],
+    ['..#####..', '.#.#.#.#.', '.#######.', '.#.#.#.#.', '..#####..', '....#....', '....#....', '...##....', '....#....'],
+    ['.#...#...', '###.###.#', '.#...#.##', '###.###.#', '.#...#..#', '..#..#.#.', '..#..#.#.', '...#.##..', '....##...'],
+    ['.........', '....#....', '...#.....', '.#######.', '#.#.#.#.#', '#.#.#.#.#', '#.#.#.#.#', '.#######.', '.........'],
+    ['.........', '.###.....', '#####....', '..#..###.', '..#.#####', '..#...#..', '..#...#..', '.###.###.', '.........'],
+    ['...####..', '..#.#..#.', '.#.#.#.#.', '.#..#.#..', '..#.#.#..', '...###...', '....#....', '....#....', '....#....'],
+    ['.##...##.', '#..#.#..#', '...###...', '..#.#.#..', '.#..#..#.', '....#....', '....#....', '....#....', '...###...'],
+    ['..#.#.#..', '...###...', '....#....', '...###...', '...###...', '...###...', '....#....', '....#....', '.........'],
+    ['...#.#...', '..#####..', '.#.#.#.#.', '.#######.', '.#.#.#.#.', '..#####..', '...#.#...', '....#....', '.........']
+  ];
+  var N = 9, HEAD = 4, PAD = 3, GREEN = '#3c9a22', INK = '#26262b', DOT = '#c3cba6', LIME = '#d9ee6a', MOTE = '#b9d43c';
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  var now = o.now || new Date(), Y = now.getFullYear();
+  var days = Math.round((new Date(Y + 1, 0, 1) - new Date(Y, 0, 1)) / 864e5);
+  var today = Math.round((new Date(Y, now.getMonth(), now.getDate()) - new Date(Y, 0, 1)) / 864e5);
+  if (o.yearEl) o.yearEl.textContent = Y;
+  if (o.countEl) o.countEl.innerHTML = '<b>' + (today + 1) + '</b> grown, ' + (days - today - 1) + ' to go';
+  var icon = []; for (var d = 0; d < days; d++) icon.push(Math.floor(rng(Y * 1000 + d)() * ICONS.length));
+
+  /* special days: o.marks = [{ date: 'YYYY-MM-DD', title, text?, link?, linkText? }]. a grown plant on that day is drawn
+     in its own colour (o.markColor) with a small sparkle,
+     and hovering or tapping it opens a card with its lore. days of other years, or still to come, are left out */
+  var marks = {}, markColor = o.markColor || '#c23b8f';
+  (o.marks || []).forEach(function (m) {
+    var q = String(m.date).split('-').map(Number); if (q[0] !== Y) return;
+    var md = Math.round((new Date(Y, q[1] - 1, q[2]) - new Date(Y, 0, 1)) / 864e5);
+    if (md >= 0 && md <= today) marks[md] = m;
+  });
+
+  var cv = o.canvas, ctx = cv.getContext('2d');
+  var S = 3, CELL, cols, rows, dpr = 1, stamps = {}, t0 = null, hover = -1, hop = {};
+  var lastWaveCol = -1, rolled = false;
+  var gestures = {}, nextGesture = 2.2, breeze = -99, nextBreeze = 1.5, motes = [], nextMote = 2, lastT = 0, visible = false, running = false;
+
+  /* each icon drawn once per size and colour */
+  function stamp(i, col) {
+    var key = i + col + S;
+    if (!stamps[key]) {
+      var c = document.createElement('canvas'); c.width = N * S * dpr; c.height = N * S * dpr;
+      var g = c.getContext('2d'); g.fillStyle = col; g.scale(dpr, dpr);
+      ICONS[i].forEach(function (row, r) { for (var k = 0; k < N; k++) if (row[k] === '#') g.fillRect(k * S, r * S, S, S); });
+      stamps[key] = c;
+    }
+    return stamps[key];
+  }
+  function layout() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    var w = cv.parentElement.clientWidth;
+    var s2 = w > 700 ? 3 : 2; if (s2 !== S) stamps = {}; S = s2;
+    CELL = (N + PAD) * S;
+    cols = Math.max(7, Math.floor(w / CELL)); rows = Math.ceil(days / cols);
+    var gw = cols * CELL, gh = rows * CELL;
+    cv.style.width = gw + 'px'; cv.style.height = gh + 'px'; cv.width = Math.round(gw * dpr); cv.height = Math.round(gh * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.imageSmoothingEnabled = false;
+    stamps = {};
+    if (!running) draw();
+  }
+  function at(d) { return { x: (d % cols) * CELL, y: Math.floor(d / cols) * CELL }; }
+  /* stamp rows [r0, r1) of an icon, shifted sideways by lean pixels and up by lift */
+  function part(img, x, y, r0, r1, lean, lift) {
+    if (r1 <= r0) return;
+    ctx.drawImage(img, 0, r0 * S * dpr, N * S * dpr, (r1 - r0) * S * dpr, x + lean * S, y + r0 * S - lift, N * S, (r1 - r0) * S);
+  }
+
+  /* ---- sound: only after the visitor's first tap (browsers ask for that) ----
+     plants sound like plants: brushing past one rustles its leaves, a tap gives a small wooden tok.
+     the wind follows the drawing frame by frame: each breeze is heard for exactly as long as it crosses the garden,
+     moving left to right with it, and the leaves it passes rustle as they lean. the roll-in rises the same way
+     and ends in a little win chime the moment the last plant appears */
+  var ac = null, lastNote = 0;
+  function audio() {
+    if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { ac = false; } }
+    if (ac && ac.state === 'suspended') ac.resume();
+    return ac || null;
+  }
+  document.addEventListener('pointerdown', audio, { once: true });
+  function quiet() { return window.jcSound === false; }               /* the page's sound on / off */
+  function note(f, dur, vol, type, to, when, pan) {
+    var a = ac; if (!a || a.state !== 'running' || quiet()) return;
+    var o = a.createOscillator(), g = a.createGain(), t = a.currentTime + (when || 0);
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+    if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur * .8);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g);
+    if (pan && a.createStereoPanner) { var sp = a.createStereoPanner(); sp.pan.value = pan; g.connect(sp); sp.connect(a.destination); } else g.connect(a.destination);
+    o.start(t); o.stop(t + dur + .03);
+  }
+  /* leaves: soft pink noise (warmer than white), filtered low and shaped to swell in and out */
+  var noiseBuf = null;
+  function pink(a) {
+    if (noiseBuf) return noiseBuf;
+    noiseBuf = a.createBuffer(1, Math.round(a.sampleRate * 2.5), a.sampleRate);
+    var ch = noiseBuf.getChannelData(0), b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (var i = 0; i < ch.length; i++) {
+      var w = Math.random() * 2 - 1;
+      b0 = .99886 * b0 + w * .0555179; b1 = .99332 * b1 + w * .0750759; b2 = .969 * b2 + w * .153852;
+      b3 = .8665 * b3 + w * .3104856; b4 = .55 * b4 + w * .5329522; b5 = -.7616 * b5 - w * .016898;
+      ch[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * .5362) * .11; b6 = w * .115926;
+    }
+    return noiseBuf;
+  }
+  function rustle(f, vol, dur, when, pan) {
+    var a = ac; if (!a || a.state !== 'running' || quiet()) return;
+    var t = a.currentTime + (when || 0), src = a.createBufferSource(), bp = a.createBiquadFilter(), lp = a.createBiquadFilter(), g = a.createGain();
+    src.buffer = pink(a); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = .7; lp.type = 'lowpass'; lp.frequency.value = 3200;
+    var up = Math.min(.03, dur / 4);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + up); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    src.connect(bp); bp.connect(lp); lp.connect(g);
+    if (pan && a.createStereoPanner) { var sp = a.createStereoPanner(); sp.pan.value = pan; g.connect(sp); sp.connect(a.destination); } else g.connect(a.destination);
+    src.start(t, Math.random() * 2); src.stop(t + dur + .03);
+  }
+  /* the wind: a light rustling breeze with a few quiet wind chimes in it (air alone and chimes alone were tried) */
+  var windStyle = 'leaves';
+  var WIND = {
+    leaves: { buf: pink, type: 'lowpass', q: .5, lo: 380, hi: 900, vol: .05, leaves: .45, chimes: .22 }
+  };
+  var CHIME = [1047, 1175, 1319, 1568, 1760, 2093];
+  function chimeNote(pan) { var f = CHIME[Math.floor(Math.random() * CHIME.length)]; note(f, 1.8, .008, 'sine', null, 0, pan); note(f * 2.76, .7, .002, 'sine', null, 0, pan); }
+  /* the wind: one soft bed of noise that the drawing steers every frame, so what you hear is what you see.
+     it rises the moment a breeze or the roll-in starts, lasts exactly as long as it's on screen, and pans with the wave */
+  var bed = null;
+  function bedSet(vol, f, p) {
+    var a = ac; if (!a || a.state !== 'running') return;
+    if (quiet()) vol = 0;
+    if (!bed || bed.style !== windStyle) {
+      if (bed) { try { bed.g.gain.setTargetAtTime(0, a.currentTime, .03); bed.src.stop(a.currentTime + .2); } catch (e) {} }
+      var W = WIND[windStyle], src = a.createBufferSource(), lp = a.createBiquadFilter(), g = a.createGain(), sp = a.createStereoPanner ? a.createStereoPanner() : null;
+      src.buffer = W.buf(a); src.loop = true; lp.type = W.type; lp.Q.value = W.q; lp.frequency.value = W.lo; g.gain.value = 0;
+      src.connect(lp); if (sp) { lp.connect(sp); sp.connect(g); } else lp.connect(g); g.connect(a.destination); src.start(0, Math.random() * 2);
+      bed = { lp: lp, g: g, sp: sp, src: src, style: windStyle };
+    }
+    var t = a.currentTime;
+    bed.g.gain.setTargetAtTime(vol, t, .05); bed.lp.frequency.setTargetAtTime(f, t, .07); if (bed.sp) bed.sp.pan.setTargetAtTime(p, t, .07);
+  }
+  function bedOff() { if (bed && ac) bed.g.gain.setTargetAtTime(0, ac.currentTime, .04); }
+  document.addEventListener('visibilitychange', function () { if (document.hidden) bedOff(); });
+  var PENTA = [0, 2, 4, 7, 9];
+  function pitch(d) { var c = d % cols, r = Math.floor(d / cols), k = (c + r * 3) % 10; return 440 * Math.pow(2, (72 + PENTA[k % 5] + 12 * Math.floor(k / 5) - 69) / 12); }
+  function leaf(d) { return 950 + (pitch(d) - 523) * .9; }        /* each plant rustles a little higher or lower */
+  function brush(d) { var n = performance.now(); if (n - lastNote < 60) return; lastNote = n; var f = leaf(d); rustle(f, .05, .17); rustle(f * 1.3, .025, .13, .045); }
+  function pluck(d) { var f = pitch(d) * .5; note(f, .1, .045, 'triangle', f * .7); rustle(leaf(d) * 1.2, .055, .22); rustle(leaf(d) * .9, .025, .16, .07); }
+  function chime() { pluck(today); var f = pitch(today); note(f, .7, .022, 'sine', null, .05); note(f * 1.5, .8, .016, 'sine', null, .14); }
+  function tapDot() { note(150, .07, .03, 'sine', 110); rustle(600, .02, .08); }
+  function step() { rustle(1100 + Math.random() * 500, .022, .11); }
+  /* the moment the last plant of the year appears: a small win chime */
+  function winChime() {
+    [523, 659, 784, 1047].forEach(function (f, k) { note(f, .55, .03, 'triangle', null, k * .09); });
+    note(2093, .9, .013, 'sine', null, .38);
+  }
+  /* the lore card: a paper swish and a soft bell */
+  function cardSound() { rustle(2600, .03, .14); note(1318, .55, .018, 'sine', null, .03); note(1976, .7, .01, 'sine', null, .1); }
+  function mrrp() { note(330, .26, .035, 'triangle', 520); setTimeout(function () { note(520, .16, .025, 'triangle', 400); }, 150); }
+  function pat() { note(120, .06, .03, 'sine', 90); rustle(900, .045, .14); }
+  /* ---- the cat: asleep where tomorrow will grow ----
+     tap it and it stretches and goes for a wander among the plants; tap a plant while it's awake and it leaps there.
+     left alone it comes home, turns twice and curls up again, breathing with the page */
+  function sprite(rows) { var c = []; rows.forEach(function (r, y) { for (var x = 0; x < r.length; x++) if (r[x] === '#') c.push(x, y); }); return { w: rows[0].length, h: rows.length, c: c }; }
+  var CAT = {      /* black, side-on, facing right: a 4x3 head with corner-pixel ears, one-pixel tail and legs.
+                       it sits with its tail wrapped round its paws, walks, jumps in stages, and falls asleep curled in a ball */
+    sit:       sprite(['......#..#.', '......####.', '......####.', '......####.', '.....###...', '....#####..', '...######..', '...######..', '...######.#', '...#######.']),
+    sit_ear:   sprite(['.........#.', '......####.', '......####.', '......####.', '.....###...', '....#####..', '...######..', '...######..', '...######.#', '...#######.']),
+    sit_look:  sprite(['...#..#....', '...####....', '...####....', '...####....', '....###....', '...#####...', '..######...', '..######...', '..######.#.', '..########.']),
+    walk1:     sprite(['#.......#..#', '#.......####', '.#......####', '.#.....#####', '..#########.', '..########..', '..#.....#...', '.#.......#..']),
+    walk2:     sprite(['.#......#..#', '.#......####', '.#......####', '..#....#####', '..#########.', '..########..', '...#...#....', '...#...#....']),
+    walk3:     sprite(['#.......#..#', '#.......####', '.#......####', '.#.....#####', '..#########.', '..########..', '...#.....#..', '....#...#...']),
+    walk4:     sprite(['.#......#..#', '.#......####', '.#......####', '..#....#####', '..#########.', '..########..', '...#...#....', '...#...#....']),
+    jump1:     sprite(['............', '............', '........#..#', '........####', '#.......####', '.##.########', '..##########', '..#.#....#.#']),
+    jump2:     sprite(['..........#..#', '..........####', '..........####', '.........####.', '#.......#####.', '.#....#####...', '..#######.....', '..######......', '.#..#.........', '#.............']),
+    jump3:     sprite(['............#..#', '............####', '##..........####', '..#.....#######.', '...##########...', '...#########....', '..#..........#..', '.#............#.']),
+    jump4:     sprite(['.........#..#', '.........####', '.........####', '#.......#####', '.#...#######.', '..########...', '..#######.#..', '...#.....#...', '..........#..']),
+    land:      sprite(['............', '............', '........#..#', '........####', '##......####', '..##########', '..##########', '.##.#...#.##']),
+    sleep1:    sprite(['...........', '.......#..#', '.......####', '.......####', '......####.', '....#####..', '...######..', '...######..', '...######.#', '...#######.']),
+    sleep2:    sprite(['............', '............', '........#..#', '........####', '.......#####', '.....#####..', '...#######..', '...########.', '...#########', '...#.....#..']),
+    sleep3:    sprite(['.............', '.............', '.............', '.............', '.........#..#', '.........####', '.........####', '..##########.', '.###########.', '.#.......#.#.']),
+    sleep4:    sprite(['.............', '.............', '.............', '.............', '.............', '.........#..#', '.........####', '..###########', '.############', '#.#......#.#.']),
+    sleep5:    sprite(['.............', '.............', '.............', '.............', '.............', '.............', '.........#..#', '..###########', '.############', '#############']),
+    sleep6:    sprite(['.............', '.............', '.............', '.............', '.............', '.........#..#', '....#########', '..###########', '.############', '.###########.']),
+    curl:      sprite(['.........#..#', '....#########', '..###########', '.############', '.###########.']),
+    curl2:     sprite(['.............', '....#####.#.#', '..###########', '.############', '.###########.']),
+    curl_ear:  sprite(['............#', '....#########', '..###########', '.############', '.###########.']),
+    curl_tail: sprite(['.........#..#', '....#########', '..###########', '.############', '############.']),
+    stretch:   sprite(['#..............', '.#.............', '.###...........', '.######........', '.#.######..#..#', '.#..#########..', '.#..#....######'])
+  };
+  var home = today + 1 < days ? today + 1 : Math.max(0, today - 1);
+  var cat = { at: home, face: -1, mode: 'sleep', t0: 0, idle: 0, jump: null, walk: null, roam: 0, look: 0 };
+  function feet(d) { var p = at(d); return { x: p.x + CELL / 2, y: p.y + PAD * S / 2 + N * S }; }
+  function catPos() {
+    if (cat.mode === 'air' && cat.jump) return { x: cat.jump.x, y: cat.jump.y };
+    if (cat.mode === 'walk' && cat.walk) return { x: cat.walk.x, y: cat.walk.y };
+    return feet(cat.at);
+  }
+  function catBox() { var f = catPos(); return { x: f.x - 8 * S, y: f.y - 11 * S, w: 16 * S, h: 12 * S }; }
+  function overCat(e) {
+    var r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, b = catBox();
+    return x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h;
+  }
+  /* getting about: it walks to plants along its own row, and jumps for another row or anything far */
+  function moveTo(d, then) {
+    if (d === cat.at) { if (then) then(); return; }
+    var now = performance.now(), a = feet(cat.at), b = feet(d);
+    if (reduce) { cat.at = d; cat.mode = 'stand'; cat.idle = now; if (then) then(); return; }
+    cat.face = b.x > a.x ? 1 : -1;
+    if (a.y === b.y && Math.abs(b.x - a.x) <= CELL * 6) {
+      cat.walk = { x0: a.x, x1: b.x, x: a.x, y: a.y, to: d, then: then, dur: Math.abs(b.x - a.x) / (CELL * 1.25) * 1000 };
+      cat.mode = 'walk'; cat.t0 = now;
+    } else {
+      var dist = Math.hypot(b.x - a.x, b.y - a.y) / CELL, peak = Math.max(10 * S, Math.min(a.y, b.y) - CELL * (.55 + Math.min(1.2, dist * .22)));
+      cat.jump = { x0: a.x, y0: a.y, x1: b.x, y1: b.y, cy: 2 * peak - (a.y + b.y) / 2, dur: 380 + Math.min(520, dist * 70), wind: dist > 3 ? 420 : 220, to: d, then: then, x: a.x, y: a.y };
+      cat.mode = 'crouch'; cat.t0 = now;
+    }
+    wake();
+  }
+  function wander() {
+    /* somewhere grown nearby: mostly along its own row, sometimes up a row */
+    var tries = 24, c0 = cat.at % cols, r0 = Math.floor(cat.at / cols);
+    while (tries--) {
+      var r = Math.max(0, r0 - (Math.random() < .3 ? 1 : 0)), c = Math.max(0, Math.min(cols - 1, c0 + Math.round((Math.random() * 2 - 1) * 5))), d = r * cols + c;
+      if (d <= today && d !== cat.at && d !== home) return moveTo(d, function () { hop[d] = S * 2; });
+    }
+  }
+  function goHome() { moveTo(home, function () { cat.mode = 'settle'; cat.t0 = performance.now(); }); }
+  function catTap() {
+    var now = performance.now();
+    if (cat.mode === 'sleep') { cat.mode = 'wake'; cat.t0 = now; mrrp(); return; }
+    if (cat.mode === 'stand') { mrrp(); cat.look = now; cat.idle = now; }      /* it turns to look at you */
+  }
+  /* a run of frames, each held for its own time; returns the frame for el ms in, or null when done */
+  function seq(frames, el) { for (var i = 0; i < frames.length; i++) { if (el < frames[i][1]) return frames[i][0]; el -= frames[i][1]; } return null; }
+  var FALL_ASLEEP = [['sit', 500], ['sit_look', 700], ['sit', 300], ['sleep1', 380], ['sleep2', 300], ['sleep3', 420], ['sleep4', 360], ['sleep5', 420], ['sleep6', 380]];
+  var WAKE_UP = [['curl_ear', 260], ['sleep6', 180], ['sleep5', 180], ['sleep4', 200], ['stretch', 650], ['sleep3', 200], ['sleep2', 160], ['sleep1', 160], ['sit', 200]];
+
+  function drawCat(now) {
+    var el = now - cat.t0, f = feet(cat.at), t = now / 1000, name = 'sit', x = f.x, y = f.y;
+    if (cat.mode === 'sleep') {
+      var p = ((t % 10) + 10) % 10 / 10;                                  /* 4 s in, 6 s out, like the rest of the page */
+      name = reduce || (p < .4 ? p / .4 : 1 - (p - .4) / .6) > .5 ? 'curl' : 'curl2';
+      if (!reduce && (t % 7.3) < .2) name = 'curl_ear';                   /* an ear twitches as it dreams */
+      if (!reduce && (t % 11.9) < .45) name = 'curl_tail';                /* and the tip of the tail */
+    } else if (cat.mode === 'wake') {
+      name = seq(WAKE_UP, el);
+      if (!name) { name = 'sit'; cat.mode = 'stand'; cat.idle = now; cat.roam = 0; wander(); }
+    } else if (cat.mode === 'settle') {
+      name = seq(FALL_ASLEEP, el);
+      if (!name) { name = 'curl'; cat.mode = 'sleep'; cat.t0 = now; }
+    } else if (cat.mode === 'walk') {
+      var w = cat.walk, u = Math.min(1, el / w.dur);
+      w.x = w.x0 + (w.x1 - w.x0) * u; x = w.x; y = w.y;
+      var cellNow = Math.round((w.x - CELL / 2) / CELL); if (cellNow !== w.cell) { w.cell = cellNow; step(); }   /* a rustle for each plant it passes */
+      name = 'walk' + (Math.floor(el / 130) % 4 + 1);
+      if (u >= 1) { cat.at = w.to; cat.mode = 'stand'; cat.idle = now; cat.walk = null; if (w.then) w.then(); }
+    } else if (cat.mode === 'crouch') {
+      var j = cat.jump; name = 'jump1'; x = j.x0; y = j.y0;
+      if (j.wind > 300 && el > 120 && el < j.wind - 60) x += Math.floor(el / 60) % 2 ? S / 2 : -S / 2;   /* a wiggle before a big one */
+      if (el > j.wind) { cat.mode = 'air'; cat.t0 = now; }
+    } else if (cat.mode === 'air') {
+      var j2 = cat.jump, u2 = Math.min(1, el / j2.dur), v = 1 - u2;
+      j2.x = v * v * j2.x0 + 2 * u2 * v * (j2.x0 + j2.x1) / 2 + u2 * u2 * j2.x1; j2.y = v * v * j2.y0 + 2 * u2 * v * j2.cy + u2 * u2 * j2.y1;
+      x = j2.x; y = j2.y; name = u2 < .22 ? 'jump2' : u2 < .68 ? 'jump3' : 'jump4';
+      if (u2 >= 1) {
+        cat.at = j2.to; cat.mode = 'land'; cat.t0 = now; pat(); if (j2.then) j2.then();
+        hop[j2.to] = S * 2; var lc = j2.to % cols;                      /* the plant it lands by bounces, its neighbours sway */
+        if (lc > 0 && j2.to - 1 <= today) gestures[j2.to - 1] = { k: 'sway', at: t0 === null ? 0 : (now - t0) / 1000, dir: -1 };
+        if (lc < cols - 1 && j2.to + 1 <= today) gestures[j2.to + 1] = { k: 'sway', at: t0 === null ? 0 : (now - t0) / 1000, dir: 1 };
+      }
+    } else if (cat.mode === 'land') {
+      name = 'land'; if (el > 160) { cat.mode = 'stand'; cat.idle = now; }
+    } else if (cat.mode === 'stand') {
+      name = reduce ? 'sit' : now - cat.look < 1400 ? 'sit_look' : (t % 6.1) < .25 ? 'sit_ear' : 'sit';
+      /* a short wander, then home to sleep */
+      if (now - cat.idle > 3400 && !reduce) {
+        if (cat.at !== home && cat.roam < 2 && Math.random() < .55) { cat.roam++; wander(); }
+        else if (cat.at !== home) goHome();
+        else { cat.mode = 'settle'; cat.t0 = now; }
+        cat.idle = now;
+      }
+    }
+    var pose = CAT[name] || CAT.sit;
+    var ox = Math.round(x - pose.w * S / 2), oy = Math.round(y - pose.h * S);
+    if (cat.mode === 'sleep' && !reduce) {
+      /* little z's drifting up from its head, one after another */
+      ctx.fillStyle = '#7c7f77';
+      for (var z = 0; z < 3; z++) {
+        var hx = cat.face > 0 ? ox + (pose.w - 3) * S : ox + 2 * S;     /* above its head, at the front of the curl */
+        var zp = (t * .3 + z / 3) % 1, big = z % 2 ? 4 : 3, zx = Math.round(hx + zp * 4 * S), zy = Math.round(oy - 2 * S - zp * 9 * S);
+        ctx.globalAlpha = Math.sin(zp * Math.PI) * .85;
+        ctx.fillRect(zx, zy, big * S, S); ctx.fillRect(zx, zy + (big - 1) * S, big * S, S);
+        for (var q = 1; q < big - 1; q++) ctx.fillRect(zx + (big - 1 - q) * S, zy + q * S, S, S);
+      }
+      ctx.globalAlpha = 1;
+    }
+    ctx.fillStyle = INK;
+    for (var n = 0; n < pose.c.length; n += 2) ctx.fillRect(ox + (cat.face < 0 ? pose.w - 1 - pose.c[n] : pose.c[n]) * S, oy + pose.c[n + 1] * S, S, S);
+  }
+
+  function draw() {
+    var t = t0 === null ? 0 : (performance.now() - t0) / 1000, dt = Math.min(.05, t - lastT); lastT = t;
+    if (!reduce && t0 !== null) {
+      if (t > nextGesture) { gestures[Math.floor(Math.random() * (today + 1))] = { k: ['sway', 'hop', 'nod'][Math.floor(Math.random() * 3)], at: t, dir: Math.random() < .5 ? -1 : 1 }; nextGesture = t + .7 + Math.random() * 1.1; }
+      if (t > nextBreeze) { breeze = t; nextBreeze = t + 11 + Math.random() * 5; }
+      if (t > nextMote) { var md = Math.floor(Math.random() * (today + 1)), mp = at(md); motes.push({ x: mp.x + CELL / 2, y: mp.y + PAD * S / 2, life: 1, ph: Math.random() * 6.28 }); nextMote = t + .9 + Math.random() * 1.3; }
+    }
+    var wave = (t - breeze) * cols / 2.2, hc = hover >= 0 ? hover % cols : -99, hr = hover >= 0 ? Math.floor(hover / cols) : -99;
+    /* where the cat is, in cells, so the plants it passes can lean out of its way */
+    var cp = t0 !== null && cat.mode !== 'sleep' && cat.mode !== 'settle' ? catPos() : null;
+    var ccx = cp ? cp.x / CELL - .5 : -99, ccy = cp ? (cp.y - PAD * S / 2 - N * S) / CELL : -99;
+    if (!reduce && t0 !== null) {
+      /* steer the wind from what's on screen: the breeze wave, and the year filling in */
+      var vol = 0, fq = 450, pan = 0, ba = t - breeze, cross = (cols + rows * .35 + 2) / (cols / 2.2);
+      if (ba >= 0 && ba <= cross) {
+        var W = WIND[windStyle], e = Math.min(1, ba / .12, (cross - ba) / .4);
+        e = e * e * (3 - 2 * e);                                            /* eased, so it swells rather than switches */
+        vol = W.vol * e; fq = W.lo + (W.hi - W.lo) * e; pan = Math.max(-1, Math.min(1, wave / cols * 2 - 1)) * .7;
+        var wc = Math.floor(wave);
+        if (wc !== lastWaveCol && wc >= 0 && wc < cols) {
+          lastWaveCol = wc;
+          if (Math.random() < W.leaves) rustle(700 + Math.random() * 350, .018, .22, 0, pan);
+          if (Math.random() < W.chimes) chimeNote(pan);
+        }
+      }
+      var fillEnd = (today + 18) / 260;
+      if (t < fillEnd + .12) { var W2 = WIND[windStyle], e2 = Math.min(1, t / .06, (fillEnd + .12 - t) / .22); vol = Math.max(vol, W2.vol * .9 * e2); fq = Math.max(fq, W2.lo + (W2.hi - W2.lo) * Math.min(1, t / fillEnd)); }
+      if (!rolled && t >= fillEnd) { rolled = true; winChime(); }
+      bedSet(vol, fq, pan);
+    }
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (var d = 0; d < days; d++) {
+      var p = at(d), x = p.x + PAD * S / 2, y = p.y + PAD * S / 2;
+      /* the year fills in left to right when it first comes into view */
+      var show = reduce ? 1 : t0 === null ? 0 : Math.max(0, Math.min(1, (t * 260 - d) / 18));
+      if (d > today) {
+        var s = Math.max(1, S - 1) * show; if (s <= 0) continue;
+        ctx.fillStyle = DOT; ctx.fillRect(Math.round(x + N * S / 2 - s / 2), Math.round(y + N * S / 2 - s / 2), Math.ceil(s), Math.ceil(s));
+        continue;
+      }
+      if (show <= 0) continue;
+      var col = d % cols, row = Math.floor(d / cols), lean = 0;
+      var lift = (hop[d] || 0) + (d === hover ? S : 0);
+      if (d === today) {
+        var breath = reduce ? .6 : .45 + .35 * (Math.sin((t / 10) * Math.PI * 2 - Math.PI / 2) * .5 + .5);
+        ctx.globalAlpha = breath; ctx.fillStyle = LIME; ctx.fillRect(p.x + 1, p.y + 1, CELL - 2, CELL - 2); ctx.globalAlpha = 1;
+        if (!reduce) lift += Math.round((Math.sin(t * 1.3) * .5 + .5) * S * 1.5);
+      }
+      var g = gestures[d];
+      if (g) {
+        var a = t - g.at, q = Math.sin(Math.min(1, a / .8) * Math.PI);
+        if (g.k === 'sway') lean = Math.round(q * g.dir); else if (g.k === 'hop') lift += Math.round(q * S * 2); else lean = a < .8 ? (Math.floor(a * 6) % 2 ? g.dir : 0) : 0;
+        if (a > .8) delete gestures[d];
+      }
+      if (!reduce && Math.abs(col - wave + row * .35) < 1.2) lean += 1;
+      if (Math.abs(col - hc) <= 1 && Math.abs(row - hr) <= 1 && d !== hover) lean += col === hc ? 0 : (col > hc ? 1 : -1);
+      if (cp && Math.abs(row - ccy) < .6 && Math.abs(col - ccx) < 1.15 && !(d === cat.at && cat.mode === 'stand')) lean += col > ccx ? 1 : -1;
+      lean = Math.max(-1, Math.min(1, lean));
+      var img = stamp(icon[d], d === today ? INK : marks[d] ? markColor : GREEN), r0 = N - Math.ceil(show * N);
+      part(img, x, y, Math.max(r0, HEAD), N, 0, lift);          /* the stem stays put */
+      part(img, x, y, Math.max(r0, 0), HEAD, lean, lift);       /* the head leans */
+      if (marks[d] && show >= 1) {
+        /* a small glint at the plant's shoulder, breathing with the page */
+        var glow = reduce ? .8 : .35 + .65 * (Math.sin((t / 10) * Math.PI * 2 - Math.PI / 2) * .5 + .5), gx = p.x + CELL - 2 * S, gy = p.y + S - lift;
+        ctx.globalAlpha = glow; ctx.fillStyle = INK;
+        ctx.fillRect(gx - S, gy, 3 * S, S); ctx.fillRect(gx, gy - S, S, 3 * S);
+        ctx.globalAlpha = 1;
+      }
+    }
+    /* the cat appears once its square has filled in */
+    if (reduce || (t0 !== null && t * 260 > home + 18)) drawCat(performance.now());
+    motes = motes.filter(function (m) { return m.life > 0; });
+    motes.forEach(function (m) {
+      m.life -= dt / 2.6; m.y -= dt * CELL * .55; var mx = m.x + Math.sin((1 - m.life) * 6 + m.ph) * S;
+      ctx.globalAlpha = Math.max(0, m.life) * .3; ctx.fillStyle = LIME; ctx.fillRect(Math.round(mx - S), Math.round(m.y - S), S * 3, S * 3);
+      ctx.globalAlpha = Math.max(0, m.life); ctx.fillStyle = MOTE; ctx.fillRect(Math.round(mx), Math.round(m.y), S, S);
+      ctx.globalAlpha = 1;
+    });
+    for (var k in hop) { hop[k] *= .8; if (hop[k] < .2) delete hop[k]; }
+  }
+  function loop() { running = false; if (!visible) return; draw(); running = true; requestAnimationFrame(loop); }
+  function wake() { if (!running && visible) { running = true; requestAnimationFrame(loop); } }
+
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function dateOf(d) { var dt = new Date(Y, 0, 1 + d); return MONTHS[dt.getMonth()] + ' ' + dt.getDate(); }
+  function cellAt(e) {
+    var r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    if (x < 0 || y < 0 || x >= cols * CELL) return -1;
+    var d = Math.floor(y / CELL) * cols + Math.floor(x / CELL);
+    return d >= 0 && d < days ? d : -1;
+  }
+  function say(d) {
+    if (!o.dayEl) return;
+    if (d === 'cat') { o.dayEl.innerHTML = '<b>The cat</b>, ' + (cat.mode === 'sleep' ? (home > today ? 'asleep where tomorrow will grow' : 'asleep') : 'out for a walk'); return; }
+    if (d < 0) { o.dayEl.textContent = 'One plant for every day of ' + Y + ' so far'; return; }
+    o.dayEl.innerHTML = '<b>' + dateOf(d) + '</b>' + (d === today ? ', today' : d > today ? ', still to grow' : '') + (marks[d] ? ' · something happened here' : '');
+  }
+  var card = null, pinned = -1, onCard = false, hideT = null;
+  if (Object.keys(marks).length) {
+    card = document.createElement('div'); card.className = 'lore'; card.hidden = true;
+    cv.parentElement.appendChild(card);
+    card.addEventListener('pointerenter', function () { onCard = true; clearTimeout(hideT); });
+    card.addEventListener('pointerleave', function () { onCard = false; hideSoon(); });
+  }
+  /* a hover card waits a moment before closing, so the pointer can travel up to its link */
+  function hideSoon() {
+    clearTimeout(hideT);
+    hideT = setTimeout(function () { if (pinned < 0 && !onCard && card) { card.hidden = true; shown = -1; } }, 450);
+  }
+  var shown = -1;
+  function showLore(d) {
+    var m = marks[d]; if (!m || !card) return;
+    /* a small stage of its own: crop marks, a pale mat, the date in the same chip as the year */
+    card.textContent = '';
+    var inner = document.createElement('div'); inner.className = 'lore-in';
+    ['tl', 'tr', 'bl', 'br'].forEach(function (k) { var c = document.createElement('i'); c.className = 'lc ' + k; inner.appendChild(c); });
+    var dt = document.createElement('span'), ti = document.createElement('b'), tx = document.createElement('p');
+    dt.className = 'lore-date'; dt.textContent = dateOf(d); ti.textContent = m.title; tx.textContent = m.text || '';
+    inner.appendChild(dt); inner.appendChild(ti); if (m.text) inner.appendChild(tx);
+    if (m.link) { var ln = document.createElement('a'); ln.href = m.link; ln.target = '_blank'; ln.rel = 'noopener'; ln.textContent = m.linkText || 'See it'; inner.appendChild(ln); }
+    card.appendChild(inner);
+    if (shown !== d) { shown = d; cardSound(); }
+    card.hidden = false;
+    var p = at(d), host = cv.parentElement, w = card.offsetWidth;
+    var left = cv.offsetLeft + p.x + CELL / 2;
+    card.style.left = Math.max(w / 2, Math.min(host.clientWidth - w / 2, left)) + 'px';
+    card.style.top = (cv.offsetTop + p.y) + 'px';
+    card.style.setProperty('--tip', (left - Math.max(w / 2, Math.min(host.clientWidth - w / 2, left)) + w / 2) + 'px');
+  }
+  function hideLore() { if (card) card.hidden = true; pinned = -1; shown = -1; }
+  document.addEventListener('click', function (e) { if (pinned >= 0 && e.target !== cv && !(card && card.contains(e.target))) hideLore(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideLore(); });
+  var tip = document.createElement('div'), tipT = null, lastPointer = 'mouse';
+  tip.className = 'ytip'; tip.hidden = true; tip.setAttribute('aria-hidden', 'true'); cv.parentElement.appendChild(tip);
+  cv.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
+  function tipAt(d) {
+    var p = at(d);
+    tip.textContent = dateOf(d) + (d === today ? ' · today' : d > today ? ' · to come' : '');
+    tip.style.left = Math.max(60, Math.min(cv.parentElement.clientWidth - 60, cv.offsetLeft + p.x + CELL / 2)) + 'px';
+    tip.style.top = (cv.offsetTop + p.y) + 'px';
+    tip.hidden = false; clearTimeout(tipT); tipT = setTimeout(function () { tip.hidden = true; }, 1800);
+  }
+  var onCat = false;
+  cv.addEventListener('pointermove', function (e) {
+    var c = overCat(e);
+    if (c !== onCat) { onCat = c; say(c ? 'cat' : hover); }
+    if (c) return;
+    var d = cellAt(e);
+    if (d !== hover) {
+      hover = d; say(d);
+      if (d >= 0 && d <= today && e.pointerType === 'mouse') brush(d);
+      if (pinned < 0 && e.pointerType === 'mouse') { if (marks[d]) { clearTimeout(hideT); showLore(d); } else if (card && !card.hidden) hideSoon(); }
+    }
+  });
+  cv.addEventListener('pointerleave', function () { hover = -1; onCat = false; say(-1); if (pinned < 0 && card) hideSoon(); });
+  cv.addEventListener('click', function (e) {
+    audio();
+    if (overCat(e)) { hideLore(); catTap(); say('cat'); return; }
+    var d = cellAt(e);
+    if (lastPointer !== 'mouse' && d >= 0 && !marks[d]) tipAt(d);
+    if (marks[d]) {
+      tip.hidden = true;
+      /* its card is already up (hovered, or tapped once on a phone): this click goes to the page */
+      var go = card && !card.hidden && shown === d && card.querySelector('a');
+      if (go) { go.click(); hideLore(); return; }
+      pinned = d; showLore(d);
+    }
+    else if (pinned >= 0) hideLore();
+    if (d >= 0 && d <= today) {
+      hop[d] = S * 3; if (!marks[d]) d === today ? chime() : pluck(d);
+      if (cat.mode === 'stand' || cat.mode === 'land') moveTo(d, function () { hop[d] = S * 2; });
+    } else if (d > today) tapDot();
+    say(d);
+  });
+
+  if (window.ResizeObserver) new ResizeObserver(layout).observe(cv.parentElement); else window.addEventListener('resize', layout);
+  if (window.IntersectionObserver) new IntersectionObserver(function (es) {
+    visible = es[0].isIntersecting;
+    if (visible && t0 === null) { t0 = performance.now(); }
+    if (!visible) bedOff();
+    wake();
+  }, { threshold: .15 }).observe(cv);
+  else { visible = true; t0 = performance.now(); }
+  layout(); wake();
+  return { days: days, today: today, cols: function () { return cols; }, draw: draw,
+    setMarkColor: function (c) { markColor = c; if (!running) draw(); } };
+}
+</script>
+<script>
+/* the living layer: breath (css), weather over the masthead, a garden seen from above whose roots climb up into the work */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pages = document.getElementById('pages'), stage = document.querySelector('.stage:not(.stage2)'), gardenCv = document.getElementById('garden');
+  document.body.classList.add('breath', 'weather');
+
+
+  /* seeded randomness: the same page grows the same garden and the same roots every time */
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function layer(parent, cls) { var c = document.createElement('canvas'); c.className = cls; parent.insertBefore(c, parent.firstChild); return c; }
+
+  /* ---------- weather: clouds, two wires, a bird that visits ---------- */
+  var weather = (function () {
+    var cv = layer(stage, 'weather'), ctx = cv.getContext('2d'), C = 3, W, H, clouds = [], bird = null, nextBird = 3, t = 0;
+    var mast = stage.querySelector('.mast');
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function size() {
+      var sr = stage.getBoundingClientRect(), mr = mast.getBoundingClientRect();
+      W = Math.ceil(stage.clientWidth / C); H = Math.ceil((mr.bottom - sr.top + 18) / C);
+      cv.width = W; cv.height = H; cv.style.width = W * C + 'px'; cv.style.height = H * C + 'px';
+      clouds = []; for (var i = 0; i < 5; i++) clouds.push({ x: rnd(0, W), y: rnd(H * .15, H * .7), w: rnd(16, 34), v: rnd(.02, .06) });
+    }
+    function wireY(x, k) { var top = 13 + k * 5, sag = 9 + k * 2, span = W / 2, u = (x % span) / span; return top + sag * 4 * u * (1 - u); }
+    function cloud(c) {
+      ctx.fillStyle = '#eef2df'; var w = Math.round(c.w), x = Math.round(c.x), y = Math.round(c.y);
+      ctx.fillRect(x, y, w, 4); ctx.fillRect(x + 3, y - 2, w - 9, 2); ctx.fillRect(x + 7, y - 4, Math.round(w * .35), 2); ctx.fillRect(x + 2, y + 4, w - 5, 1);
+    }
+    var BIRD = [['.##.', '####', '.#..'], ['#..#', '.##.', '.#..']];
+    function drawBird(b, f) { ctx.fillStyle = '#4b4e47'; BIRD[f].forEach(function (r, yy) { for (var xx = 0; xx < r.length; xx++) if (r[xx] === '#') ctx.fillRect(Math.round(b.x) + xx, Math.round(b.y) + yy, 1, 1); }); }
+    function tick() {
+      t += .05; ctx.clearRect(0, 0, W, H);
+      clouds.forEach(function (c) { if (!reduce) c.x += c.v; if (c.x > W + 4) c.x = -c.w; cloud(c); });
+      ctx.fillStyle = '#c9cdbd';
+      for (var k = 0; k < 2; k++) { var prev = Math.round(wireY(0, k)); for (var x = 0; x < W; x++) { var y = Math.round(wireY(x, k)); ctx.fillRect(x, Math.min(y, prev), 1, Math.abs(y - prev) || 1); prev = y; } }
+      ctx.fillStyle = '#b0b4a6'; ctx.fillRect(Math.round(W / 2), 9, 1, 22); ctx.fillRect(Math.round(W / 2) - 4, 12, 9, 1); ctx.fillRect(Math.round(W / 2) - 4, 17, 9, 1);
+      if (reduce) return;
+      if (!bird && t > nextBird) { var land = rnd(W * .15, W * .85); bird = { x: -6, y: 2, land: land, state: 'in', sit: 0 }; }
+      if (bird) {
+        if (bird.state === 'in') { bird.x += .9; var ty = wireY(bird.land, 0) - 3; bird.y += (ty - bird.y) * .05; if (bird.x >= bird.land) { bird.x = bird.land; bird.y = ty; bird.state = 'sit'; if (window.jcPlay && Math.random() < .35) window.jcPlay.chirp(); } drawBird(bird, Math.floor(t * 8) % 2); }
+        else if (bird.state === 'sit') { bird.sit += .05; drawBird(bird, 0); if (bird.sit > 7) bird.state = 'out'; }
+        else { bird.x += 1.1; bird.y -= .25; drawBird(bird, Math.floor(t * 8) % 2); if (bird.x > W + 6) { bird = null; nextBird = t + rnd(8, 16); } }
+      }
+    }
+    if (window.ResizeObserver) new ResizeObserver(function () { size(); }).observe(mast);
+    return { start: function () { size(); tick(); if (!reduce) setInterval(function () { if (!document.hidden) tick(); }, 50); } };
+  })();
+
+  /* ---------- the garden: the year, one plant a day (YearGarden is defined in the script above) ---------- */
+  /* special days in the garden: one plain line each, saying why the day matters. a good jam placing is worth saying;
+     the game's name goes in the small line under it */
+  var MARKS = [
+    { date: '2026-01-04', title: 'Placed #2 for Best Gameplay at thatgamejam #01', text: 'With Shaped in Stars, out of 249 entries.', link: 'https://itch.io/jam/thatgamejam01/rate/4171860', linkText: 'See the results' },
+    { date: '2026-01-26', title: '#4 in Macrow’s Picks at Comfy Jam: Winter', text: 'With Secret Santa Delivery, out of 88 entries.', link: 'https://itch.io/jam/comfy-jam-winter-2026/rate/4232553', linkText: 'See the results' },
+    { date: '2026-02-08', title: 'Took part in the Bigmode Game Jam', link: 'https://uhminc.itch.io/9lives', linkText: 'See my entry' },
+    { date: '2026-06-01', title: 'Launched the BUILD Alumni portal', link: 'https://build.org/alumni', linkText: 'Visit it' }
+  ];
+  /* project days are magenta: the complement of the page's greens, so they stand out without clashing */
+  (function () {
+    var ul = document.getElementById('markslist'), M = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    if (ul) MARKS.forEach(function (m) {
+      var q = m.date.split('-').map(Number), li = document.createElement('li'), a = document.createElement('a');
+      a.href = m.link || '#'; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = M[q[1] - 1] + ' ' + q[2] + ': ' + m.title + (m.text ? ' ' + m.text : '');
+      li.appendChild(a); ul.appendChild(li);
+    });
+  })();
+  var garden = { start: function () { YearGarden({ canvas: gardenCv, yearEl: document.getElementById('year'), countEl: document.getElementById('count'), dayEl: document.getElementById('yday'), marks: MARKS, markColor: '#c23b8f' }); } };
+
+  function begin() { weather.start(); garden.start(); }
+  if (window.swIntro && !window.swIntro.done) window.swIntro.then.push(begin); else begin();
+})();
+</script>
+
+<script>document.getElementById("cy").textContent = new Date().getFullYear();</script>
+</body>
+</html>
