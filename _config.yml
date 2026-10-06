@@ -1,9 +1,8 @@
 # Jekyll Configuration for Jeralmi Canela Portfolio
 
 # Site settings
-title: jeralmi canela
+title: Jeralmi Canela
 email: jeralmicw@gmail.com
-description: jeralmi canela makes games and other things. part of Uhm…Games? with friends.
 url: "https://jeralmics.com"
 baseurl: ""
 
@@ -21,11 +20,3 @@ exclude:
   - README.md
   - IMPLEMENTATION_SUMMARY.md
   - QUICK_START.md
-
-# Defaults
-defaults:
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: "default"

@@ -5,3 +5,5 @@ _redesign/
 # Jekyll output and caches
 .jekyll-cache/
 .sass-cache/
+_site/
+.claude/settings.local.json
