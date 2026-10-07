@@ -720,7 +720,8 @@ function YearGarden(o) {
     return stamps[key];
   }
   function layout() {
-    dpr = Math.min(2, window.devicePixelRatio || 1);
+    /* never below 1: a zoomed-out browser reports less, which would blur the pixels */
+    dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
     var w = cv.parentElement.clientWidth;
     var s2 = w > 700 ? 3 : 2; if (s2 !== S) stamps = {}; S = s2;
     CELL = (N + PAD) * S;
@@ -998,7 +999,8 @@ function YearGarden(o) {
       if (!rolled && t >= fillEnd) { rolled = true; winChime(); }
       bedSet(vol, fq, pan);
     }
-    ctx.clearRect(0, 0, cv.width, cv.height);
+    /* clear in canvas pixels, not scaled ones, or a scale under 1 leaves the right and bottom edges smearing */
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.restore();
     for (var d = 0; d < days; d++) {
       var p = at(d), x = p.x + PAD * S / 2, y = p.y + PAD * S / 2;
       /* the year fills in left to right when it first comes into view */
