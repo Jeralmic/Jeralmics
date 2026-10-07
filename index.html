@@ -720,8 +720,9 @@ function YearGarden(o) {
     return stamps[key];
   }
   function layout() {
-    /* never below 1: a zoomed-out browser reports less, which would blur the pixels */
-    dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    /* the real ratio, even below 1 on a zoomed-out browser: the canvas then matches the screen's pixels one to one,
+       which keeps the pixel art crisp (a bigger canvas gets shrunk and loses rows of pixels) */
+    dpr = Math.min(2, window.devicePixelRatio || 1);
     var w = cv.parentElement.clientWidth;
     var s2 = w > 700 ? 3 : 2; if (s2 !== S) stamps = {}; S = s2;
     CELL = (N + PAD) * S;
