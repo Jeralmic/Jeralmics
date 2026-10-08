@@ -53,7 +53,8 @@
   :focus-visible { outline: 2px dotted var(--ink); outline-offset: 2px; }
   .tiny { font: 11px/1.4 var(--pixel); color: var(--grey); }
 
-  .stage { position: relative; width: 100%; max-width: 1060px; background: var(--stage); padding: 60px 72px 50px; box-shadow: 0 1px 0 #e3e5dc, 0 20px 50px rgba(60,70,40,.06); }
+  .stage { position: relative; width: 100%; max-width: 1060px; background: var(--stage); padding: 60px 72px 50px; box-shadow: 0 1px 0 #e3e5dc, 0 20px 50px rgba(60,70,40,.06);
+    overflow-x: clip; }   /* the sky canvas rounds up to whole pixels and can be 1px wider; without this, a sideways scrollbar */
   .crop { position: absolute; width: 14px; height: 14px; border: 0 solid var(--ink); }
   .crop.tl { top: 22px; left: 22px; border-top-width: 1.5px; border-left-width: 1.5px; }
   .crop.tr { top: 22px; right: 22px; border-top-width: 1.5px; border-right-width: 1.5px; }
@@ -158,7 +159,7 @@
 
   /* the second section: the garden from above, and (version A) me */
   .stage2 { padding-top: 48px; }
-  .garden-wrap canvas { display: block; margin: 0 auto; cursor: pointer; image-rendering: pixelated; image-rendering: crisp-edges; }
+  .garden-wrap canvas { display: block; margin: 0 auto; cursor: pointer; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: pan-y; }   /* a sideways swipe plants; up and down still scrolls */
   .yhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
   .year { font: 13px/1 var(--pixel); background: var(--ink); color: var(--lime); padding: 8px 16px; letter-spacing: 1px; }
   .count { font: 13px var(--mono); color: var(--grey); }
@@ -701,7 +702,7 @@ function YearGarden(o) {
     ['..#.#.#..', '...###...', '....#....', '...###...', '...###...', '...###...', '....#....', '....#....', '.........'],
     ['...#.#...', '..#####..', '.#.#.#.#.', '.#######.', '.#.#.#.#.', '..#####..', '...#.#...', '....#....', '.........']
   ];
-  var N = 9, HEAD = 4, PAD = 3, GREEN = '#3c9a22', INK = '#26262b', DOT = '#c3cba6', LIME = '#d9ee6a', MOTE = '#b9d43c';
+  var N = 9, HEAD = 4, PAD = 3, GHOST = '#9fabbd', GREEN = '#3c9a22', INK = '#26262b', DOT = '#c3cba6', LIME = '#d9ee6a', MOTE = '#b9d43c';
   function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
   var now = o.now || new Date(), Y = now.getFullYear();
@@ -720,6 +721,17 @@ function YearGarden(o) {
     var md = Math.round((new Date(Y, q[1] - 1, q[2]) - new Date(Y, 0, 1)) / 864e5);
     if (md >= 0 && md <= today) marks[md] = m;
   });
+
+  /* a visitor can plant something on a day still to come: a pale, see-through ghost of a random plant. it's kept in their
+     own browser (localStorage, never sent anywhere), so only they see it, and it's still there when they come back.
+     when the day arrives, the real plant grows in its place */
+  var PKEY = 'jc-garden-' + Y, planted = {}, plantedAt = {}, gone = {};
+  try { planted = JSON.parse(localStorage.getItem(PKEY)) || {}; } catch (e) { planted = {}; }
+  function keep() { try { localStorage.setItem(PKEY, JSON.stringify(planted)); } catch (e) {} }
+  function plantable(d) { return d > today && d < days && d !== home; }
+  /* pops in: grows up fast and bounces; taken away, it sinks back into the ground */
+  function plant(d) { planted[d] = Math.floor(Math.random() * ICONS.length); plantedAt[d] = performance.now(); delete gone[d]; hop[d] = S * 3; keep(); popSound(d, 1); wake(); }
+  function unplant(d) { gone[d] = { i: planted[d], at: performance.now() }; delete planted[d]; delete plantedAt[d]; keep(); popSound(d, -1); wake(); }
 
   var cv = o.canvas, ctx = cv.getContext('2d');
   var S = 3, CELL, cols, rows, dpr = 1, stamps = {}, t0 = null, hover = -1, hop = {};
@@ -836,6 +848,12 @@ function YearGarden(o) {
   function brush(d) { var n = performance.now(); if (n - lastNote < 60) return; lastNote = n; var f = leaf(d); rustle(f, .05, .17); rustle(f * 1.3, .025, .13, .045); }
   function pluck(d) { var f = pitch(d) * .5; note(f, .1, .045, 'triangle', f * .7); rustle(leaf(d) * 1.2, .055, .22); rustle(leaf(d) * .9, .025, .16, .07); }
   function chime() { pluck(today); var f = pitch(today); note(f, .7, .022, 'sine', null, .05); note(f * 1.5, .8, .016, 'sine', null, .14); }
+  var lastPop = 0;
+  function popSound(d, dir) {
+    var n = performance.now(); if (n - lastPop < 45) return; lastPop = n;
+    var f = 520 + (d % cols) * 18;
+    note(dir > 0 ? f : f * 1.5, .07, .03, 'sine', dir > 0 ? f * 1.5 : f * .8);
+  }
   function tapDot() { note(150, .07, .03, 'sine', 110); rustle(600, .02, .08); }
   function step() { rustle(1100 + Math.random() * 500, .022, .11); }
   /* the moment the last plant of the year appears: a small win chime */
@@ -1024,6 +1042,26 @@ function YearGarden(o) {
       var p = at(d), x = p.x + PAD * S / 2, y = p.y + PAD * S / 2;
       /* the year fills in left to right when it first comes into view */
       var show = reduce ? 1 : t0 === null ? 0 : Math.max(0, Math.min(1, (t * 260 - d) / 18));
+      var gh = d > today && d !== home ? (planted[d] != null ? planted[d] : gone[d] ? gone[d].i : null) : null, grow = 1, fade = 1;
+      if (gh !== null) {
+        var nowMs = performance.now();
+        if (planted[d] != null) { if (plantedAt[d]) grow = Math.min(1, (nowMs - plantedAt[d]) / 220); }
+        else { var u = (nowMs - gone[d].at) / 260; if (u >= 1) { delete gone[d]; gh = null; } else { grow = fade = 1 - u; } }
+      }
+      if (gh !== null) {
+        /* a ghost: pops up out of the ground when planted, then floats a little, fades in and out, and sways with the breeze */
+        var gs = show * grow; if (gs <= 0) continue;
+        var gc = d % cols, gr = Math.floor(d / cols), gl = 0, glift = (hop[d] || 0) + (d === hover ? S : 0);
+        if (!reduce) glift += Math.round((Math.sin(t * 1.4 + d * 1.7) * .5 + .5) * S * 1.5);
+        if (!reduce && Math.abs(gc - wave + gr * .35) < 1.2) gl = 1;
+        if (Math.abs(gc - hc) <= 1 && Math.abs(gr - hr) <= 1 && d !== hover && gc !== hc) gl = gc > hc ? 1 : -1;
+        var pimg = stamp(gh, GHOST), pr0 = N - Math.ceil(gs * N);
+        ctx.globalAlpha = (reduce ? .5 : .32 + .26 * (Math.sin(t * .9 + d * 2.3) * .5 + .5)) * fade;
+        part(pimg, x, y, Math.max(pr0, HEAD), N, 0, glift);
+        part(pimg, x, y, Math.max(pr0, 0), HEAD, gl, glift);
+        ctx.globalAlpha = 1;
+        continue;
+      }
       if (d > today) {
         var s = Math.max(1, S - 1) * show; if (s <= 0) continue;
         ctx.fillStyle = DOT; ctx.fillRect(Math.round(x + N * S / 2 - s / 2), Math.round(y + N * S / 2 - s / 2), Math.ceil(s), Math.ceil(s));
@@ -1084,7 +1122,9 @@ function YearGarden(o) {
     if (!o.dayEl) return;
     if (d === 'cat') { o.dayEl.innerHTML = '<b>The cat</b>, ' + (cat.mode === 'sleep' ? (home > today ? 'asleep where tomorrow will grow' : 'asleep') : 'out for a walk'); return; }
     if (d < 0) { o.dayEl.textContent = 'One plant for every day of ' + Y + ' so far'; return; }
-    o.dayEl.innerHTML = '<b>' + dateOf(d) + '</b>' + (d === today ? ', today' : d > today ? ', still to grow' : '') + (marks[d] ? ' · something happened here' : '');
+    var later = d > today ? (planted[d] != null && d !== home ? ', still to grow · a ghost you planted, ' + (lastPointer === 'mouse' ? 'click' : 'tap') + ' to clear it'
+      : ', still to grow' + (d !== home ? ' · ' + (lastPointer === 'mouse' ? 'click or drag' : 'tap or swipe') + ' to plant' : '')) : '';
+    o.dayEl.innerHTML = '<b>' + dateOf(d) + '</b>' + (d === today ? ', today' : later) + (marks[d] ? ' · something happened here' : '');
   }
   var card = null, pinned = -1, onCard = false, hideT = null;
   if (Object.keys(marks).length) {
@@ -1124,9 +1164,29 @@ function YearGarden(o) {
   var tip = document.createElement('div'), tipT = null, lastPointer = 'mouse';
   tip.className = 'ytip'; tip.hidden = true; tip.setAttribute('aria-hidden', 'true'); cv.parentElement.appendChild(tip);
   cv.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
+  var brush = null, brushed = {}, bx = 0, by = 0, handled = -1;
+  function brushAt(d) {
+    if (d < 0 || !plantable(d) || brushed[d]) return; brushed[d] = 1;
+    if (brush === 'plant' && planted[d] == null) plant(d); else if (brush === 'clear' && planted[d] != null) unplant(d);
+  }
+  cv.addEventListener('pointerdown', function (e) {
+    if (overCat(e)) return;
+    var d = cellAt(e); if (d < 0 || !plantable(d)) return;
+    audio(); brush = planted[d] != null ? 'clear' : 'plant'; brushed = {}; bx = e.clientX; by = e.clientY; handled = d;
+    brushAt(d); say(d);
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!brush) return;
+    /* fill in every cell along the stroke, so a quick drag doesn't skip any */
+    var dx = e.clientX - bx, dy = e.clientY - by, steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / (CELL / 3)));
+    for (var k = 1; k <= steps; k++) brushAt(cellAt({ clientX: bx + dx * k / steps, clientY: by + dy * k / steps }));
+    bx = e.clientX; by = e.clientY;
+  });
+  function brushEnd() { brush = null; }
+  window.addEventListener('pointerup', brushEnd); window.addEventListener('pointercancel', brushEnd);
   function tipAt(d) {
     var p = at(d);
-    tip.textContent = dateOf(d) + (d === today ? ' · today' : d > today ? ' · to come' : '');
+    tip.textContent = dateOf(d) + (d === today ? ' · today' : d > today ? (planted[d] != null && d !== home ? ' · planted' : ' · to come') : '');
     tip.style.left = Math.max(60, Math.min(cv.parentElement.clientWidth - 60, cv.offsetLeft + p.x + CELL / 2)) + 'px';
     tip.style.top = (cv.offsetTop + p.y) + 'px';
     tip.hidden = false; clearTimeout(tipT); tipT = setTimeout(function () { tip.hidden = true; }, 1800);
@@ -1160,7 +1220,8 @@ function YearGarden(o) {
     if (d >= 0 && d <= today) {
       hop[d] = S * 3; if (!marks[d]) d === today ? chime() : pluck(d);
       if (cat.mode === 'stand' || cat.mode === 'land') moveTo(d, function () { hop[d] = S * 2; });
-    } else if (d > today) tapDot();
+    } else if (d > today && d !== handled) tapDot();
+    handled = -1;
     say(d);
   });
 
