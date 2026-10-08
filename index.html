@@ -45,7 +45,7 @@
   }
   * { box-sizing: border-box; }
   * { -webkit-tap-highlight-color: transparent; }   /* no grey or blue flash on tap; things press in their own way */
-  .row, .pic, .th, .garden-wrap canvas, .shotnav, .index button { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }   /* no long-press menus */
+  .row, .pic, .th, .garden-wrap, .shotnav, .index button { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }   /* no long-press menus */
   [hidden] { display: none !important; }
   html { background: var(--paper); }
   body { margin: 0; min-height: 100vh; color: var(--ink); background: var(--paper); font: 500 16px/1.5 var(--body); padding-block: 48px 40px; padding-inline: 16px; display: flex; flex-direction: column; align-items: center; }
@@ -166,7 +166,7 @@
   .year { font: 13px/1 var(--pixel); background: var(--ink); color: var(--lime); padding: 8px 16px; letter-spacing: 1px; }
   .count { font: 13px var(--mono); color: var(--grey); }
   .count b { color: var(--green); font-weight: 400; }
-  .yday { margin: -8px 0 14px; min-height: 1.6em; font: 13px/1.6 var(--mono); color: var(--grey); }
+  .yday { margin: -8px 0 14px; min-height: 1.6em; font: 13px/1.6 var(--mono); color: var(--grey); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }   /* one line, always: it must never push the garden down */
   .yday b { font-weight: 400; color: var(--ink); }
   /* a small key for the garden */
   .ykey { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: -6px 0 16px; font: 12px var(--mono); color: var(--grey); }
@@ -655,6 +655,9 @@
       mnav.addEventListener('click', function (e) { var b = e.target.closest('.share'); if (b) share(i, b); });
       mpic.addEventListener('click', function (e) { var n = SAVES[i].shots.length; if (n > 1 && !e.target.closest('a, iframe')) goSlide(mpic, (SAVES[i].at + 1) % n); });
       mpic.addEventListener('scroll', function () { slideScrolled(i, mpic, mnav); }, { passive: true });
+      mpic.addEventListener('touchend', function () {
+        if (!navigator.vibrate && Math.abs(mpic.scrollLeft - SAVES[i].at * mpic.clientWidth) > mpic.clientWidth * .25) window.jcHaptic();
+      }, { passive: true });
     }
     rows.push({ b: b, more: more });
     b.addEventListener('click', function () { openRow(i); });
@@ -1257,8 +1260,9 @@ function YearGarden(o) {
     if (!o.dayEl) return;
     if (d === 'cat') { o.dayEl.innerHTML = '<b>The cat</b>, ' + (cat.mode === 'sleep' ? (home > today ? 'asleep where tomorrow will grow' : 'asleep') : 'out for a walk'); return; }
     if (d < 0) { o.dayEl.textContent = 'One plant for every day of ' + Y + ' so far'; return; }
-    var later = d > today ? (planted[d] != null && d !== home ? ', still to grow · a ghost you planted, ' + (lastPointer === 'mouse' ? 'click' : 'tap') + ' to clear it'
-      : ', still to grow' + (d !== home ? ' · ' + (lastPointer === 'mouse' ? 'click or drag' : 'tap or swipe') + ' to plant' : '')) : '';
+    var mouse = lastPointer === 'mouse', ghost = planted[d] != null && d !== home;
+    var later = d > today ? (mouse ? (ghost ? ', still to grow · a ghost you planted, click to clear it' : ', still to grow' + (d !== home ? ' · click or drag to plant' : ''))
+      : (ghost ? ' · your ghost · tap to clear' : d !== home ? ' · tap or swipe to plant' : ', still to grow')) : '';
     o.dayEl.innerHTML = '<b>' + dateOf(d) + '</b>' + (d === today ? ', today' : later) + (marks[d] ? ' · something happened here' : '');
   }
   var card = null, pinned = -1, onCard = false, hideT = null;
@@ -1301,16 +1305,16 @@ function YearGarden(o) {
   cv.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
   /* a press, or a drag across the garden, flips each day as the pointer enters it: an empty one gets a ghost, a ghost
      goes away. it flips again when the stroke comes back to it, but not while the pointer stays inside it */
-  var drawing = false, lastCell = -1, bx = 0, by = 0, handled = -1;
+  var drawing = false, lastCell = -1, bx = 0, by = 0, handled = -1, flipped = 0;
   function brushAt(d) {
     if (d === lastCell) return; lastCell = d;
     if (d < 0 || !plantable(d)) return;
-    if (planted[d] == null) plant(d); else unplant(d);
+    flipped++; if (planted[d] == null) plant(d); else unplant(d);
   }
   cv.addEventListener('pointerdown', function (e) {
     if (overCat(e)) return;
     var d = cellAt(e); if (d < 0 || !plantable(d)) return;
-    audio(); drawing = true; lastCell = -1; bx = e.clientX; by = e.clientY; handled = d;
+    audio(); drawing = true; lastCell = -1; flipped = 0; bx = e.clientX; by = e.clientY; handled = d;
     brushAt(d); say(d);
   });
   cv.addEventListener('pointermove', function (e) {
@@ -1320,7 +1324,8 @@ function YearGarden(o) {
     for (var k = 1; k <= steps; k++) brushAt(cellAt({ clientX: bx + dx * k / steps, clientY: by + dy * k / steps }));
     bx = e.clientX; by = e.clientY;
   });
-  function brushEnd() { drawing = false; }
+  /* Android buzzes for every day as the stroke passes it; iPhone can only tick as the finger lifts, so it gets one then */
+  function brushEnd() { if (drawing && flipped && !navigator.vibrate) buzz(); drawing = false; flipped = 0; }
   window.addEventListener('pointerup', brushEnd); window.addEventListener('pointercancel', brushEnd);
   function tipAt(d) {
     var p = at(d);
