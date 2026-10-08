@@ -44,6 +44,8 @@
     --body: "Archivo Narrow", "Arial Narrow", sans-serif;
   }
   * { box-sizing: border-box; }
+  * { -webkit-tap-highlight-color: transparent; }   /* no grey or blue flash on tap; things press in their own way */
+  .row, .pic, .th, .garden-wrap canvas, .shotnav, .index button { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }   /* no long-press menus */
   [hidden] { display: none !important; }
   html { background: var(--paper); }
   body { margin: 0; min-height: 100vh; color: var(--ink); background: var(--paper); font: 500 16px/1.5 var(--body); padding-block: 48px 40px; padding-inline: 16px; display: flex; flex-direction: column; align-items: center; }
@@ -270,7 +272,35 @@
     .more .notes { position: static; padding: 4px 0; }
 
     .foot { padding-inline: 18px; }
+
+    /* pressing a row: it dims and gives a little, like a real button */
+    .row { transition: transform .12s ease-out, filter .12s ease-out; }
+    .row:active { transform: scale(.985); filter: brightness(.94); }
+    /* the contact links are small; each gets a thumb-sized target around it */
+    .reach a { position: relative; }
+    .reach a::after { content: ""; position: absolute; inset: -13px -7px; }
+    /* the sound switch steps aside while you scroll, and comes back when you stop */
+    .soundbtn { transition: opacity .25s, transform .25s; }
+    .soundbtn.away { opacity: 0; transform: translateY(8px); pointer-events: none; }
+    /* the pictures swipe like a photo gallery, with square dots for where you are */
+    .more .pic.track { aspect-ratio: auto; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
+    .more .pic.track::-webkit-scrollbar { display: none; }
+    .more .slide { flex: 0 0 100%; aspect-ratio: 4 / 3; position: relative; overflow: hidden; scroll-snap-align: center; scroll-snap-stop: always; }
+    .more .pic.nudge .slide { animation: nudge 1.1s ease-in-out .5s 1; }          /* the first time: a peek at the next picture */
+    .shotnav .dots { display: flex; gap: 6px; align-items: center; }
+    .shotnav .dots i { width: 6px; height: 6px; background: #c9cfb6; transition: background .2s, transform .2s; }
+    .shotnav .dots i.on { background: var(--ink); transform: scale(1.25); }
+    .share { all: unset; cursor: pointer; color: var(--ink); border-bottom: 2px solid var(--lime); font: 14px var(--mono); position: relative; }
+    .share::after { content: ""; position: absolute; inset: -12px -10px; }
+    .share:active { color: var(--green); }
   }
+  /* press-and-hold on a phone: the plant, up close */
+  .peek { position: absolute; z-index: 6; transform: translate(-50%, calc(-100% - 14px)); background: var(--stage); padding: 12px 12px 10px;
+    display: grid; justify-items: center; gap: 8px; box-shadow: 0 0 0 1px #dfe3d2, 0 10px 26px rgba(60,70,40,.16); pointer-events: none; animation: peekin .16s ease-out; }
+  .peek canvas { display: block; image-rendering: pixelated; }
+  .peek span { font: 10px/1 var(--pixel); background: var(--ink); color: var(--lime); padding: 5px 8px; letter-spacing: .5px; white-space: nowrap; }
+  @keyframes peekin { from { opacity: 0; transform: translate(-50%, calc(-100% - 4px)) scale(.9); } }
+  @keyframes nudge { 0%, 100% { transform: none; } 40%, 55% { transform: translateX(-14%); } }
   /* wide screens: everything a size up (Jeralmi, Oct 7: "slightly bigger"). the garden isn't scaled, so its pixels stay crisp;
      it just gets a wider row */
   @media (min-width: 1180px) {
@@ -452,6 +482,20 @@
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* a light tap you can feel. Android vibrates; iPhone Safari can't, but flipping a hidden iOS switch gives a haptic tick
+     (iOS 18 and later). it only ever answers a touch */
+  var lastBuzz = 0;
+  window.jcHaptic = function (ms) {
+    var n = performance.now(); if (n - lastBuzz < 40) return; lastBuzz = n;
+    if (navigator.vibrate) { try { navigator.vibrate(ms || 8); } catch (e) {} return; }
+    try {
+      var l = document.createElement('label'), x = document.createElement('input');
+      x.type = 'checkbox'; x.setAttribute('switch', ''); l.appendChild(x); l.style.display = 'none'; l.setAttribute('aria-hidden', 'true');
+      document.head.appendChild(l); l.click(); l.remove();
+    } catch (e) {}
+  };
+  document.addEventListener('touchstart', function () {}, { passive: true });   /* lets iPhone Safari show :active presses */
+
   /* shots: the project's screenshots and gameplay videos (a YouTube link, or a .mp4); the first is the one shown. 'file.jpg#x,y,zoom' shows a crop (the stand-ins use this
      until the real screenshots arrive). no shots = the banner is shown */
   var SAVES = [
@@ -508,6 +552,52 @@
     s.at = (s.at + 1) % s.shots.length; picEl.innerHTML = picture(s, s.at); navEl.innerHTML = navInner(s); tick();
   }
 
+  /* phone: the pictures sit side by side and swipe like a photo gallery; square dots show where you are, and
+     tapping the picture goes on to the next one. the first time, the picture nudges aside to show it swipes */
+  function showSlides(i, more) {
+    var s = SAVES[i], p = more.querySelector('.pic'), nav = more.querySelector('.shotnav'), n = s.shots.length;
+    if (!p) return;
+    p.classList.toggle('track', n > 1); p.classList.remove('nudge');
+    p.innerHTML = n > 1 ? s.shots.map(function (src) { return '<div class="slide">' + shotImg(src) + '</div>'; }).join('') : picture(s, 0);
+    nav.innerHTML = mnavInner(s);
+    if (n > 1) {
+      p.scrollLeft = s.at * p.clientWidth; playOnly(p, s.at);
+      var seen = false; try { seen = localStorage.getItem('jc-swiped') === '1'; } catch (e) {}
+      if (!seen && !reduce) { void p.offsetWidth; p.classList.add('nudge'); }
+    }
+  }
+  function mnavInner(s) {
+    var n = s.shots.length, dots = '<span></span>';
+    if (n > 1) { dots = '<span class="dots" aria-label="picture ' + (s.at + 1) + ' of ' + n + '">'; for (var k = 0; k < n; k++) dots += '<i' + (k === s.at ? ' class="on"' : '') + '></i>'; dots += '</span>'; }
+    return dots + '<button type="button" class="share">Share</button>';
+  }
+  /* only the picture on screen plays its clip */
+  function playOnly(p, k) {
+    p.querySelectorAll('.slide').forEach(function (sl, j) {
+      var v = sl.querySelector('video'); if (!v) return;
+      if (j === k) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } else v.pause();
+    });
+  }
+  function goSlide(p, k) { p.scrollTo({ left: k * p.clientWidth, behavior: reduce ? 'auto' : 'smooth' }); }
+  function slideScrolled(i, p, nav) {
+    var s = SAVES[i], k = Math.round(p.scrollLeft / Math.max(1, p.clientWidth));
+    if (k === s.at || k < 0 || k >= s.shots.length) return;
+    s.at = k; playOnly(p, k); p.classList.remove('nudge');
+    nav.querySelectorAll('.dots i').forEach(function (d, j) { d.classList.toggle('on', j === k); });
+    var dl = nav.querySelector('.dots'); if (dl) dl.setAttribute('aria-label', 'picture ' + (k + 1) + ' of ' + s.shots.length);
+    tick(); window.jcHaptic();
+    try { localStorage.setItem('jc-swiped', '1'); } catch (e) {}
+  }
+  /* share a project: the phone's own share sheet, with a link straight to it; where there's none, the link is copied */
+  function share(i, btn) {
+    var s = SAVES[i], url = location.origin + location.pathname + '#' + slug(s);
+    window.jcHaptic();
+    if (navigator.share) { navigator.share({ title: s.name + ' · Jeralmi Canela', url: url }).catch(function () {}); return; }
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () {
+      btn.textContent = 'Link copied'; setTimeout(function () { btn.textContent = 'Share'; }, 1600);
+    }, function () {});
+  }
+
   /* desktop */
   var index = document.getElementById('index'), navs = [], sel = -1;
   var pic = document.getElementById('pic'), descEl = document.getElementById('desc'), play = document.getElementById('play'), shotnav = document.getElementById('shotnav');
@@ -545,9 +635,9 @@
     rows.forEach(function (q) { q.b.setAttribute('aria-expanded', 'false'); q.more.hidden = true; });
     r.b.setAttribute('aria-expanded', String(open)); r.more.hidden = !open;
     if (open) {
-      r.more.querySelector('.pic').innerHTML = picture(SAVES[i], SAVES[i].at); r.more.querySelector('.shotnav').innerHTML = navInner(SAVES[i]);
+      showSlides(i, r.more);
       sel = i; if (quiet) return;
-      click(); linkTo(i);
+      click(); linkTo(i); window.jcHaptic();
       r.b.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
     }
   }
@@ -562,8 +652,9 @@
       '</div>';
     var b = li.querySelector('.row'), more = li.querySelector('.more'), mpic = more.querySelector('.pic'), mnav = more.querySelector('.shotnav');
     if (mnav) {
-      mnav.addEventListener('click', function (e) { if (e.target.closest('.shotnext')) nextShot(i, mpic, mnav); });
-      mpic.addEventListener('click', function (e) { if (!e.target.closest('a, iframe, video')) nextShot(i, mpic, mnav); });
+      mnav.addEventListener('click', function (e) { var b = e.target.closest('.share'); if (b) share(i, b); });
+      mpic.addEventListener('click', function (e) { var n = SAVES[i].shots.length; if (n > 1 && !e.target.closest('a, iframe')) goSlide(mpic, (SAVES[i].at + 1) % n); });
+      mpic.addEventListener('scroll', function () { slideScrolled(i, mpic, mnav); }, { passive: true });
     }
     rows.push({ b: b, more: more });
     b.addEventListener('click', function () { openRow(i); });
@@ -625,6 +716,12 @@
     try { localStorage.setItem('jc-sound', window.jcSound ? 'on' : 'off'); } catch (e) {}
   });
   soundLabel();
+  var awayT = null;
+  window.addEventListener('scroll', function () {
+    if (window.innerWidth > 860) return;
+    soundBtn.classList.add('away'); clearTimeout(awayT);
+    awayT = setTimeout(function () { soundBtn.classList.remove('away'); }, 700);
+  }, { passive: true });
 
   /* small rollover sounds; browsers allow them after the first tap */
   var ac = null;
@@ -730,8 +827,8 @@ function YearGarden(o) {
   function keep() { try { localStorage.setItem(PKEY, JSON.stringify(planted)); } catch (e) {} }
   function plantable(d) { return d > today && d < days && d !== home; }
   /* pops in: grows up fast and bounces; taken away, it sinks back into the ground */
-  function plant(d) { planted[d] = Math.floor(Math.random() * ICONS.length); plantedAt[d] = performance.now(); delete gone[d]; hop[d] = S * 3; keep(); popSound(d, 1); wake(); }
-  function unplant(d) { gone[d] = { i: planted[d], at: performance.now() }; delete planted[d]; delete plantedAt[d]; keep(); popSound(d, -1); wake(); }
+  function plant(d) { planted[d] = Math.floor(Math.random() * ICONS.length); plantedAt[d] = performance.now(); delete gone[d]; hop[d] = S * 3; keep(); popSound(d, 1); buzz(); wake(); }
+  function unplant(d) { gone[d] = { i: planted[d], at: performance.now() }; delete planted[d]; delete plantedAt[d]; keep(); popSound(d, -1); buzz(); wake(); }
 
   var cv = o.canvas, ctx = cv.getContext('2d');
   var S = 3, CELL, cols, rows, dpr = 1, stamps = {}, t0 = null, hover = -1, hop = {};
@@ -890,6 +987,8 @@ function YearGarden(o) {
     var f = 520 + (d % cols) * 18;
     note(dir > 0 ? f : f * 1.5, .07, .03, 'sine', dir > 0 ? f * 1.5 : f * .8);
   }
+  /* a light tap you can feel, when the page offers one (window.jcHaptic) */
+  function buzz() { if (window.jcHaptic) window.jcHaptic(); }
   function tapDot() { note(150, .07, .03, 'sine', 110); rustle(600, .02, .08); }
   function step() { rustle(1100 + Math.random() * 500, .022, .11); }
   /* the moment the last plant of the year appears: a small win chime */
@@ -1248,6 +1347,7 @@ function YearGarden(o) {
   });
   cv.addEventListener('pointerleave', function () { hover = -1; onCat = false; say(-1); if (pinned < 0 && card) hideSoon(); });
   cv.addEventListener('click', function (e) {
+    if (peeked) { peeked = false; return; }                     /* that press was a look, not a tap */
     audio();
     if (overCat(e)) { hideLore(); catTap(); say('cat'); return; }
     var d = cellAt(e);
@@ -1257,16 +1357,47 @@ function YearGarden(o) {
       /* its card is already up (hovered, or tapped once on a phone): this click goes to the page */
       var go = card && !card.hidden && shown === d && card.querySelector('a');
       if (go) { go.click(); hideLore(); return; }
-      pinned = d; showLore(d);
+      pinned = d; showLore(d); buzz();
     }
     else if (pinned >= 0) hideLore();
     if (d >= 0 && d <= today) {
-      hop[d] = S * 3; if (!marks[d]) d === today ? chime() : pluck(d);
+      hop[d] = S * 3; buzz(); if (!marks[d]) d === today ? chime() : pluck(d);
       if (cat.mode === 'stand' || cat.mode === 'land') moveTo(d, function () { hop[d] = S * 2; });
     } else if (d > today && d !== handled) tapDot();
     handled = -1;
     say(d);
   });
+
+  /* on a phone: press and hold a plant to see it up close (phones have no hover); slide sideways to look at its neighbours */
+  var peek = document.createElement('div'), peekCv = document.createElement('canvas'), peekLbl = document.createElement('span');
+  var peekT = null, peeking = -1, peeked = false, px0 = 0, py0 = 0;
+  peek.className = 'peek'; peek.hidden = true; peek.setAttribute('aria-hidden', 'true');
+  peek.appendChild(peekCv); peek.appendChild(peekLbl); cv.parentElement.appendChild(peek);
+  function showPeek(d) {
+    if (d === peeking) return; peeking = d;
+    var Z = 6; peekCv.width = N * Z * dpr; peekCv.height = N * Z * dpr; peekCv.style.width = peekCv.style.height = N * Z + 'px';
+    var g = peekCv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, N * Z, N * Z);
+    g.fillStyle = d === today ? INK : marks[d] ? markColor : GREEN;
+    ICONS[icon[d]].forEach(function (row, r) { for (var k = 0; k < N; k++) if (row[k] === '#') g.fillRect(k * Z, r * Z, Z, Z); });
+    peekLbl.textContent = dateOf(d) + (d === today ? ' · today' : '');
+    var p = at(d); peek.hidden = false; tip.hidden = true;
+    peek.style.left = Math.max(56, Math.min(cv.parentElement.clientWidth - 56, cv.offsetLeft + p.x + CELL / 2)) + 'px';
+    peek.style.top = (cv.offsetTop + p.y) + 'px';
+    hop[d] = S * 2; pluck(d); buzz(); say(d);
+  }
+  function hidePeek() { clearTimeout(peekT); peekT = null; if (peeking >= 0) { peek.hidden = true; peeking = -1; } }
+  cv.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse' || overCat(e)) return;
+    var d = cellAt(e); if (d < 0 || d > today) return;
+    px0 = e.clientX; py0 = e.clientY; peeked = false; clearTimeout(peekT);
+    peekT = setTimeout(function () { peeked = true; showPeek(d); }, 380);
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (peeking >= 0) { var d = cellAt(e); if (d >= 0 && d <= today) showPeek(d); return; }
+    if (peekT && Math.hypot(e.clientX - px0, e.clientY - py0) > 8) { clearTimeout(peekT); peekT = null; }
+  });
+  window.addEventListener('pointerup', hidePeek); window.addEventListener('pointercancel', hidePeek);
+  cv.addEventListener('contextmenu', function (e) { if (lastPointer !== 'mouse') e.preventDefault(); });
 
   if (window.ResizeObserver) new ResizeObserver(layout).observe(cv.parentElement); else window.addEventListener('resize', layout);
   if (window.IntersectionObserver) new IntersectionObserver(function (es) {
