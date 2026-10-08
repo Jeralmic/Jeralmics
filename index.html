@@ -1164,17 +1164,18 @@ function YearGarden(o) {
   var tip = document.createElement('div'), tipT = null, lastPointer = 'mouse';
   tip.className = 'ytip'; tip.hidden = true; tip.setAttribute('aria-hidden', 'true'); cv.parentElement.appendChild(tip);
   cv.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
-  /* a press, or a drag across the garden, flips every day it touches: an empty one gets a ghost, a ghost goes away.
-     each day flips once per stroke, so wobbling over it doesn't make it flicker */
-  var brush = false, brushed = {}, bx = 0, by = 0, handled = -1;
+  /* a press, or a drag across the garden, flips each day as the pointer enters it: an empty one gets a ghost, a ghost
+     goes away. it flips again when the stroke comes back to it, but not while the pointer stays inside it */
+  var brush = false, lastCell = -1, bx = 0, by = 0, handled = -1;
   function brushAt(d) {
-    if (d < 0 || !plantable(d) || brushed[d]) return; brushed[d] = 1;
+    if (d === lastCell) return; lastCell = d;
+    if (d < 0 || !plantable(d)) return;
     if (planted[d] == null) plant(d); else unplant(d);
   }
   cv.addEventListener('pointerdown', function (e) {
     if (overCat(e)) return;
     var d = cellAt(e); if (d < 0 || !plantable(d)) return;
-    audio(); brush = true; brushed = {}; bx = e.clientX; by = e.clientY; handled = d;
+    audio(); brush = true; lastCell = -1; bx = e.clientX; by = e.clientY; handled = d;
     brushAt(d); say(d);
   });
   cv.addEventListener('pointermove', function (e) {
