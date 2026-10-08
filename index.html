@@ -459,13 +459,13 @@
       shots: ['/assets/img/currently-01.jpg'],
       about: 'Too early to say much. It changes every week.', credit: 'Lead developer · Uhm…Games?, a studio I run with friends', link: 'https://x.com/Uhm_Inc', cta: 'Follow updates on Twitter' },
     { name: 'Elevator Brawl', kind: 'Beat ’em up',
-      thumb: '/assets/img/shots/eb-cover.jpg', shots: ['/assets/img/shots/eb-clip1.mp4', 'https://youtu.be/RD7W_eo1Auo', '/assets/img/shots/eb-still.jpg', '/assets/img/shots/eb-clip2.mp4', '/assets/img/shots/eb-clip3.mp4'],
+      thumb: '/assets/img/shots/eb-cover.jpg', shots: ['/assets/img/shots/eb-clip1.mp4', '/assets/img/shots/eb-still.jpg', '/assets/img/shots/eb-clip2.mp4', '/assets/img/shots/eb-clip3.mp4', 'https://youtu.be/RD7W_eo1Auo'],
       about: 'A 3D beat ’em up that takes place entirely in one elevator. There are bosses.', credit: 'Lead developer · Epic MegaJam 2025', link: 'https://aquagon.itch.io/elevator-brawl', cta: 'Play on itch.io' },
     { name: 'Secret Santa Delivery', kind: 'Adventure', banner: '#d9463f',
-      shots: ['/assets/img/shots/ssd-cover.jpg', 'https://youtu.be/6dTnHTngXQY', '/assets/img/shots/ssd-1.jpg', '/assets/img/shots/ssd-3.jpg', '/assets/img/shots/ssd-5.jpg', '/assets/img/shots/ssd-2.jpg', '/assets/img/shots/ssd-4.jpg'],
+      shots: ['/assets/img/shots/ssd-cover.jpg', '/assets/img/shots/ssd-1.jpg', '/assets/img/shots/ssd-3.jpg', '/assets/img/shots/ssd-5.jpg', '/assets/img/shots/ssd-2.jpg', '/assets/img/shots/ssd-4.jpg', 'https://youtu.be/6dTnHTngXQY'],
       about: 'You’re a cat. You drive a truck. You deliver Secret Santa gifts, but one of them goes to the cave…', credit: 'Lead developer · Comfy Jam: Winter 2026 · #4 in Macrow’s Picks', link: 'https://uhminc.itch.io/secret-santa-delivery', cta: 'Play on itch.io' },
     { name: 'Shaped in Stars', kind: 'Puzzle platformer', banner: '#2a3a94',
-      thumb: '/assets/img/shots/sis-cover.jpg', shots: ['/assets/img/shots/sis-cover.jpg', 'https://youtu.be/c13i625FJ2o', '/assets/img/shots/sis-2.jpg', '/assets/img/shots/sis-3.jpg', '/assets/img/shots/sis-1.jpg', '/assets/img/shots/sis-4.jpg'],
+      thumb: '/assets/img/shots/sis-cover.jpg', shots: ['/assets/img/shots/sis-cover.jpg', '/assets/img/shots/sis-2.jpg', '/assets/img/shots/sis-3.jpg', '/assets/img/shots/sis-1.jpg', '/assets/img/shots/sis-4.jpg', 'https://youtu.be/c13i625FJ2o'],
       about: 'The world got split into two realities. You open rifts to stitch it back together.', credit: 'Programmer and designer · thatgamejam #01 · #2 for Best Gameplay', link: 'https://lonksadventures.itch.io/shaped-in-stars', cta: 'Play on itch.io' },
     { name: 'BUILD Alumni', kind: 'Web design',
       shots: ['/assets/img/build-alumni.jpg'],
@@ -854,12 +854,33 @@ function YearGarden(o) {
     rustle(f * 1.35, .026 * k, .1 + .06 * k, .025 + Math.random() * .03, pan);
     if (k > .9) rustle(f * .7, .022 * k, .2, .06, pan);                       /* a quick sweep shakes the stems too */
   }
-  /* sweeping through a ghost: no leaves, just a cold breath and a faint hollow note that wavers down */
+  /* sweeping through a ghost: no leaves. a cold breath, and a low theremin moan that wavers and sinks a minor third,
+     with a thin voice a tritone above it and a soft echo trailing behind */
+  var lastWail = 0;
+  function wail(f, dur, vol, pan, when) {
+    var a = ac; if (!a || a.state !== 'running' || quiet()) return;
+    var t = a.currentTime + (when || 0), o = a.createOscillator(), g = a.createGain(), lfo = a.createOscillator(), depth = a.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(f * 1.03, t); o.frequency.exponentialRampToValueAtTime(f, t + .12);
+    o.frequency.exponentialRampToValueAtTime(f * .84, t + dur);                 /* sinks a minor third */
+    lfo.frequency.value = 5 + Math.random(); depth.gain.value = f * .018;          /* the waver */
+    lfo.connect(depth); depth.connect(o.frequency);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + dur * .3); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g);
+    var out = a.createGain(), dl = a.createDelay(1), fb = a.createGain(), wet = a.createGain();
+    dl.delayTime.value = .23; fb.gain.value = .38; wet.gain.value = .5;           /* an echo, as if from somewhere else */
+    g.connect(out); g.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(out);
+    if (pan && a.createStereoPanner) { var sp = a.createStereoPanner(); sp.pan.value = pan; out.connect(sp); sp.connect(a.destination); } else out.connect(a.destination);
+    o.start(t); lfo.start(t); o.stop(t + dur + .05); lfo.stop(t + dur + .05);
+    setTimeout(function () { try { out.disconnect(); } catch (e) {} }, (dur + (when || 0) + 2) * 1000);
+  }
   function ghostBrush(d, k) {
     var n = performance.now(); if (n - lastNote < 45) return; lastNote = n;
-    k = k || 1; var f = pitch(d), pan = panOf(d);
-    rustle(2300 + Math.random() * 700, .018 * k, .34, 0, pan);
-    note(f, .5, .011 * k, 'sine', f * .93, .02, pan); note(f * 1.007, .55, .007 * k, 'sine', f * .94, .06, pan);
+    k = k || 1; var pan = panOf(d);
+    rustle(1700 + Math.random() * 900, .02 * k, .6, 0, pan);                     /* the cold breath */
+    if (n - lastWail < 260) return; lastWail = n;                                /* moans don't pile up on a fast sweep */
+    var f = pitch(d) / 2;
+    wail(f, 1.1, .03 * Math.min(1.2, k), pan);
+    wail(f * 1.414, .9, .009 * Math.min(1.2, k), pan, .08);
   }
   function pluck(d) { var f = pitch(d) * .5; note(f, .1, .045, 'triangle', f * .7); rustle(leaf(d) * 1.2, .055, .22); rustle(leaf(d) * .9, .025, .16, .07); }
   function chime() { pluck(today); var f = pitch(today); note(f, .7, .022, 'sine', null, .05); note(f * 1.5, .8, .016, 'sine', null, .14); }
