@@ -270,6 +270,25 @@
 
     .foot { padding-inline: 18px; }
   }
+  /* wide screens: everything a size up (Jeralmi, Oct 7: "slightly bigger"). the garden isn't scaled, so its pixels stay crisp;
+     it just gets a wider row */
+  @media (min-width: 1180px) {
+    .stage, .pages { max-width: 1200px; }
+    .stage { padding: 64px 80px 54px; }
+    .mast { margin-bottom: 44px; }
+    .mast h1 { font-size: 44px; }
+    .reach { font-size: 15px; gap: 20px; }
+    .grid { grid-template-columns: 250px minmax(0, 1fr) 280px; gap: 18px; }
+    .index .n { font-size: 19px; }
+    .index .k { font-size: 14px; }
+    .side .desc { font-size: 19px; }
+    .desc .credit { font-size: 15px; }
+    .play { font-size: 19px; padding: 15px 18px; }
+    .shotnav { font-size: 14px; }
+    .shotnext { font-size: 15px; }
+    .about-a { grid-template-columns: 280px minmax(0, 1fr); gap: 40px; }
+    .about-text { font-size: 20px; }
+  }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 </head>
