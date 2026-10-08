@@ -845,7 +845,22 @@ function YearGarden(o) {
   var PENTA = [0, 2, 4, 7, 9];
   function pitch(d) { var c = d % cols, r = Math.floor(d / cols), k = (c + r * 3) % 10; return 440 * Math.pow(2, (72 + PENTA[k % 5] + 12 * Math.floor(k / 5) - 69) / 12); }
   function leaf(d) { return 950 + (pitch(d) - 523) * .9; }        /* each plant rustles a little higher or lower */
-  function brush(d) { var n = performance.now(); if (n - lastNote < 60) return; lastNote = n; var f = leaf(d); rustle(f, .05, .17); rustle(f * 1.3, .025, .13, .045); }
+  /* sweeping through the plants: a leafy rustle that gets fuller the faster you sweep (k), heard where it happens */
+  function panOf(d) { return (d % cols) / Math.max(1, cols - 1) * 1.2 - .6; }
+  function brush(d, k) {
+    var n = performance.now(); if (n - lastNote < 45) return; lastNote = n;
+    k = k || 1; var f = leaf(d) * (.92 + Math.random() * .16), pan = panOf(d);
+    rustle(f, .05 * k, .14 + .1 * k, 0, pan);
+    rustle(f * 1.35, .026 * k, .1 + .06 * k, .025 + Math.random() * .03, pan);
+    if (k > .9) rustle(f * .7, .022 * k, .2, .06, pan);                       /* a quick sweep shakes the stems too */
+  }
+  /* sweeping through a ghost: no leaves, just a cold breath and a faint hollow note that wavers down */
+  function ghostBrush(d, k) {
+    var n = performance.now(); if (n - lastNote < 45) return; lastNote = n;
+    k = k || 1; var f = pitch(d), pan = panOf(d);
+    rustle(2300 + Math.random() * 700, .018 * k, .34, 0, pan);
+    note(f, .5, .011 * k, 'sine', f * .93, .02, pan); note(f * 1.007, .55, .007 * k, 'sine', f * .94, .06, pan);
+  }
   function pluck(d) { var f = pitch(d) * .5; note(f, .1, .045, 'triangle', f * .7); rustle(leaf(d) * 1.2, .055, .22); rustle(leaf(d) * .9, .025, .16, .07); }
   function chime() { pluck(today); var f = pitch(today); note(f, .7, .022, 'sine', null, .05); note(f * 1.5, .8, .016, 'sine', null, .14); }
   var lastPop = 0;
@@ -1166,7 +1181,7 @@ function YearGarden(o) {
   cv.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
   /* a press, or a drag across the garden, flips each day as the pointer enters it: an empty one gets a ghost, a ghost
      goes away. it flips again when the stroke comes back to it, but not while the pointer stays inside it */
-  var brush = false, lastCell = -1, bx = 0, by = 0, handled = -1;
+  var drawing = false, lastCell = -1, bx = 0, by = 0, handled = -1;
   function brushAt(d) {
     if (d === lastCell) return; lastCell = d;
     if (d < 0 || !plantable(d)) return;
@@ -1175,17 +1190,17 @@ function YearGarden(o) {
   cv.addEventListener('pointerdown', function (e) {
     if (overCat(e)) return;
     var d = cellAt(e); if (d < 0 || !plantable(d)) return;
-    audio(); brush = true; lastCell = -1; bx = e.clientX; by = e.clientY; handled = d;
+    audio(); drawing = true; lastCell = -1; bx = e.clientX; by = e.clientY; handled = d;
     brushAt(d); say(d);
   });
   cv.addEventListener('pointermove', function (e) {
-    if (!brush) return;
+    if (!drawing) return;
     /* fill in every cell along the stroke, so a quick drag doesn't skip any */
     var dx = e.clientX - bx, dy = e.clientY - by, steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / (CELL / 3)));
     for (var k = 1; k <= steps; k++) brushAt(cellAt({ clientX: bx + dx * k / steps, clientY: by + dy * k / steps }));
     bx = e.clientX; by = e.clientY;
   });
-  function brushEnd() { brush = false; }
+  function brushEnd() { drawing = false; }
   window.addEventListener('pointerup', brushEnd); window.addEventListener('pointercancel', brushEnd);
   function tipAt(d) {
     var p = at(d);
@@ -1194,15 +1209,19 @@ function YearGarden(o) {
     tip.style.top = (cv.offsetTop + p.y) + 'px';
     tip.hidden = false; clearTimeout(tipT); tipT = setTimeout(function () { tip.hidden = true; }, 1800);
   }
-  var onCat = false;
+  var onCat = false, mx = 0, my = 0, mt = 0;
   cv.addEventListener('pointermove', function (e) {
+    /* how fast the pointer sweeps, so a quick brush rustles louder than a slow one */
+    var dt = Math.max(1, e.timeStamp - mt), k = Math.max(.4, Math.min(1.5, Math.hypot(e.clientX - mx, e.clientY - my) / dt / .8));
+    mx = e.clientX; my = e.clientY; mt = e.timeStamp;
     var c = overCat(e);
     if (c !== onCat) { onCat = c; say(c ? 'cat' : hover); }
     if (c) return;
     var d = cellAt(e);
     if (d !== hover) {
       hover = d; say(d);
-      if (d >= 0 && d <= today && e.pointerType === 'mouse') brush(d);
+      if (d >= 0 && d <= today) brush(d, k);
+      else if (!drawing && d > today && d !== home && planted[d] != null) ghostBrush(d, k);
       if (pinned < 0 && e.pointerType === 'mouse') { if (marks[d]) { clearTimeout(hideT); showLore(d); } else if (card && !card.hidden) hideSoon(); }
     }
   });
