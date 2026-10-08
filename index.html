@@ -704,11 +704,12 @@
   /* every project has its own link (jeralmics.com/#elevator-brawl) to send someone straight to it */
   function slug(s) { return s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
   function linkTo(i) { try { history.replaceState(null, '', '#' + slug(SAVES[i])); } catch (e) {} }
-  var start = 0, wanted = location.hash.slice(1);
-  SAVES.forEach(function (s, i) { if (slug(s) === wanted) start = i; });
+  var start = 0, linked = false, wanted = location.hash.slice(1);
+  SAVES.forEach(function (s, i) { if (slug(s) === wanted) { start = i; linked = true; } });
   if (start) choose(start, true);
-  /* on a phone, a project is open from the start, so the first screen shows a picture */
-  if (window.matchMedia('(max-width: 860px)').matches) openRow(start, true);
+  /* on a phone, every project starts closed (Jeralmi, Oct 8), unless the visitor came in on a link to one:
+     then that one is open and in view */
+  if (linked && window.matchMedia('(max-width: 860px)').matches) { openRow(start, true); rows[start].b.scrollIntoView({ block: 'start' }); }
 
   /* sound on / off, for the whole page; remembered in this browser */
   var soundBtn = document.getElementById('soundbtn');
