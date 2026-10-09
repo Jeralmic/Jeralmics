@@ -195,7 +195,10 @@
   .lore a:hover { border-color: var(--green); }
   @keyframes lorein { from { opacity: 0; margin-top: 4px; } to { opacity: 1; margin-top: 0; } }
   @keyframes lorein { from { opacity: 0; margin-top: 4px; } to { opacity: 1; margin-top: 0; } }
-  .about-a { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
+  .about-a { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 0 32px; align-items: start; }
+  .about-a .frame { grid-row: 1 / span 2; }
+  .about-a .hello, .about-a .about-text { grid-column: 2; }
+  .about-a .hello { margin: 0 0 10px; font: 500 18px/1.5 var(--body); }
   .stage2 .garden-wrap { margin-top: 40px; }
   .about-text { font: 500 18px/1.5 var(--body); }
   body.v-a .tabs { display: none; }
@@ -208,8 +211,10 @@
   @media (max-width: 860px) {
     .pages { gap: 0; }
     .stage2 { padding-top: 34px; }
-    .about-a { grid-template-columns: 1fr; gap: 16px; }
-    .about-a .frame { max-width: 240px; }
+    .about-a { grid-template-columns: 128px minmax(0, 1fr); gap: 16px; }
+    .about-a .frame { grid-row: 1; padding: 5px; }
+    .about-a .hello { align-self: center; margin: 0; font: 700 27px/1.12 var(--body); letter-spacing: -.3px; }
+    .about-a .about-text { grid-column: 1 / -1; }
   }
 
   /* ---- tests: breath, roots, weather. each one switches off from the panel ---- */
@@ -317,8 +322,8 @@
     .play { font-size: 19px; padding: 15px 18px; }
     .shotnav { font-size: 14px; }
     .shotnext { font-size: 15px; }
-    .about-a { grid-template-columns: 280px minmax(0, 1fr); gap: 40px; }
-    .about-text { font-size: 20px; }
+    .about-a { grid-template-columns: 280px minmax(0, 1fr); gap: 0 40px; }
+    .about-text, .about-a .hello { font-size: 20px; }
   }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
@@ -372,8 +377,9 @@
   <i class="crop tl"></i><i class="crop tr"></i><i class="crop bl"></i><i class="crop br"></i>
   <div class="about-a" id="about">
     <div class="frame"><div class="pic portrait"><img alt="Jeralmi Canela" src="/assets/img/jeralmi-photo.jpg"></div></div>
-    <div class="about-text"><p>Hi, I&rsquo;m Jeralmi. I make games. I started at 16 without knowing how to code or model anything, and picked up coding, Blender, and Unreal as each project needed them.</p>
-<p>I spent a summer interning at Ghost Story Games, and my best jam so far placed #2 for Best Gameplay at <a href="https://itch.io/jam/thatgamejam01/rate/4171860" target="_blank" rel="noopener">thatgamejam</a>, run by thatgamecompany (yes, the Journey people). Outside of games, I led a youth research project for <a href="https://agncy.org/Biotech-Pathways-Webinar" target="_blank" rel="noopener">Agncy</a>, a nonprofit design firm, on how Boston students see careers in biotech.</p>
+    <p class="hello">Hi, I&rsquo;m Jeralmi. I make games.</p>
+    <div class="about-text"><p>When I started, I didn&rsquo;t know how to code or model anything, so I picked up coding, Blender, and Unreal as each project needed them.</p>
+<p>I spent a summer interning at Ghost Story Games, and my best jam so far placed #2 for Best Gameplay at <a href="https://itch.io/jam/thatgamejam01/rate/4171860" target="_blank" rel="noopener">thatgamejam</a>, run by thatgamecompany, the studio behind Journey. Outside of games, I led a youth research project for <a href="https://agncy.org/Biotech-Pathways-Webinar" target="_blank" rel="noopener">Agncy</a>, a nonprofit design firm, on how Boston students see careers in biotech.</p>
 <p>If you wanna do business, hit me up: <a href="mailto:jeralmicw@gmail.com">jeralmicw@gmail.com</a></p></div>
   </div>
   <div class="garden-wrap">
