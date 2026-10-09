@@ -2,7 +2,7 @@
 
 > Jeralmi Canela (also known as Jeralmics) is a game developer. Personal site: https://jeralmics.com/
 
-Jeralmi started making games without knowing how to code or model anything, and picked up coding, Blender and Unreal Engine as each project needed them. Jeralmi spent a summer interning at Ghost Story Games; Jeralmi's best jam game so far placed #2 for Best Gameplay at thatgamejam, run by thatgamecompany. Outside of games, Jeralmi led a youth research project for Agncy, a nonprofit design firm, on how Boston students see careers in biotech.
+Jeralmi studies computer science and loves making things in just about any form; games are what Jeralmi keeps coming back to, working across the whole thing: programming, 3D in Blender, and building it out in Unreal Engine. Jeralmi spent a summer interning at Ghost Story Games; Jeralmi's best jam game so far placed #2 for Best Gameplay at thatgamejam, run by thatgamecompany. Outside of games, Jeralmi led a youth research project for Agncy, a nonprofit design firm, on how Boston students see careers in biotech.
 
 ## Work
 
