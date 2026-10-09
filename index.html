@@ -506,7 +506,7 @@
      until the real screenshots arrive). no shots = the banner is shown */
   var SAVES = [
     { name: 'Something New', kind: 'In progress', writing: true,
-      shots: ['/assets/img/currently-01.jpg'],
+      thumb: '/assets/img/shots/sn-thumb.jpg', shots: ['/assets/img/shots/sn-clip1.mp4', '/assets/img/shots/sn-clip2.mp4'],
       about: 'Too early to say much. It changes every week.', credit: 'Lead developer · Uhm…Games?, a studio I run with friends', link: 'https://x.com/Uhm_Inc', cta: 'Follow updates on Twitter' },
     { name: 'Elevator Brawl', kind: 'Beat ’em up',
       thumb: '/assets/img/shots/eb-cover.jpg', shots: ['/assets/img/shots/eb-clip1.mp4', '/assets/img/shots/eb-still.jpg', '/assets/img/shots/eb-clip2.mp4', '/assets/img/shots/eb-clip3.mp4', 'https://youtu.be/RD7W_eo1Auo'],
@@ -531,11 +531,11 @@
   var EMBED = /(^|\.)jeralmics\.com$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
   function youtubeId(src) { var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/.exec(src); return m ? m[1] : null; }
   function isVideo(src) { return !!youtubeId(src) || /\.(mp4|webm)$/i.test(src); }
-  function shotImg(src) {
+  function shotImg(src, lazy) {
     var yt = youtubeId(src);
     if (yt && EMBED) return '<iframe src="https://www.youtube-nocookie.com/embed/' + yt + '?rel=0" title="Gameplay video" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>';
     if (yt) return '<a class="ytile" href="https://www.youtube.com/watch?v=' + yt + '" target="_blank" rel="noopener"><span class="yplay" aria-hidden="true"></span><span>Watch the gameplay on YouTube</span></a>';
-    if (/\.(mp4|webm)$/i.test(src)) return '<video src="' + src + '" muted autoplay loop playsinline></video>';
+    if (/\.(mp4|webm)$/i.test(src)) return '<video src="' + src + '" poster="' + src.replace(/\.(mp4|webm)$/i, '.jpg') + '" muted loop playsinline ' + (lazy ? 'preload="none"' : 'autoplay') + '></video>';
     var m = src.split('#'), st = '';
     if (m[1]) { var c = m[1].split(','); st = ' style="object-position:' + c[0] + '% ' + c[1] + '%;transform:scale(' + c[2] + ');transform-origin:' + c[0] + '% ' + c[1] + '%"'; }
     return '<img alt="" src="' + m[0] + '"' + st + '>';
@@ -564,7 +564,8 @@
     var s = SAVES[i], p = more.querySelector('.pic'), nav = more.querySelector('.shotnav'), n = s.shots.length;
     if (!p) return;
     p.classList.toggle('track', n > 1); p.classList.remove('nudge');
-    p.innerHTML = n > 1 ? s.shots.map(function (src) { return '<div class="slide">' + shotImg(src) + '</div>'; }).join('') : picture(s, 0);
+    /* only the picture on screen loads its clip; the others wait until they're swiped to */
+    p.innerHTML = n > 1 ? s.shots.map(function (src) { return '<div class="slide">' + shotImg(src, true) + '</div>'; }).join('') : picture(s, 0);
     nav.innerHTML = mnavInner(s);
     if (n > 1) {
       p.scrollLeft = s.at * p.clientWidth; playOnly(p, s.at);
@@ -605,6 +606,7 @@
   }
 
   /* desktop */
+  var desk = window.matchMedia('(min-width: 861px)');
   var index = document.getElementById('index'), navs = [], sel = -1;
   var pic = document.getElementById('pic'), descEl = document.getElementById('desc'), play = document.getElementById('play'), shotnav = document.getElementById('shotnav');
   shotnav.addEventListener('click', function (e) { if (e.target.closest('.shotnext')) nextShot(sel, pic, shotnav); });
@@ -622,7 +624,7 @@
     sel = i; navs[i].setAttribute('aria-current', 'true');
     var s = SAVES[i];
     if (!quiet) { click(); linkTo(i); }
-    pic.innerHTML = picture(s, s.at); shotnav.innerHTML = navInner(s);
+    pic.innerHTML = desk.matches ? picture(s, s.at) : ''; shotnav.innerHTML = navInner(s);   /* nothing loads into the hidden layout on a phone */
     pic.classList.toggle('more-shots', s.shots.length > 1);
     descEl.innerHTML = descHTML(s);
     if (s.link) { play.hidden = false; play.href = s.link; play.textContent = s.cta; } else play.hidden = true;
@@ -652,7 +654,7 @@
     li.innerHTML = '<button type="button" class="row" aria-expanded="false" aria-controls="more' + i + '">' +
       '<span class="th">' + thumb(s) + '</span><span><span class="n">' + s.name + (s.writing ? '<span class="dot"></span>' : '') + '</span><span class="k">' + s.kind + '</span></span><span class="chev" aria-hidden="true">&#9654;</span></button>' +
       '<div class="more" id="more' + i + '" hidden>' +
-        (s.notes ? picture(s) : '<div class="frame"><div class="pic">' + picture(s, 0) + '</div></div><div class="shotnav"></div>') +
+        (s.notes ? picture(s) : '<div class="frame"><div class="pic"></div></div><div class="shotnav"></div>') +   /* filled when the row opens */
         (s.about ? '<p class="desc">' + descHTML(s) + '</p>' : '') +
         (s.link ? '<a class="play" href="' + s.link + '" target="_blank" rel="noopener">' + s.cta + '</a>' : '') +
       '</div>';
@@ -706,6 +708,8 @@
   document.querySelectorAll('#versions input').forEach(function (r) { r.checked = r.value === ver; r.addEventListener('change', function () { setVer(r.value); }); });
   setVer(ver);
   choose(0, true);
+  /* a window widened past phone size gets the computer layout's picture */
+  if (desk.addEventListener) desk.addEventListener('change', function () { if (desk.matches && sel >= 0) choose(sel, true); });
 
   /* every project has its own link (jeralmics.com/#elevator-brawl) to send someone straight to it */
   function slug(s) { return s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
