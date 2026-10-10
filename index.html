@@ -425,6 +425,7 @@
     /* only after a click on this page (Replay intro); a sound queued earlier would play later, out of place */
     if (!(navigator.userActivation && navigator.userActivation.hasBeenActive)) return;
     var a = window.__jcIntroAC;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
     if (!a) { try { a = window.__jcIntroAC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; } }
     if (a.state === 'suspended') a.resume();
     var t = a.currentTime + .05, buf = a.createBuffer(1, a.sampleRate * 4, a.sampleRate), d = buf.getChannelData(0), last = 0;
@@ -649,13 +650,16 @@
   var list = document.getElementById('list'), rows = [];
   function openRow(i, quiet) {
     var r = rows[i], open = quiet ? true : r.b.getAttribute('aria-expanded') !== 'true';
-    rows.forEach(function (q) { q.b.setAttribute('aria-expanded', 'false'); q.more.hidden = true; });
+    rows.forEach(function (q) { q.b.setAttribute('aria-expanded', 'false'); q.more.hidden = true; q.more.querySelectorAll('video').forEach(function (v) { v.pause(); }); });
     r.b.setAttribute('aria-expanded', String(open)); r.more.hidden = !open;
     if (open) {
       showSlides(i, r.more);
       sel = i; if (quiet) return;
       click(); linkTo(i); window.jcHaptic();
       r.b.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+    } else if (!quiet) {
+      shut(); window.jcHaptic();
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
     }
   }
   SAVES.forEach(function (s, i) {
@@ -750,6 +754,8 @@
   /* small rollover sounds; browsers allow them after the first tap */
   var ac = null;
   function wake() {
+    /* play through the iPhone's silent switch, as video does (Jeralmi, Oct 9): iOS 17+ treats the page's sound as media */
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
     if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; } }
     if (ac.state !== 'running') {
       try { ac.resume(); var sb = ac.createBufferSource(); sb.buffer = ac.createBuffer(1, 1, 22050); sb.connect(ac.destination); sb.start(0); } catch (e) {}
@@ -772,6 +778,14 @@
   var lastTick = 0, lastClick = 0;
   function tick() { var n = performance.now(); if (n - lastClick < 250 || n - lastTick < 60) return; lastTick = n; tone(2400, .02, .025); }
   function click() { lastClick = performance.now(); tone(1200, .05, .03); }
+  /* closing a project: the same click, lower and softer, falling */
+  function shut() {
+    lastClick = performance.now(); var a = live(); if (!a) return;
+    var o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+    o.type = 'square'; o.frequency.setValueAtTime(900, t); o.frequency.exponentialRampToValueAtTime(560, t + .05);
+    g.gain.setValueAtTime(.024, t); g.gain.exponentialRampToValueAtTime(.0001, t + .06);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + .08);
+  }
   /* hover sounds only for a real mouse: on a touchscreen a tap also counts as a hover and would double up */
   function onHover(el, fn) { el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') fn(); }); }
   /* the bird's chirp: when the bird on the wire lands (now and then), and on the Twitter link */
@@ -912,6 +926,8 @@ function YearGarden(o) {
      and ends in a little win chime the moment the last plant appears */
   var ac = null, lastNote = 0;
   function audio() {
+    /* play through the iPhone's silent switch, as video does (Jeralmi, Oct 9): iOS 17+ treats the page's sound as media */
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
     if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { ac = false; } }
     if (ac && ac.state !== 'running') {
       try { ac.resume(); var sb = ac.createBufferSource(); sb.buffer = ac.createBuffer(1, 1, 22050); sb.connect(ac.destination); sb.start(0); } catch (e) {}
