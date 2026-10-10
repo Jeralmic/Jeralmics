@@ -1,4 +1,19 @@
 <!doctype html>
+<!--
+
+     .##...##.
+     #..#.#..#     hi, you're reading the source.
+     ...###...
+     ..#.#.#..     jeralmics.com is one page of plain HTML, CSS and JavaScript;
+     .#..#..#.     the garden is drawn on a canvas, one plant per day.
+     ....#....
+     ....#....     i'm not much of a web dev. i had the ideas and the feelings,
+     ...###...     and made it with the help of AI.
+
+                   if you wanna make something together:
+                   jeralmicw@gmail.com
+
+-->
 <html lang="en">
 <head>
 <title>Jeralmi Canela · Game Developer</title>
@@ -532,7 +547,7 @@
   function isVideo(src) { return !!youtubeId(src) || /\.(mp4|webm)$/i.test(src); }
   function shotImg(src, lazy) {
     var yt = youtubeId(src);
-    if (yt && EMBED) return '<iframe src="https://www.youtube-nocookie.com/embed/' + yt + '?rel=0" title="Gameplay video" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>';
+    if (yt && EMBED) return '<iframe src="https://www.youtube-nocookie.com/embed/' + yt + '?rel=0" title="Gameplay video" allow="encrypted-media; picture-in-picture; fullscreen" loading="lazy"></iframe>';
     if (yt) return '<a class="ytile" href="https://www.youtube.com/watch?v=' + yt + '" target="_blank" rel="noopener"><span class="yplay" aria-hidden="true"></span><span>Watch the gameplay on YouTube</span></a>';
     if (/\.(mp4|webm)$/i.test(src)) return '<video src="' + src + '" poster="' + src.replace(/\.(mp4|webm)$/i, '.jpg') + '" muted loop playsinline ' + (lazy ? 'preload="none"' : 'autoplay') + '></video>';
     var m = src.split('#'), st = '';
@@ -1479,6 +1494,7 @@ function YearGarden(o) {
   else { visible = true; t0 = performance.now(); }
   layout(); wake();
   return { days: days, today: today, cols: function () { return cols; }, draw: draw,
+    breeze: function () { if (t0 !== null) { breeze = (performance.now() - t0) / 1000; nextBreeze = breeze + 11 + Math.random() * 5; wake(); } },
     setMarkColor: function (c) { markColor = c; if (!running) draw(); } };
 }
 </script>
@@ -1549,8 +1565,19 @@ function YearGarden(o) {
       li.appendChild(a); ul.appendChild(li);
     });
   })();
-  var garden = { start: function () { YearGarden({ canvas: gardenCv, yearEl: document.getElementById('year'), countEl: document.getElementById('count'), dayEl: document.getElementById('yday'), marks: MARKS, markColor: '#c23b8f', onPlant: hideHint }); } };
-  /* the hint to plant, in the key above the garden, until the visitor has planted once */
+  var gardenApi = null;
+  var garden = { start: function () { gardenApi = YearGarden({ canvas: gardenCv, yearEl: document.getElementById('year'), countEl: document.getElementById('count'), dayEl: document.getElementById('yday'), marks: MARKS, markColor: '#c23b8f', onPlant: hideHint }); } };
+  /* for whoever opens the console: a hello, and a way to send a breeze through the garden */
+  try {
+    console.log('%c jeralmics.com ', 'font: 700 14px monospace; background: #26262b; color: #d9ee6a; padding: 6px 10px;');
+    console.log('%cHi, you opened the hood. Everything here is one page, so look around.\n' +
+      'The garden is drawn on a canvas, one plant for every day of the year.\n' +
+      'Type water() to send a breeze through it.\n\n' +
+      'If you wanna make something together: jeralmicw@gmail.com', 'font: 13px/1.6 monospace; color: #3c9a22;');
+  } catch (e) {}
+  window.water = function () { if (gardenApi && gardenApi.breeze) gardenApi.breeze(); return 'the garden sways'; };
+
+    /* the hint to plant, in the key above the garden, until the visitor has planted once */
   var hint = document.querySelector('.yhint');
   function hideHint() { if (hint) hint.hidden = true; }
   try {
