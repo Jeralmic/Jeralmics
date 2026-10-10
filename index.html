@@ -179,9 +179,6 @@
   .ykey .sw { display: inline-block; width: 10px; height: 10px; margin-right: 7px; vertical-align: -1px; }
   .ykey .sw.mag { background: #c23b8f; }
   .ykey .sw.today { background: var(--lime); }
-  /* the garden's invisible switches over the days to come (iPhone haptics when planting) */
-  .ypad { position: absolute; z-index: 3; opacity: 0; overflow: hidden; touch-action: pan-y; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-  .ypad input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; }
   .ykey .sw.ghost { background: #d0d7e2; box-shadow: inset 0 0 0 1px #9fabbd; }   /* the hint to plant, until they have */
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: -1px; padding: 0; }
   /* the lore card over a special plant: a small stage of its own, hung from the plant by a hairline */
@@ -502,13 +499,6 @@
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* a light tap you can feel, used only when a ghost is planted or cleared (Jeralmi, Oct 9). Android vibrates; on iPhone
-     the garden's invisible switches do it, since iOS ticks only for a finger on a real switch */
-  var lastBuzz = 0;
-  window.jcHaptic = function (ms) {
-    var n = performance.now(); if (n - lastBuzz < 40) return; lastBuzz = n;
-    if (navigator.vibrate) { try { navigator.vibrate(ms || 8); } catch (e) {} }
-  };
   document.addEventListener('touchstart', function () {}, { passive: true });   /* lets iPhone Safari show :active presses */
 
   /* shots: the project's screenshots and gameplay videos (a YouTube link, or a .mp4); the first is the one shown. 'file.jpg#x,y,zoom' shows a crop (the stand-ins use this
@@ -890,11 +880,11 @@ function YearGarden(o) {
   function plantable(d) { return d > today && d < days && d !== home; }
   /* pops in: grows up fast and bounces; taken away, it sinks back into the ground */
   function plant(d) {
-    planted[d] = Math.floor(Math.random() * ICONS.length); plantedAt[d] = performance.now(); delete gone[d]; delete demo[d]; hop[d] = S * 3; keep(); popSound(d, 1); buzz(); wake();
+    planted[d] = Math.floor(Math.random() * ICONS.length); plantedAt[d] = performance.now(); delete gone[d]; delete demo[d]; hop[d] = S * 3; keep(); popSound(d, 1); wake();
     try { localStorage.setItem('jc-planted', '1'); } catch (e) {}
     if (o.onPlant) o.onPlant();
   }
-  function unplant(d) { gone[d] = { i: planted[d], at: performance.now() }; delete planted[d]; delete plantedAt[d]; keep(); popSound(d, -1); buzz(); wake(); }
+  function unplant(d) { gone[d] = { i: planted[d], at: performance.now() }; delete planted[d]; delete plantedAt[d]; keep(); popSound(d, -1); wake(); }
 
   var cv = o.canvas, ctx = cv.getContext('2d');
   var S = 3, CELL, cols, rows, dpr = 1, stamps = {}, t0 = null, hover = -1, hop = {};
@@ -912,25 +902,6 @@ function YearGarden(o) {
     }
     return stamps[key];
   }
-  /* iPhone gives a haptic tick only when a finger really taps a switch (a page can't fire one itself; tested on
-     Jeralmi's iPhone, Oct 9), so on a touch screen without vibrate, invisible switches lie over the days still to come:
-     planting or clearing a ghost there ticks. they cost nothing to draw; the garden listens to them as to the canvas */
-  var pads = [];
-  if (!navigator.vibrate && window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-    for (var q = 0; q < 2; q++) {
-      var lb = document.createElement('label'), sw = document.createElement('input');
-      sw.type = 'checkbox'; sw.setAttribute('switch', ''); sw.tabIndex = -1;
-      lb.className = 'ypad'; lb.setAttribute('aria-hidden', 'true'); lb.appendChild(sw); cv.parentElement.appendChild(lb); pads.push(lb);
-    }
-  }
-  function placePads() {
-    if (!pads.length) return;
-    var x0 = cv.offsetLeft, y0 = cv.offsetTop, f = today + 1, r = Math.floor(f / cols), c = f % cols;
-    function put(el, x, y, w, h) { el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.width = Math.max(0, w) + 'px'; el.style.height = Math.max(0, h) + 'px'; }
-    put(pads[0], x0 + c * CELL, y0 + r * CELL, (cols - c) * CELL, CELL);                 /* the rest of today's row */
-    put(pads[1], x0, y0 + (r + 1) * CELL, cols * CELL, (rows - r - 1) * CELL);            /* every row below */
-  }
-  function on(type, fn, opts) { cv.addEventListener(type, fn, opts); pads.forEach(function (p) { p.addEventListener(type, fn, opts); }); }
   function layout() {
     /* the real ratio, even below 1 on a zoomed-out browser: the canvas then matches the screen's pixels one to one,
        which keeps the pixel art crisp (a bigger canvas gets shrunk and loses rows of pixels) */
@@ -943,7 +914,6 @@ function YearGarden(o) {
     cv.style.width = gw + 'px'; cv.style.height = gh + 'px'; cv.width = Math.round(gw * dpr); cv.height = Math.round(gh * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.imageSmoothingEnabled = false;
     stamps = {};
-    placePads();
     if (!running) draw();
   }
   function at(d) { return { x: (d % cols) * CELL, y: Math.floor(d / cols) * CELL }; }
@@ -1081,9 +1051,6 @@ function YearGarden(o) {
     var f = 520 + (d % cols) * 18;
     note(dir > 0 ? f : f * 1.5, .07, .03, 'sine', dir > 0 ? f * 1.5 : f * .8);
   }
-  /* a light tap you can feel when a ghost is planted or cleared: Android vibrates (window.jcHaptic); iPhone ticks
-     from the invisible switches over the days to come */
-  function buzz() { if (window.jcHaptic) window.jcHaptic(); }
   function tapDot() { note(150, .07, .03, 'sine', 110); rustle(600, .02, .08); }
   function step() { rustle(1100 + Math.random() * 500, .022, .11); }
   /* the moment the last plant of the year appears: a small win chime */
@@ -1401,7 +1368,7 @@ function YearGarden(o) {
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideLore(); });
   var tip = document.createElement('div'), tipT = null, lastPointer = 'mouse';
   tip.className = 'ytip'; tip.hidden = true; tip.setAttribute('aria-hidden', 'true'); cv.parentElement.appendChild(tip);
-  on('pointerdown', function (e) { lastPointer = e.pointerType; });
+  cv.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
   /* a press, or a drag across the garden, flips each day as the pointer enters it: an empty one gets a ghost, a ghost
      goes away. it flips again when the stroke comes back to it, but not while the pointer stays inside it */
   var drawing = false, lastCell = -1, bx = 0, by = 0, handled = -1, flipped = 0;
@@ -1410,20 +1377,19 @@ function YearGarden(o) {
     if (d < 0 || !plantable(d)) return;
     flipped++; if (planted[d] == null) plant(d); else unplant(d);
   }
-  on('pointerdown', function (e) {
+  cv.addEventListener('pointerdown', function (e) {
     if (overCat(e)) return;
     var d = cellAt(e); if (d < 0 || !plantable(d)) return;
     audio(); drawing = true; lastCell = -1; flipped = 0; bx = e.clientX; by = e.clientY; handled = d;
     brushAt(d); say(d);
   });
-  on('pointermove', function (e) {
+  cv.addEventListener('pointermove', function (e) {
     if (!drawing) return;
     /* fill in every cell along the stroke, so a quick drag doesn't skip any */
     var dx = e.clientX - bx, dy = e.clientY - by, steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / (CELL / 3)));
     for (var k = 1; k <= steps; k++) brushAt(cellAt({ clientX: bx + dx * k / steps, clientY: by + dy * k / steps }));
     bx = e.clientX; by = e.clientY;
   });
-  /* Android buzzes for every day as the stroke passes it; iPhone can only tick as the finger lifts, so it gets one then */
   function brushEnd() { drawing = false; flipped = 0; }
   window.addEventListener('pointerup', brushEnd); window.addEventListener('pointercancel', brushEnd);
   function tipAt(d) {
@@ -1434,7 +1400,7 @@ function YearGarden(o) {
     tip.hidden = false; clearTimeout(tipT); tipT = setTimeout(function () { tip.hidden = true; }, 1800);
   }
   var onCat = false, mx = 0, my = 0, mt = 0;
-  on('pointermove', function (e) {
+  cv.addEventListener('pointermove', function (e) {
     /* how fast the pointer sweeps, so a quick brush rustles louder than a slow one */
     var dt = Math.max(1, e.timeStamp - mt), k = Math.max(.4, Math.min(1.5, Math.hypot(e.clientX - mx, e.clientY - my) / dt / .8));
     mx = e.clientX; my = e.clientY; mt = e.timeStamp;
@@ -1449,8 +1415,8 @@ function YearGarden(o) {
       if (pinned < 0 && e.pointerType === 'mouse') { if (marks[d]) { clearTimeout(hideT); showLore(d); } else if (card && !card.hidden) hideSoon(); }
     }
   });
-  on('pointerleave', function () { hover = -1; onCat = false; say(-1); if (pinned < 0 && card) hideSoon(); });
-  on('click', function (e) {
+  cv.addEventListener('pointerleave', function () { hover = -1; onCat = false; say(-1); if (pinned < 0 && card) hideSoon(); });
+  cv.addEventListener('click', function (e) {
     if (peeked) { peeked = false; return; }                     /* that press was a look, not a tap */
     audio();
     if (overCat(e)) { hideLore(); catTap(); say('cat'); return; }
@@ -1490,18 +1456,18 @@ function YearGarden(o) {
     hop[d] = S * 2; pluck(d); say(d);
   }
   function hidePeek() { clearTimeout(peekT); peekT = null; if (peeking >= 0) { peek.hidden = true; peeking = -1; } }
-  on('pointerdown', function (e) {
+  cv.addEventListener('pointerdown', function (e) {
     if (e.pointerType === 'mouse' || overCat(e)) return;
     var d = cellAt(e); if (d < 0 || d > today) return;
     px0 = e.clientX; py0 = e.clientY; peeked = false; clearTimeout(peekT);
     peekT = setTimeout(function () { peeked = true; showPeek(d); }, 380);
   });
-  on('pointermove', function (e) {
+  cv.addEventListener('pointermove', function (e) {
     if (peeking >= 0) { var d = cellAt(e); if (d >= 0 && d <= today) showPeek(d); return; }
     if (peekT && Math.hypot(e.clientX - px0, e.clientY - py0) > 8) { clearTimeout(peekT); peekT = null; }
   });
   window.addEventListener('pointerup', hidePeek); window.addEventListener('pointercancel', hidePeek);
-  on('contextmenu', function (e) { if (lastPointer !== 'mouse') e.preventDefault(); });
+  cv.addEventListener('contextmenu', function (e) { if (lastPointer !== 'mouse') e.preventDefault(); });
 
   if (window.ResizeObserver) new ResizeObserver(layout).observe(cv.parentElement); else window.addEventListener('resize', layout);
   if (window.IntersectionObserver) new IntersectionObserver(function (es) {
