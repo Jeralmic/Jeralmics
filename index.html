@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://jeralmics.com/assets/img/og-card.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Jeralmi Canela. Makes computer games. A gameplay frame from Something New and a row of pixel plants.">
+<meta property="og:image:alt" content="Jeralmi Canela, over a row of pixel plants: one magenta, today in lime, and a cat asleep.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@Jeralmics">
 <meta name="twitter:creator" content="@Jeralmics">
@@ -388,7 +388,7 @@
   </div>
   <div class="garden-wrap">
     <div class="yhead"><span class="year" id="year">2026</span><span class="count" id="count"></span></div>
-    <div class="yday" id="yday" aria-live="polite">One plant for every day of 2026 so far</div>
+    <div class="yday" id="yday" aria-live="polite">One item for every day of 2026 so far</div>
     <div class="ykey" aria-hidden="true"><span><i class="sw mag"></i>Shipped</span><span><i class="sw today"></i>Today</span></div>
     <ul class="sr-only" id="markslist" aria-label="Things I shipped this year"></ul>
     <canvas id="garden" aria-label="a garden of the year: a small plant for each day so far, a dot for each day to come"></canvas>
@@ -825,7 +825,7 @@ function YearGarden(o) {
   var days = Math.round((new Date(Y + 1, 0, 1) - new Date(Y, 0, 1)) / 864e5);
   var today = Math.round((new Date(Y, now.getMonth(), now.getDate()) - new Date(Y, 0, 1)) / 864e5);
   if (o.yearEl) o.yearEl.textContent = Y;
-  if (o.countEl) o.countEl.innerHTML = '<b>' + (today + 1) + '</b> grown, ' + (days - today - 1) + ' to go';
+  if (o.countEl) o.countEl.innerHTML = '<b>' + (today + 1) + '</b> days, ' + (days - today - 1) + ' to go';
   var icon = []; for (var d = 0; d < days; d++) icon.push(Math.floor(rng(Y * 1000 + d)() * ICONS.length));
 
   /* special days: o.marks = [{ date: 'YYYY-MM-DD', title, text?, link?, linkText? }]. a grown plant on that day is drawn
@@ -1275,7 +1275,7 @@ function YearGarden(o) {
   function say(d) {
     if (!o.dayEl) return;
     if (d === 'cat') { o.dayEl.innerHTML = '<b>The cat</b>, ' + (cat.mode === 'sleep' ? (home > today ? 'asleep where tomorrow will grow' : 'asleep') : 'out for a walk'); return; }
-    if (d < 0) { o.dayEl.textContent = 'One plant for every day of ' + Y + ' so far'; return; }
+    if (d < 0) { o.dayEl.textContent = 'One item for every day of ' + Y + ' so far'; return; }
     var mouse = lastPointer === 'mouse', ghost = planted[d] != null && d !== home;
     var later = d > today ? (mouse ? (ghost ? ', still to grow · a ghost you planted, click to clear it' : ', still to grow' + (d !== home ? ' · click or drag to plant' : ''))
       : (ghost ? ' · your ghost · tap to clear' : d !== home ? ' · tap or swipe to plant' : ', still to grow')) : '';
