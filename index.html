@@ -169,6 +169,8 @@
   .count b { color: var(--green); font-weight: 400; }
   .yday { margin: -8px 0 14px; min-height: 1.6em; font: 13px/1.6 var(--mono); color: var(--grey); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }   /* one line, always: it must never push the garden down */
   .yday b { font-weight: 400; color: var(--ink); }
+  .yday .yname { color: var(--green); }          /* the plant's name, beside its date */
+  .yday .yghost { color: #7f8ca1; }              /* a ghost you planted */
   /* a small key for the garden */
   .ykey { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: -6px 0 16px; font: 12px var(--mono); color: var(--grey); }
   .ykey .sw { display: inline-block; width: 10px; height: 10px; margin-right: 7px; vertical-align: -1px; }
@@ -818,7 +820,12 @@ function YearGarden(o) {
     ['..#.#.#..', '...###...', '....#....', '...###...', '...###...', '...###...', '....#....', '....#....', '.........'],
     ['...#.#...', '..#####..', '.#.#.#.#.', '.#######.', '.#.#.#.#.', '..#####..', '...#.#...', '....#....', '.........']
   ];
-  var N = 9, HEAD = 4, PAD = 3, GHOST = '#9fabbd', GREEN = '#3c9a22', INK = '#26262b', DOT = '#c3cba6', LIME = '#d9ee6a', MOTE = '#b9d43c';
+  /* a name for each plant, shown beside its date (Jeralmi, Oct 9) */
+  var NAMES = ['Daisy', 'Tulip', 'Sprout', 'Parasol', 'Tall grass', 'Clover', 'Poppy bud', 'Dandelion', 'Fiddlehead', 'Lilac',
+    'Fern', 'Oak', 'Thistle', 'Iris', 'Morning glory', 'Twin lilies', 'Cactus', 'Pine', 'Mint', 'Cattails', 'Bamboo', 'Agave',
+    'Rose', 'Lavender', 'Acacia', 'Coral', 'Moss bed', 'Mushrooms', 'Lantern flower', 'Palm', 'Radish', 'Cabbage'];
+  function nameOf(i) { return NAMES[i] || 'Plant'; }
+  var N = 9, HEAD = 4, PAD = 3, GHOST = '#9fabbd', GREEN = '#3c9a22', INK = '#26262b', DOT = '#a9b18c', LIME = '#d9ee6a', MOTE = '#b9d43c';
   function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
   var now = o.now || new Date(), Y = now.getFullYear();
@@ -1277,9 +1284,11 @@ function YearGarden(o) {
     if (d === 'cat') { o.dayEl.innerHTML = '<b>The cat</b>, ' + (cat.mode === 'sleep' ? (home > today ? 'asleep where tomorrow will grow' : 'asleep') : 'out for a walk'); return; }
     if (d < 0) { o.dayEl.textContent = 'One item for every day of ' + Y + ' so far'; return; }
     var mouse = lastPointer === 'mouse', ghost = planted[d] != null && d !== home;
-    var later = d > today ? (mouse ? (ghost ? ', still to grow · a ghost you planted, click to clear it' : ', still to grow' + (d !== home ? ' · click or drag to plant' : ''))
-      : (ghost ? ' · your ghost · tap to clear' : d !== home ? ' · tap or swipe to plant' : ', still to grow')) : '';
-    o.dayEl.innerHTML = '<b>' + dateOf(d) + '</b>' + (d === today ? ', today' : later) + (marks[d] ? ' · something happened here' : '');
+    var gname = ghost ? ' · <span class="yghost">Ghost ' + nameOf(planted[d]).toLowerCase() + '</span>' : '';
+    var later = d > today ? (mouse ? (ghost ? gname + ', click to clear it' : ', still to grow' + (d !== home ? ' · click or drag to plant' : ''))
+      : (ghost ? gname + ' · tap to clear' : d !== home ? ' · tap or swipe to plant' : ', still to grow')) : '';
+    var grown = d <= today ? ' · <span class="yname"' + (marks[d] ? ' style="color:' + markColor + '"' : '') + '>' + nameOf(icon[d]) + '</span>' : '';
+    o.dayEl.innerHTML = '<b>' + dateOf(d) + '</b>' + grown + (d === today ? ' · today' : later) + (marks[d] ? ' · something happened here' : '');
   }
   var card = null, pinned = -1, onCard = false, hideT = null;
   if (Object.keys(marks).length) {
@@ -1345,7 +1354,7 @@ function YearGarden(o) {
   window.addEventListener('pointerup', brushEnd); window.addEventListener('pointercancel', brushEnd);
   function tipAt(d) {
     var p = at(d);
-    tip.textContent = dateOf(d) + (d === today ? ' · today' : d > today ? (planted[d] != null && d !== home ? ' · planted' : ' · to come') : '');
+    tip.textContent = dateOf(d) + (d <= today ? ' · ' + nameOf(icon[d]) : planted[d] != null && d !== home ? ' · ghost ' + nameOf(planted[d]).toLowerCase() : ' · to come');
     tip.style.left = Math.max(60, Math.min(cv.parentElement.clientWidth - 60, cv.offsetLeft + p.x + CELL / 2)) + 'px';
     tip.style.top = (cv.offsetTop + p.y) + 'px';
     tip.hidden = false; clearTimeout(tipT); tipT = setTimeout(function () { tip.hidden = true; }, 1800);
@@ -1400,7 +1409,7 @@ function YearGarden(o) {
     var g = peekCv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, N * Z, N * Z);
     g.fillStyle = d === today ? INK : marks[d] ? markColor : GREEN;
     ICONS[icon[d]].forEach(function (row, r) { for (var k = 0; k < N; k++) if (row[k] === '#') g.fillRect(k * Z, r * Z, Z, Z); });
-    peekLbl.textContent = dateOf(d) + (d === today ? ' · today' : '');
+    peekLbl.textContent = dateOf(d) + ' · ' + nameOf(icon[d]);
     var p = at(d); peek.hidden = false; tip.hidden = true;
     peek.style.left = Math.max(56, Math.min(cv.parentElement.clientWidth - 56, cv.offsetLeft + p.x + CELL / 2)) + 'px';
     peek.style.top = (cv.offsetTop + p.y) + 'px';
