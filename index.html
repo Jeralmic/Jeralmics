@@ -179,6 +179,7 @@
   .ykey .sw { display: inline-block; width: 10px; height: 10px; margin-right: 7px; vertical-align: -1px; }
   .ykey .sw.mag { background: #c23b8f; }
   .ykey .sw.today { background: var(--lime); }
+  .ykey .sw.ghost { background: #d0d7e2; box-shadow: inset 0 0 0 1px #9fabbd; }   /* the hint to plant, until they have */
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: -1px; padding: 0; }
   /* the lore card over a special plant: a small stage of its own, hung from the plant by a hairline */
   .lore { position: absolute; z-index: 5; width: max-content; max-width: min(270px, 82vw); transform: translate(-50%, calc(-100% - 22px));
@@ -394,7 +395,7 @@
   <div class="garden-wrap">
     <div class="yhead"><span class="year" id="year">2026</span><span class="count" id="count"></span></div>
     <div class="yday" id="yday" aria-live="polite">One item for every day of 2026 so far</div>
-    <div class="ykey" aria-hidden="true"><span><i class="sw mag"></i>Shipped</span><span><i class="sw today"></i>Today</span></div>
+    <div class="ykey" aria-hidden="true"><span><i class="sw mag"></i>Shipped</span><span><i class="sw today"></i>Today</span><span class="yhint" hidden><i class="sw ghost"></i><span class="yhint-t">Tap a dot to plant a ghost</span></span></div>
     <ul class="sr-only" id="markslist" aria-label="Things I shipped this year"></ul>
     <canvas id="garden" aria-label="a garden of the year: a small plant for each day so far, a dot for each day to come"></canvas>
   </div>
@@ -781,10 +782,12 @@
   /* closing a project: the same click, lower and softer, falling */
   function shut() {
     lastClick = performance.now(); var a = live(); if (!a) return;
-    var o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
-    o.type = 'square'; o.frequency.setValueAtTime(900, t); o.frequency.exponentialRampToValueAtTime(560, t + .05);
-    g.gain.setValueAtTime(.024, t); g.gain.exponentialRampToValueAtTime(.0001, t + .06);
-    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + .08);
+    [[1320, 0], [990, .055]].forEach(function (n) {                     /* two soft notes stepping down, like a quiet close */
+      var o = a.createOscillator(), g = a.createGain(), t = a.currentTime + n[1];
+      o.type = 'sine'; o.frequency.setValueAtTime(n[0], t);
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.028, t + .006); g.gain.exponentialRampToValueAtTime(.0001, t + .09);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + .1);
+    });
   }
   /* hover sounds only for a real mouse: on a touchscreen a tap also counts as a hover and would double up */
   function onHover(el, fn) { el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') fn(); }); }
@@ -877,9 +880,26 @@ function YearGarden(o) {
   var PKEY = 'jc-garden-' + Y, planted = {}, plantedAt = {}, gone = {};
   try { planted = JSON.parse(localStorage.getItem(PKEY)) || {}; } catch (e) { planted = {}; }
   function keep() { try { localStorage.setItem(PKEY, JSON.stringify(planted)); } catch (e) {} }
+  /* a nudge, once per visitor: after the year has grown in, a few ghosts pop into the days to come one after another,
+     as if a finger drew across them, hover a moment and sink away. not shown again once seen, or once they've planted */
+  var demo = {}, demoAt = -1, demoOut = 0, hinted = false;
+  try { hinted = localStorage.getItem('jc-ghost-hint') === '1' || localStorage.getItem('jc-planted') === '1'; } catch (e) {}
+  function startDemo() {
+    var now = performance.now(), k = 0;
+    for (var d = today + 2; d < days && k < 5; d++) {
+      if (d === home || planted[d] != null) continue;
+      demo[d] = { i: Math.floor(Math.random() * ICONS.length), at: now + k * 170 }; k++;
+    }
+    demoOut = now + k * 170 + 1500;
+    try { localStorage.setItem('jc-ghost-hint', '1'); } catch (e) {}
+  }
   function plantable(d) { return d > today && d < days && d !== home; }
   /* pops in: grows up fast and bounces; taken away, it sinks back into the ground */
-  function plant(d) { planted[d] = Math.floor(Math.random() * ICONS.length); plantedAt[d] = performance.now(); delete gone[d]; hop[d] = S * 3; keep(); popSound(d, 1); buzz(); wake(); }
+  function plant(d) {
+    planted[d] = Math.floor(Math.random() * ICONS.length); plantedAt[d] = performance.now(); delete gone[d]; delete demo[d]; hop[d] = S * 3; keep(); popSound(d, 1); buzz(); wake();
+    try { localStorage.setItem('jc-planted', '1'); } catch (e) {}
+    if (o.onPlant) o.onPlant();
+  }
   function unplant(d) { gone[d] = { i: planted[d], at: performance.now() }; delete planted[d]; delete plantedAt[d]; keep(); popSound(d, -1); buzz(); wake(); }
 
   var cv = o.canvas, ctx = cv.getContext('2d');
@@ -1228,7 +1248,8 @@ function YearGarden(o) {
       }
       var fillEnd = (today + 18) / 260;
       if (t < fillEnd + .12) { var W2 = WIND[windStyle], e2 = Math.min(1, t / .06, (fillEnd + .12 - t) / .22); vol = Math.max(vol, W2.vol * .9 * e2); fq = Math.max(fq, W2.lo + (W2.hi - W2.lo) * Math.min(1, t / fillEnd)); }
-      if (!rolled && t >= fillEnd) { rolled = true; winChime(); }
+      if (!rolled && t >= fillEnd) { rolled = true; winChime(); if (!hinted) { hinted = true; demoAt = t + 1.1; } }
+      if (demoAt > 0 && t >= demoAt) { demoAt = -1; startDemo(); }
       bedSet(vol, fq, pan);
     }
     /* clear in canvas pixels, not scaled ones, or a scale under 1 leaves the right and bottom edges smearing */
@@ -1237,11 +1258,15 @@ function YearGarden(o) {
       var p = at(d), x = p.x + PAD * S / 2, y = p.y + PAD * S / 2;
       /* the year fills in left to right when it first comes into view */
       var show = reduce ? 1 : t0 === null ? 0 : Math.max(0, Math.min(1, (t * 260 - d) / 18));
-      var gh = d > today && d !== home ? (planted[d] != null ? planted[d] : gone[d] ? gone[d].i : null) : null, grow = 1, fade = 1;
+      var nowMs = performance.now(), dm = demo[d] && nowMs >= demo[d].at ? demo[d] : null;
+      var gh = d > today && d !== home ? (planted[d] != null ? planted[d] : gone[d] ? gone[d].i : dm ? dm.i : null) : null, grow = 1, fade = 1;
       if (gh !== null) {
-        var nowMs = performance.now();
         if (planted[d] != null) { if (plantedAt[d]) grow = Math.min(1, (nowMs - plantedAt[d]) / 220); }
-        else { var u = (nowMs - gone[d].at) / 260; if (u >= 1) { delete gone[d]; gh = null; } else { grow = fade = 1 - u; } }
+        else if (gone[d]) { var u = (nowMs - gone[d].at) / 260; if (u >= 1) { delete gone[d]; gh = null; } else { grow = fade = 1 - u; } }
+        else {
+          grow = Math.min(1, (nowMs - dm.at) / 220);
+          var v = (nowMs - demoOut) / 420; if (v >= 1) { delete demo[d]; gh = null; } else if (v > 0) { grow = fade = 1 - v; }
+        }
       }
       if (gh !== null) {
         /* a ghost: pops up out of the ground when planted, then floats a little, fades in and out, and sways with the breeze */
@@ -1543,7 +1568,16 @@ function YearGarden(o) {
       li.appendChild(a); ul.appendChild(li);
     });
   })();
-  var garden = { start: function () { YearGarden({ canvas: gardenCv, yearEl: document.getElementById('year'), countEl: document.getElementById('count'), dayEl: document.getElementById('yday'), marks: MARKS, markColor: '#c23b8f' }); } };
+  var garden = { start: function () { YearGarden({ canvas: gardenCv, yearEl: document.getElementById('year'), countEl: document.getElementById('count'), dayEl: document.getElementById('yday'), marks: MARKS, markColor: '#c23b8f', onPlant: hideHint }); } };
+  /* the hint to plant, in the key above the garden, until the visitor has planted once */
+  var hint = document.querySelector('.yhint');
+  function hideHint() { if (hint) hint.hidden = true; }
+  try {
+    if (hint && localStorage.getItem('jc-planted') !== '1') {
+      hint.hidden = false;
+      if (window.matchMedia('(hover: hover)').matches) hint.querySelector('.yhint-t').textContent = 'Click or drag across the dots to plant';
+    }
+  } catch (e) {}
 
   function begin() { weather.start(); garden.start(); }
   if (window.swIntro && !window.swIntro.done) window.swIntro.then.push(begin); else begin();
