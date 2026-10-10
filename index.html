@@ -284,9 +284,11 @@
     /* the contact links are small; each gets a thumb-sized target around it */
     .reach a { position: relative; }
     .reach a::after { content: ""; position: absolute; inset: -13px -7px; }
-    /* the sound switch steps aside while you scroll, and comes back when you stop */
-    .soundbtn { transition: opacity .25s, transform .25s; }
-    .soundbtn.away { opacity: 0; transform: translateY(8px); pointer-events: none; }
+    /* the sound switch sits at the end of the contact links (Jeralmi, Oct 9), so it never covers anything */
+    .reach { width: 100%; align-items: center; gap: 12px; }
+    .reach .soundbtn { position: relative; right: auto; bottom: auto; width: 28px; height: 24px; margin-left: auto; }
+    .reach .soundbtn svg { width: 18px; height: 12px; }
+    .reach .soundbtn::after { content: ""; position: absolute; inset: -10px; }      /* a thumb-sized target */
     /* the pictures swipe like a photo gallery, with square dots for where you are */
     .more .pic.track { aspect-ratio: auto; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
     .more .pic.track::-webkit-scrollbar { display: none; }
@@ -731,12 +733,13 @@
     try { localStorage.setItem('jc-sound', window.jcSound ? 'on' : 'off'); } catch (e) {}
   });
   soundLabel();
-  var awayT = null;
-  window.addEventListener('scroll', function () {
-    if (window.innerWidth > 860) return;
-    soundBtn.classList.add('away'); clearTimeout(awayT);
-    awayT = setTimeout(function () { soundBtn.classList.remove('away'); }, 700);
-  }, { passive: true });
+  /* on a phone the switch moves up to the end of the contact links; on a computer it stays in the corner */
+  var reach = document.querySelector('.reach'), phone = window.matchMedia('(max-width: 860px)');
+  function placeSound() {
+    if (phone.matches) { if (soundBtn.parentElement !== reach) reach.appendChild(soundBtn); }
+    else if (soundBtn.parentElement !== document.body) document.body.appendChild(soundBtn);
+  }
+  placeSound(); if (phone.addEventListener) phone.addEventListener('change', placeSound);
 
   /* small rollover sounds; browsers allow them after the first tap */
   var ac = null;
