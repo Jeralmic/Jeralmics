@@ -6,7 +6,7 @@ Jeralmi studies computer science and loves making things in just about any form;
 
 ## Work
 
-- Something New (in progress): a fast, acrobatic shooter inspired by Mirror's Edge and Vanquish. Lead developer, with Uhm…Games?, a studio Jeralmi runs with friends. Updates: https://x.com/Uhm_Inc
+- Something New (in progress): a fast, acrobatic shooter. Lead developer, with Uhm…Games?, a studio Jeralmi runs with friends. Updates: https://x.com/Uhm_Inc
 - Elevator Brawl: a 3D beat 'em up that takes place entirely in one elevator, with bosses. Lead developer. Epic MegaJam 2025. https://aquagon.itch.io/elevator-brawl
 - Secret Santa Delivery: you're a cat who drives a truck delivering Secret Santa gifts. Lead developer. Comfy Jam: Winter 2026, #4 in Macrow's Picks. https://uhminc.itch.io/secret-santa-delivery
 - Shaped in Stars: a 2D puzzle platformer. The world got split into two realities, and you open rifts to stitch it back together. Programmer and designer. thatgamejam #01, #2 for Best Gameplay out of 249 entries. https://lonksadventures.itch.io/shaped-in-stars
