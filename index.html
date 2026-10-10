@@ -6,7 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Jeralmi Canela makes computer games.">
 <link rel="canonical" href="https://jeralmics.com/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/img/favicon-48.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <meta name="theme-color" content="#f6f7f2">
 <meta property="og:type" content="profile">
@@ -746,8 +749,17 @@
 
   /* small rollover sounds; browsers allow them after the first tap */
   var ac = null;
-  function wake() { if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } }
-  document.addEventListener('pointerdown', wake, { once: true });
+  function wake() {
+    if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; } }
+    if (ac.state !== 'running') {
+      try { ac.resume(); var sb = ac.createBufferSource(); sb.buffer = ac.createBuffer(1, 1, 22050); sb.connect(ac.destination); sb.start(0); } catch (e) {}
+    }
+  }
+  /* iPhone Safari only lets sound start from a finished tap (the finger lifting) or a click, not a finger touching
+     down, so every gesture tries again until the sound is running */
+  ['pointerdown', 'touchend', 'click', 'keydown'].forEach(function (t) {
+    document.addEventListener(t, function () { if (!ac || ac.state !== 'running') wake(); }, { passive: true, capture: true });
+  });
   /* the original little beeps for hovering and clicking (Jeralmi preferred them to the wooden version) */
   function live() { return ac && ac.state === 'running' && window.jcSound !== false ? ac : null; }
   function tone(f, d, v, type) {
@@ -901,10 +913,16 @@ function YearGarden(o) {
   var ac = null, lastNote = 0;
   function audio() {
     if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { ac = false; } }
-    if (ac && ac.state === 'suspended') ac.resume();
+    if (ac && ac.state !== 'running') {
+      try { ac.resume(); var sb = ac.createBufferSource(); sb.buffer = ac.createBuffer(1, 1, 22050); sb.connect(ac.destination); sb.start(0); } catch (e) {}
+    }
     return ac || null;
   }
-  document.addEventListener('pointerdown', audio, { once: true });
+  /* iPhone Safari only lets sound start from a finished tap (the finger lifting) or a click, not a finger touching
+     down, so every gesture tries again until the sound is running (a one-sample silent blip helps older iOS along) */
+  ['pointerdown', 'touchend', 'click', 'keydown'].forEach(function (t) {
+    document.addEventListener(t, function () { if (!ac || ac.state !== 'running') audio(); }, { passive: true, capture: true });
+  });
   function quiet() { return window.jcSound === false; }               /* the page's sound on / off */
   function note(f, dur, vol, type, to, when, pan) {
     var a = ac; if (!a || a.state !== 'running' || quiet()) return;
