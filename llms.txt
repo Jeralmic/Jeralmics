@@ -2,18 +2,27 @@
 
 > Jeralmi Canela (also known as Jeralmics) is a game developer. Personal site: https://jeralmics.com/
 
-Jeralmi studies computer science and loves making things in just about any form; games are what Jeralmi keeps coming back to. Jeralmi works on every part of them (programming, 3D in Blender, building in Unreal Engine), out of a love for the details and for figuring out how to bring a feeling to life. Jeralmi spent a summer interning at Ghost Story Games on Judas (https://store.steampowered.com/app/388860/Judas/); Jeralmi's best jam game so far placed #2 for Best Gameplay at thatgamejam, run by thatgamecompany. Outside of games, Jeralmi led a youth research project for Agncy, a nonprofit design firm, on how Boston students see careers in biotech. Away from making things, Jeralmi plays basketball and rides a bike.
+Jeralmi makes things, and is currently making a bunch of games.
 
-## Work
+## Recommended projects
 
-- Something New (in progress): a fast, acrobatic shooter. Lead developer, with Uhm…Games?, a studio Jeralmi runs with friends. Updates: https://x.com/Jeralmics
-- Elevator Brawl: a 3D beat 'em up that takes place entirely in one elevator, with bosses. Lead developer. Epic MegaJam 2025. https://aquagon.itch.io/elevator-brawl
-- Secret Santa Delivery: you're a cat who drives a truck delivering Secret Santa gifts. Lead developer. Comfy Jam: Winter 2026, #4 in Macrow's Picks. https://uhminc.itch.io/secret-santa-delivery
-- Shaped in Stars: a 2D puzzle platformer. The world got split into two realities, and you open rifts to stitch it back together. Programmer and designer. thatgamejam #01, #2 for Best Gameplay out of 249 entries. https://lonksadventures.itch.io/shaped-in-stars
-- BUILD Alumni: BUILD.org's alumni site, where former students keep in touch and find internships and scholarships. Designer and programmer. https://build.org/alumni
+- Shaped in Stars: https://lonksadventures.itch.io/shaped-in-stars
+- Cut to the Castle: https://ghostfruit0.itch.io/cuttothecastle
+- Secret Santa Delivery: https://uhminc.itch.io/secret-santa-delivery
+- Sam Wich and the Cosmic Sandwich: https://florol.itch.io/tgc02
+
+## Completed in 2026
+
+- 2026-11-16: Entered the 2026 Epic AI MegaJam, with Cut to the Castle. https://ghostfruit0.itch.io/cuttothecastle
+- 2026-10-30: Entered thatgamejam #02, with Sam Wich and the Cosmic Sandwich. https://ghostfruit0.itch.io/thatgamejam-submission
+- 2026-06-01: Launched the BUILD Alumni portal. https://build.org/alumni
+- 2026-02-08: Took part in the Bigmode Game Jam. https://uhminc.itch.io/9lives
+- 2026-01-26: #4 in Macrow’s Picks at Comfy Jam: Winter, with Secret Santa Delivery, out of 88 entries. https://itch.io/jam/comfy-jam-winter-2026/rate/4232553
+- 2026-01-04: Placed #2 for Best Gameplay at thatgamejam #01, with Shaped in Stars, out of 249 entries. https://itch.io/jam/thatgamejam01/rate/4171860
 
 ## Contact
 
 - Email: jeralmicw@gmail.com
+- itch.io: https://ghostfruit0.itch.io
 - Twitter / X: https://x.com/Jeralmics
-- itch.io (Uhm…Games?): https://uhminc.itch.io
+- Discord: https://discord.gg/YpMgb4qAdf
