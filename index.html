@@ -51,31 +51,36 @@
   :root { --bg: #fcfcfa; --ink: #111; --soft: #8f8f89; --line: #ebebe6; --hover: #f1f1ec; }
   * { box-sizing: border-box; }
   html { background: var(--bg); -webkit-text-size-adjust: 100%; }
-  body { margin: 0 auto; padding: 72px 24px 96px; max-width: 598px; background: var(--bg); color: var(--ink);
-         font: 450 15px/1.5 "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; letter-spacing: -.006em; -webkit-font-smoothing: antialiased; }
+  body { margin: 0 auto; padding: 88px 24px 112px; max-width: 728px; background: var(--bg); color: var(--ink);
+         font: 450 18px/1.5 "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; letter-spacing: -.006em; -webkit-font-smoothing: antialiased; }
   h1 { font-size: inherit; font-weight: 600; margin: 0; }
-  .updated { color: var(--soft); margin: 0 0 28px; }
+  .updated { color: var(--soft); margin: 0 0 32px; }
   p { margin: 0 0 12px; }
   ul { margin: 0; padding: 0; list-style: none; }
   a { color: inherit; text-decoration: underline; text-decoration-color: #c9c9c2; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: text-decoration-color .12s; }
   a:hover, a:focus-visible { text-decoration-color: var(--ink); outline: none; }
   .links { display: flex; flex-wrap: wrap; gap: 2px 16px; margin: 0; }
-  h2 { font-size: inherit; font-weight: 450; color: var(--soft); margin: 52px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h2 { font-size: inherit; font-weight: 450; color: var(--soft); margin: 64px 0 0; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
 
   /* a game: its cover as a small icon, its name, and the whole row goes to the game */
-  .games a { display: flex; align-items: center; gap: 14px; padding: 9px 8px; margin: 0 -8px; border-radius: 8px; text-decoration: none; transition: background-color .12s; }
+  .games a { display: flex; align-items: center; gap: 18px; padding: 11px 10px; margin: 0 -10px; border-radius: 12px; text-decoration: none; transition: background-color .12s; }
   .games li + li a { box-shadow: 0 -1px 0 var(--line); }
   .games a:hover, .games a:focus-visible { background: var(--hover); box-shadow: none; }
   .games li:has(a:hover) + li a, .games li:has(a:focus-visible) + li a { box-shadow: none; }
-  .games img { width: 44px; height: 44px; object-fit: cover; border-radius: 9px; background: #e9e9e2; flex: none; outline: 1px solid rgba(0,0,0,.08); outline-offset: -1px; }
+  .games img { width: 64px; height: 64px; object-fit: cover; border-radius: 14px; background: #e9e9e2; flex: none; outline: 1px solid rgba(0,0,0,.08); outline-offset: -1px; }
   .games .name { font-weight: 500; }
   .games .go { margin-left: auto; color: var(--soft); }
 
-  .done li { display: grid; grid-template-columns: 64px 1fr; gap: 0 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .done li { display: grid; grid-template-columns: 78px 1fr; gap: 0 18px; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .done li:last-child { border-bottom: 0; }
   .done time { color: var(--soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-  @media (max-width: 480px) { body { padding: 44px 20px 72px; } .done li { grid-template-columns: 56px 1fr; gap: 0 12px; } }
+  @media (max-width: 600px) {
+    body { padding: 44px 20px 72px; font-size: 16px; }
+    .games img { width: 52px; height: 52px; border-radius: 12px; }
+    .games a { gap: 14px; }
+    .done li { grid-template-columns: 62px 1fr; gap: 0 12px; }
+  }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
@@ -95,10 +100,10 @@
 
 <h2>Recommended projects</h2>
 <ul class="games">
-  <li><a href="https://lonksadventures.itch.io/shaped-in-stars"><img src="/assets/img/shots/sis-cover.jpg" alt="" width="44" height="44"><span class="name">Shaped in Stars</span><span class="go">Play</span></a></li>
-  <li><a href="https://ghostfruit0.itch.io/cuttothecastle"><img src="/assets/img/shots/cttc-cover.jpg" alt="" width="44" height="44"><span class="name">Cut to the Castle</span><span class="go">Play</span></a></li>
-  <li><a href="https://uhminc.itch.io/secret-santa-delivery"><img src="/assets/img/shots/ssd-cover.jpg" alt="" width="44" height="44"><span class="name">Secret Santa Delivery</span><span class="go">Play</span></a></li>
-  <li><a href="https://florol.itch.io/tgc02"><img src="/assets/img/shots/sw2-cover.jpg" alt="" width="44" height="44"><span class="name">Sam Wich and the Cosmic Sandwich</span><span class="go">Play</span></a></li>
+  <li><a href="https://lonksadventures.itch.io/shaped-in-stars"><img src="/assets/img/shots/sis-cover.jpg" alt="" width="64" height="64"><span class="name">Shaped in Stars</span><span class="go">Play</span></a></li>
+  <li><a href="https://ghostfruit0.itch.io/cuttothecastle"><img src="/assets/img/shots/cttc-cover.jpg" alt="" width="64" height="64"><span class="name">Cut to the Castle</span><span class="go">Play</span></a></li>
+  <li><a href="https://uhminc.itch.io/secret-santa-delivery"><img src="/assets/img/shots/ssd-cover.jpg" alt="" width="64" height="64"><span class="name">Secret Santa Delivery</span><span class="go">Play</span></a></li>
+  <li><a href="https://florol.itch.io/tgc02"><img src="/assets/img/shots/sw2-cover.jpg" alt="" width="64" height="64"><span class="name">Sam Wich and the Cosmic Sandwich</span><span class="go">Play</span></a></li>
 </ul>
 
 <h2>Things I&rsquo;ve completed this year</h2>
